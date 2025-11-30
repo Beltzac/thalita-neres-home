@@ -143,8 +143,25 @@
                 imageContainer.addEventListener('click', function (e) {
                     if (lastClosestImageIndex >= 0) {
                         var overlay = overlayImages[lastClosestImageIndex];
+                        var preProcessed = preProcessedOverlays[lastClosestImageIndex];
 
-                        confettiExplosion(e.clientX, e.clientY);
+                        // Calculate the screen coordinates of the item's center
+                        const style = window.getComputedStyle(imageContainer);
+                        const matrix = new WebKitCSSMatrix(style.transform);
+                        const offsetX = matrix.m41;
+                        const offsetY = matrix.m42;
+
+                        const boundingBox = baseImage.getBoundingClientRect();
+                        const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
+                        const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
+                        
+                        const scaleX = boundingBox.width / refWidth;
+                        const scaleY = boundingBox.height / refHeight;
+
+                        const centerX = (preProcessed.centerX * scaleX) + offsetX;
+                        const centerY = (preProcessed.centerY * scaleY) + offsetY;
+
+                        confettiExplosion(centerX, centerY);
 
                         setTimeout(async () => {
                        		window.parent.postMessage(overlay.urlLink, "*");
