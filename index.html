@@ -111,18 +111,18 @@
                 // Calculate the offset to center the base image's center of mass
                 // We want baseCenter.centerX to be at viewportWidth / 2
                 // and baseCenter.centerY to be at viewportHeight / 2
-                
+
                 // The image is currently at (0,0) relative to the container
                 // We need to move the container so that (baseCenter.centerX, baseCenter.centerY) is at (viewportWidth/2, viewportHeight/2)
-                
+
                 // However, the image is scaled to fit the height of the window (CSS height: 100%)
                 // We need to account for this scaling.
-                
+
                 const scale = viewportHeight / baseCenter.height;
-                
+
                 const scaledCenterX = baseCenter.centerX * scale;
                 const scaledCenterY = baseCenter.centerY * scale;
-                
+
                 const offsetX = (viewportWidth / 2) - scaledCenterX;
                 const offsetY = (viewportHeight / 2) - scaledCenterY;
 
@@ -197,17 +197,17 @@
                 // We need to adjust x and y because the container is now transformed
                 // x and y are relative to the viewport (e.offsetX/Y on the container might be affected by transform depending on browser,
                 // but since we attached listener to imageContainer, offsetX/Y are relative to the target node padding edge)
-                
+
                 // Actually, since we are using offsetX/Y on the container, and the container is transformed,
                 // the coordinates should be relative to the container's top-left, which is what we want.
                 // However, we need to be careful about the scaling.
-                
+
                 const boundingBox = baseImage.getBoundingClientRect();
                 // Assuming all images have the same aspect ratio and size as the base image
                 // Use the first overlay or base image for scale reference if overlays are empty (unlikely)
                 const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
                 const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
-                
+
                 const scaleX = refWidth / boundingBox.width;
                 const scaleY = refHeight / boundingBox.height;
 
@@ -224,7 +224,7 @@
                         minDistance = distance;
                         lastClosestImageIndex = i;
                     }
-                    
+
                     // Hide all initially
                     overlayElements[i].style.display = 'none';
                 }
@@ -407,6 +407,20 @@
             font-family: 'Thata', sans-serif;
         }
 
+        #instructionText {
+            position: fixed;
+            top: 4vh;
+            left: 0;
+            width: 100%;
+            z-index: 2000;
+            font-family: 'Thata', sans-serif;
+            font-size:5vh;
+            color: #000;
+            text-align: center;
+            pointer-events: none;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
         /* Loader */
         .lds-facebook {
             display: inline-block;
@@ -498,6 +512,7 @@
     </div>
     <div id="objectDescription"></div>
     <div id="toastContainer"></div>
+    <div id="instructionText">Para acessar os portfólios, recomendações e outros recursos, clique em qualquer item da ilustração.</div>
     <div id="imageContainer"></div>
 </body>
 
