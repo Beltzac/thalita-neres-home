@@ -3,76 +3,51 @@
 
 <head>
     <script>
-        const baseUrl = ""
-        const baseImageFilename = "https://static.wixstatic.com/media/c1926f_aa97532a8bec49118c685fc9e4ebb17a~mv2.png"; // Base image
+        const baseUrl = "site/"
+        const baseImageFilename = "base.png"; // Base image
 
         const overlayImages =
             [
                 {
-                    "nomeImagem": "Podcast",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_e120e2ec9ac44e32b75e0f74b782192a~mv2.png",
-                    "urlLink": "/espera"
+                    "nomeImagem": "Arquitetura",
+                    "arquivo": "arquitetura.png",
+                    "urlLink": "/arquitetura"
                 },
                 {
-                    "nomeImagem": "Portfólio de Arquitetura",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_4394c372cf47428cb6181bab8986e19a~mv2.png",
-                    "urlLink": "/portfolio-arquitetura"
-                },
-                {
-                    "nomeImagem": "Meu PC & Os Programas Que Uso",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_34f0db762d574ee0ae65885df953d0c5~mv2.png",
-                    "urlLink": "/espera"
-                },
-                {
-                    "nomeImagem": "Para Alunos de Arquitetura",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_1c8435ab3c3e438c875fab6102612ba7~mv2.png",
-                    "urlLink": "/espera"
-                },
-                {
-                    "nomeImagem": "Mais Sobre Arquitetura",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_df5c372683b04f5cab1bd2e28cc56d1d~mv2.png",
-                    "urlLink": "/espera"
-                },
-                {
-                    "nomeImagem": "Ilustrações",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_b94d9beb8d614380b1b2484cfa28020e~mv2.png",
-                    "urlLink": "/ilustracao"
-                },
-                {
-                    "nomeImagem": "Fotografias",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_2887ffc5a21a4a10a31bc000c5965238~mv2.png",
+                    "nomeImagem": "Fotografia",
+                    "arquivo": "camera.png",
                     "urlLink": "/fotografia"
                 },
                 {
-                    "nomeImagem": "Redes Sociais",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_fca71111d8134adeaefb6a024dc74d59~mv2.png",
-                    "urlLink": "/espera"
+                    "nomeImagem": "Desenho",
+                    "arquivo": "desenho.png",
+                    "urlLink": "/desenho"
                 },
                 {
-                    "nomeImagem": "Filosofia",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_4ec312a9ab664fa4837411c3777c6ee9~mv2.png",
-                    "urlLink": "/espera"
+                    "nomeImagem": "Exposições",
+                    "arquivo": "expo.png",
+                    "urlLink": "/exposicoes"
                 },
                 {
-                    "nomeImagem": "Meus Livros",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_cdb97f11645f48edb53ce32582614989~mv2.png",
-                    "urlLink": "/meuslivros"
+                    "nomeImagem": "Música",
+                    "arquivo": "fone.png",
+                    "urlLink": "/musica"
                 },
                 {
-                    "nomeImagem": "Games",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_5dbf75f9449144e792be90d334575cdb~mv2.png",
-                    "urlLink": "/espera"
+                    "nomeImagem": "Livros",
+                    "arquivo": "livros.png",
+                    "urlLink": "/livros"
                 },
                 {
-                    "nomeImagem": "O Que Eu Leio",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_097bfd3b6cfd4cdda0646a160e41b13a~mv2.png",
-                    "urlLink": "/ilustracao"
+                    "nomeImagem": "Sobre",
+                    "arquivo": "sobre.png",
+                    "urlLink": "/sobre"
                 },
                 {
-                    "nomeImagem": "Blog",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_8376fd325f8d4e9dbeb776ee9b468e3a~mv2.png",
-                    "urlLink": "/blog"
-                },
+                    "nomeImagem": "Vídeo",
+                    "arquivo": "video.png",
+                    "urlLink": "/video"
+                }
             ]
 
 
@@ -80,7 +55,7 @@
 
             console.log(overlayImages.length + " imagens");
 
-            let lastNonTransparentImageIndex = -1; // To keep track of the last non-transparent image
+            let lastClosestImageIndex = -1; // To keep track of the closest image
 
             const imageContainer = document.getElementById('imageContainer');
 
@@ -119,18 +94,18 @@
 
             function setupImagesEvents() {
                 imageContainer.addEventListener('mousemove', function (e) {
-                    checkPixelColor(overlayElements, e.offsetX, e.offsetY);
+                    findClosestImage(overlayElements, e.offsetX, e.offsetY);
                 });
 
                 imageContainer.addEventListener('mousemove', function (e) {
-                    var imageName = overlayImages[lastNonTransparentImageIndex]?.nomeImagem;
+                    var imageName = overlayImages[lastClosestImageIndex]?.nomeImagem;
                     changeCursor(imageName);
                     showName(imageName, e.offsetX, e.offsetY);
                 });
 
                 imageContainer.addEventListener('click', function (e) {
-                    if (lastNonTransparentImageIndex >= 0) {
-                        var overlay = overlayImages[lastNonTransparentImageIndex];
+                    if (lastClosestImageIndex >= 0) {
+                        var overlay = overlayImages[lastClosestImageIndex];
 
                         confettiExplosion(e.clientX, e.clientY);
 
@@ -144,7 +119,7 @@
                 });
             }
 
-            // Pre-process overlays
+            // Pre-process overlays to find center of mass
             function preProcessOverlays(overlay, index) {
                 const offScreenCanvas = document.createElement('canvas');
                 const ctx = offScreenCanvas.getContext('2d');
@@ -155,40 +130,59 @@
                 ctx.drawImage(overlay, 0, 0);
 
                 const imageData = ctx.getImageData(0, 0, offScreenCanvas.width, offScreenCanvas.height);
-                return { imageData, ctx };
+                const data = imageData.data;
+                let totalX = 0;
+                let totalY = 0;
+                let count = 0;
+
+                for (let y = 0; y < offScreenCanvas.height; y += 5) { // Optimization: skip pixels
+                    for (let x = 0; x < offScreenCanvas.width; x += 5) {
+                        const alpha = data[(y * offScreenCanvas.width + x) * 4 + 3];
+                        if (alpha > 0) {
+                            totalX += x;
+                            totalY += y;
+                            count++;
+                        }
+                    }
+                }
+
+                const centerX = count > 0 ? totalX / count : offScreenCanvas.width / 2;
+                const centerY = count > 0 ? totalY / count : offScreenCanvas.height / 2;
+
+                return { centerX, centerY, width: offScreenCanvas.width, height: offScreenCanvas.height };
             }
 
-            // Adjusted function to use pre-processed data
-            function checkPixelColor(overlayElements, x, y) {
-                lastNonTransparentImageIndex = -1;
-
-                // Scale the mouse coordinates to the canvas size
-                // So we can get the correct pixel from the pre-processed data
+            // Function to find the closest image based on center of mass
+            function findClosestImage(overlayElements, x, y) {
+                lastClosestImageIndex = -1;
+                let minDistance = Infinity;
 
                 const boundingBox = baseImage.getBoundingClientRect();
-                const scale = preProcessedOverlays[0].ctx.canvas.width / boundingBox.width;
+                // Assuming all images have the same aspect ratio and size as the base image
+                const scaleX = preProcessedOverlays[0].width / boundingBox.width;
+                const scaleY = preProcessedOverlays[0].height / boundingBox.height;
 
-                x *= scale;
-                y *= scale;
+                const scaledX = x * scaleX;
+                const scaledY = y * scaleY;
 
-                //floor the values to get the correct pixel
-                x = Math.floor(x);
-                y = Math.floor(y);
-
-                for (let i = overlayElements.length - 1; i >= 0; i--) {
-                    const overlay = overlayElements[i];
+                for (let i = 0; i < overlayElements.length; i++) {
                     const preProcessed = preProcessedOverlays[i];
+                    const dx = scaledX - preProcessed.centerX;
+                    const dy = scaledY - preProcessed.centerY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
 
-                    const pixelIndex = (y * preProcessed.ctx.canvas.width + x) * 4;
-                    const pixel = preProcessed.imageData.data.slice(pixelIndex, pixelIndex + 4);
-
-                    if (pixel[3] !== 0) { // Check alpha value
-                        overlayElements[i].style.display = '';
-                        lastNonTransparentImageIndex = i;
-                        break;
-                    } else {
-                        overlayElements[i].style.display = 'none';
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        lastClosestImageIndex = i;
                     }
+                    
+                    // Hide all initially
+                    overlayElements[i].style.display = 'none';
+                }
+
+                // Show only the closest one
+                if (lastClosestImageIndex >= 0) {
+                    overlayElements[lastClosestImageIndex].style.display = '';
                 }
             }
 
