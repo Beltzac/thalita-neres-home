@@ -5,6 +5,7 @@
     <script>
         const baseUrl = ""
         const baseImageFilename = "https://static.wixstatic.com/media/c1926f_8e6efa1fa9d14176af07cd73ec97ac5c~mv2.png"; // Base image
+        const margin = 60; // Configurable margin
 
         const overlayImages =
             [
@@ -58,6 +59,14 @@
             let lastClosestImageIndex = -1; // To keep track of the closest image
 
             const imageContainer = document.getElementById('imageContainer');
+            const contentWrapper = document.createElement('div');
+            contentWrapper.id = 'contentWrapper';
+            contentWrapper.style.position = 'absolute';
+            contentWrapper.style.top = '0';
+            contentWrapper.style.left = '0';
+            contentWrapper.style.width = '100%';
+            contentWrapper.style.height = '100%';
+            imageContainer.appendChild(contentWrapper);
 
             let preProcessedOverlays = [];
 
@@ -69,7 +78,7 @@
                 img.classList.add('imageLayer');
                 img.style.zIndex = zIndex;
                 img.style.display = visible ? '' : 'none';
-                imageContainer.appendChild(img);
+                contentWrapper.appendChild(img);
                 return img; // Return the image element for further use if necessary
             }
 
@@ -82,12 +91,20 @@
             var loadedImages = 0;
             var totalImages = overlayElements.length + 1; // +1 for base image
 
+            let globalBaseCenter = null;
+
             baseImage.onload = () => {
-                const baseCenter = preProcessOverlays(baseImage);
-                centerMenu(baseCenter);
+                globalBaseCenter = preProcessOverlays(baseImage);
+                centerMenu(globalBaseCenter);
                 loadedImages++;
                 checkAllLoaded();
             };
+
+            window.addEventListener('resize', () => {
+                if (globalBaseCenter) {
+                    centerMenu(globalBaseCenter);
+                }
+            });
 
             overlayElements.forEach((img, index) => {
                 img.onload = () => {
@@ -103,58 +120,66 @@
                     document.querySelector('.lds-facebook').style.display = 'none';
                 }
             }
-
             function centerMenu(baseCenter) {
                 const viewportWidth = window.innerWidth;
                 const viewportHeight = window.innerHeight;
 
-                // Calculate the offset to center the base image's center of mass
-                // We want baseCenter.centerX to be at viewportWidth / 2
-                // and baseCenter.centerY to be at viewportHeight / 2
+                // Calculate available space with margins
+                // Margin only applies to top and bottom as requested
+                const availableWidth = viewportWidth;
+                const availableHeight = viewportHeight - (2 * margin);
 
-                // The image is currently at (0,0) relative to the container
-                // We need to move the container so that (baseCenter.centerX, baseCenter.centerY) is at (viewportWidth/2, viewportHeight/2)
+                // Calculate scale to fit within the available space (contain)
+                // Use content dimensions instead of full image dimensions
+                const scaleX = availableWidth / baseCenter.contentWidth;
+                const scaleY = availableHeight / baseCenter.contentHeight;
+                const scale = Math.min(scaleX, scaleY);
 
-                // However, the image is scaled to fit the height of the window (CSS height: 100%)
-                // We need to account for this scaling.
+                // Apply the calculated size to all images
+                const targetHeight = baseCenter.height * scale;
+                baseImage.style.height = targetHeight + "px";
+                baseImage.style.width = "auto";
 
-                const scale = viewportHeight / baseCenter.height;
-
-                const scaledCenterX = baseCenter.centerX * scale;
-                const scaledCenterY = baseCenter.centerY * scale;
-
-                const offsetX = (viewportWidth / 2) - scaledCenterX;
-                const offsetY = (viewportHeight / 2) - scaledCenterY;
-
-                imageContainer.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-            }
-
-            function setupImagesEvents() {
-                imageContainer.addEventListener('mousemove', function (e) {
-                    findClosestImage(overlayElements, e.offsetX, e.offsetY);
+                overlayElements.forEach(img => {
+                    img.style.height = targetHeight + "px";
+                    img.style.width = "auto";
                 });
 
-                imageContainer.addEventListener('mousemove', function (e) {
-                    var imageName = overlayImages[lastClosestImageIndex]?.nomeImagem;
-                    changeCursor(imageName);
-                    showName(imageName, e.offsetX, e.offsetY);
-                });
+                // Calculate the offset to center the base image's bounding box center
+                const scaledCenterX = baseCenter.bboxCenterX * scale;
+                const scaledCenterY = baseCenter.bboxCenterY * scale;
+const offsetX = (viewportWidth / 2) - scaledCenterX;
+const offsetY = (viewportHeight / 2) - scaledCenterY;
 
-                imageContainer.addEventListener('click', function (e) {
-                    if (lastClosestImageIndex >= 0) {
-                        var overlay = overlayImages[lastClosestImageIndex];
-                        var preProcessed = preProcessedOverlays[lastClosestImageIndex];
+contentWrapper.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+}
 
-                        // Calculate the screen coordinates of the item's center
-                        const style = window.getComputedStyle(imageContainer);
-                        const matrix = new WebKitCSSMatrix(style.transform);
-                        const offsetX = matrix.m41;
-                        const offsetY = matrix.m42;
+function setupImagesEvents() {
+imageContainer.addEventListener('mousemove', function (e) {
+    findClosestImage(overlayElements, e.clientX, e.clientY);
+});
 
-                        const boundingBox = baseImage.getBoundingClientRect();
+imageContainer.addEventListener('mousemove', function (e) {
+    var imageName = overlayImages[lastClosestImageIndex]?.nomeImagem;
+    changeCursor(imageName);
+    showName(imageName, e.clientX, e.clientY);
+});
+
+imageContainer.addEventListener('click', function (e) {
+    if (lastClosestImageIndex >= 0) {
+        var overlay = overlayImages[lastClosestImageIndex];
+        var preProcessed = preProcessedOverlays[lastClosestImageIndex];
+
+        // Calculate the screen coordinates of the item's center
+        const style = window.getComputedStyle(contentWrapper);
+        const matrix = new WebKitCSSMatrix(style.transform);
+        const offsetX = matrix.m41;
+        const offsetY = matrix.m42;
+
+        const boundingBox = baseImage.getBoundingClientRect();
                         const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
                         const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
-                        
+
                         const scaleX = boundingBox.width / refWidth;
                         const scaleY = boundingBox.height / refHeight;
 
@@ -189,13 +214,23 @@
                 let totalY = 0;
                 let count = 0;
 
-                for (let y = 0; y < offScreenCanvas.height; y += 5) { // Optimization: skip pixels
-                    for (let x = 0; x < offScreenCanvas.width; x += 5) {
+                let minX = offScreenCanvas.width;
+                let maxX = 0;
+                let minY = offScreenCanvas.height;
+                let maxY = 0;
+
+                for (let y = 0; y < offScreenCanvas.height; y++) {
+                    for (let x = 0; x < offScreenCanvas.width; x++) {
                         const alpha = data[(y * offScreenCanvas.width + x) * 4 + 3];
                         if (alpha > 0) {
                             totalX += x;
                             totalY += y;
                             count++;
+
+                            if (x < minX) minX = x;
+                            if (x > maxX) maxX = x;
+                            if (y < minY) minY = y;
+                            if (y > maxY) maxY = y;
                         }
                     }
                 }
@@ -203,7 +238,27 @@
                 const centerX = count > 0 ? totalX / count : offScreenCanvas.width / 2;
                 const centerY = count > 0 ? totalY / count : offScreenCanvas.height / 2;
 
-                return { centerX, centerY, width: offScreenCanvas.width, height: offScreenCanvas.height };
+                // If no pixels found (empty image), fallback to full size
+                if (count === 0) {
+                    minX = 0;
+                    maxX = offScreenCanvas.width;
+                    minY = 0;
+                    maxY = offScreenCanvas.height;
+                }
+
+                const bboxCenterX = minX + (maxX - minX) / 2;
+                const bboxCenterY = minY + (maxY - minY) / 2;
+
+                return {
+                    centerX,
+                    centerY,
+                    bboxCenterX,
+                    bboxCenterY,
+                    width: offScreenCanvas.width,
+                    height: offScreenCanvas.height,
+                    contentWidth: (maxX - minX) + 1,
+                    contentHeight: (maxY - minY) + 1
+                };
             }
 
             // Function to find the closest image based on center of mass
@@ -211,13 +266,15 @@
                 lastClosestImageIndex = -1;
                 let minDistance = Infinity;
 
-                // We need to adjust x and y because the container is now transformed
-                // x and y are relative to the viewport (e.offsetX/Y on the container might be affected by transform depending on browser,
-                // but since we attached listener to imageContainer, offsetX/Y are relative to the target node padding edge)
+                // Get the current transform of the contentWrapper
+                const style = window.getComputedStyle(contentWrapper);
+                const matrix = new WebKitCSSMatrix(style.transform);
+                const offsetX = matrix.m41;
+                const offsetY = matrix.m42;
 
-                // Actually, since we are using offsetX/Y on the container, and the container is transformed,
-                // the coordinates should be relative to the container's top-left, which is what we want.
-                // However, we need to be careful about the scaling.
+                // Adjust x and y to be relative to the contentWrapper
+                const localX = x - offsetX;
+                const localY = y - offsetY;
 
                 const boundingBox = baseImage.getBoundingClientRect();
                 // Assuming all images have the same aspect ratio and size as the base image
@@ -228,8 +285,8 @@
                 const scaleX = refWidth / boundingBox.width;
                 const scaleY = refHeight / boundingBox.height;
 
-                const scaledX = x * scaleX;
-                const scaledY = y * scaleY;
+                const scaledX = localX * scaleX;
+                const scaledY = localY * scaleY;
 
                 for (let i = 0; i < overlayElements.length; i++) {
                     const preProcessed = preProcessedOverlays[i];
@@ -293,15 +350,9 @@
                 var verticalOffset = 50;
                 var borderOffset = 10;
 
-                // Get the current transform of the imageContainer
-                const style = window.getComputedStyle(imageContainer);
-                const matrix = new WebKitCSSMatrix(style.transform);
-                const offsetX = matrix.m41;
-                const offsetY = matrix.m42;
-
-                // Adjust x and y by adding the offset
-                const adjustedX = x + offsetX;
-                const adjustedY = y + offsetY;
+                // x and y are already screen coordinates (clientX/Y)
+                const adjustedX = x;
+                const adjustedY = y;
 
                 nameContainer.style.left = adjustedX - halfDescriptionWidth + 'px';
                 if (adjustedY - verticalOffset - halfDescriptionHeight - borderOffset < 0) {
@@ -391,7 +442,7 @@
         .imageLayer,
         canvas {
             position: absolute;
-            height: 100%;
+            /* height: 100%; Removed to allow JS resizing */
             width: auto; /* Maintain aspect ratio */
         }
 
