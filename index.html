@@ -7,6 +7,10 @@
         const baseImageFilename = "https://static.wixstatic.com/media/c1926f_8e6efa1fa9d14176af07cd73ec97ac5c~mv2.png"; // Base image
         const margin = 60; // Configurable margin
 
+        // Optional precomputed center data to avoid recalculating on every load.
+        // "https://...image.png": { centerX, centerY, bboxCenterX, bboxCenterY, width, height, contentWidth, contentHeight }
+        const precomputedCentersByUrl = { "https://static.wixstatic.com/media/c1926f_8e6efa1fa9d14176af07cd73ec97ac5c~mv2.png": { "centerX": 1491.8787593220952, "centerY": 1958.447764654168, "bboxCenterX": 1521, "bboxCenterY": 1810.5, "width": 3000, "height": 3000, "contentWidth": 2813, "contentHeight": 1898 }, "https://static.wixstatic.com/media/c1926f_c7fbeefb9a8740518c8d888fd8624771~mv2.png": { "centerX": 1485.1601967049653, "centerY": 1936.1135661461992, "bboxCenterX": 1443, "bboxCenterY": 1894, "width": 3000, "height": 3000, "contentWidth": 1091, "contentHeight": 1063 }, "https://static.wixstatic.com/media/c1926f_68000578d47140e4b1812f5b17b11afc~mv2.png": { "centerX": 528.3096606786427, "centerY": 1695.7314171656687, "bboxCenterX": 524, "bboxCenterY": 1699.5, "width": 3000, "height": 3000, "contentWidth": 331, "contentHeight": 236 }, "https://static.wixstatic.com/media/c1926f_81d02541dfb34f6ba30a004f8df72cb7~mv2.png": { "centerX": 2471.880391652334, "centerY": 2506.325158109993, "bboxCenterX": 1725.5, "bboxCenterY": 2390.5, "width": 3000, "height": 3000, "contentWidth": 2404, "contentHeight": 738 }, "https://static.wixstatic.com/media/c1926f_91b1bca2e29e44a79253c83382add706~mv2.png": { "centerX": 1156.9078077314343, "centerY": 1428.7547049847406, "bboxCenterX": 1159.5, "bboxCenterY": 1430, "width": 3000, "height": 3000, "contentWidth": 172, "contentHeight": 135 }, "https://static.wixstatic.com/media/c1926f_1da1efe6ea8744b986bac8d595ae7144~mv2.png": { "centerX": 2063.289977046672, "centerY": 1376.321364388534, "bboxCenterX": 1978, "bboxCenterY": 1412.5, "width": 3000, "height": 3000, "contentWidth": 631, "contentHeight": 1102 }, "https://static.wixstatic.com/media/c1926f_64c0f9a6ef9141a09b1ff35df079cf38~mv2.png": { "centerX": 511.2009772916124, "centerY": 1974.7309223499647, "bboxCenterX": 532, "bboxCenterY": 1956.5, "width": 3000, "height": 3000, "contentWidth": 835, "contentHeight": 532 }, "https://static.wixstatic.com/media/c1926f_4013caefa05a461b9f9a8397f6c0d24f~mv2.png": { "centerX": 1847.4779774088393, "centerY": 1823.971344098249, "bboxCenterX": 1842, "bboxCenterY": 1822.5, "width": 3000, "height": 3000, "contentWidth": 161, "contentHeight": 138 }, "https://static.wixstatic.com/media/c1926f_61cb5cedd5d9464faa83a4cb8e73ad8d~mv2.png": { "centerX": 1858.8244060171517, "centerY": 1615.5856178827498, "bboxCenterX": 1862.5, "bboxCenterY": 1608.5, "width": 3000, "height": 3000, "contentWidth": 164, "contentHeight": 152 } };
+
         const overlayImages =
             [
                 {
@@ -92,6 +96,7 @@
             var totalImages = overlayElements.length + 1; // +1 for base image
 
             let globalBaseCenter = null;
+            let centersLogged = false;
 
             baseImage.onload = () => {
                 globalBaseCenter = preProcessOverlays(baseImage);
@@ -108,7 +113,7 @@
 
             overlayElements.forEach((img, index) => {
                 img.onload = () => {
-                    preProcessedOverlays[index] = preProcessOverlays(img);
+                    preProcessedOverlays[index] = preProcessOverlays(img, index);
                     loadedImages++;
                     checkAllLoaded();
                 };
@@ -118,6 +123,30 @@
                 if (loadedImages === totalImages) {
                     setupImagesEvents();
                     document.querySelector('.lds-facebook').style.display = 'none';
+
+                    // Log a single JSON object with all centers so it can be pasted into precomputedCentersByUrl.
+                    if (!centersLogged) {
+                        centersLogged = true;
+
+                        const exportMap = {};
+
+                        // Base image entry
+                        if (globalBaseCenter && baseImage && baseImage.src) {
+                            exportMap[baseImage.src] = globalBaseCenter;
+                        }
+
+                        // Overlay entries
+                        overlayImages.forEach((overlay, index) => {
+                            const data = preProcessedOverlays[index];
+                            if (data) {
+                                const key = baseUrl + overlay.arquivo;
+                                exportMap[key] = data;
+                            }
+                        });
+
+                        // Single JSON output you can paste into the code later.
+                        console.log('precomputedCentersByUrl JSON:', JSON.stringify(exportMap));
+                    }
                 }
             }
             function centerMenu(baseCenter) {
@@ -170,36 +199,63 @@ imageContainer.addEventListener('click', function (e) {
         var overlay = overlayImages[lastClosestImageIndex];
         var preProcessed = preProcessedOverlays[lastClosestImageIndex];
 
-        // Calculate the screen coordinates of the item's center
-        const style = window.getComputedStyle(contentWrapper);
-        const matrix = new WebKitCSSMatrix(style.transform);
-        const offsetX = matrix.m41;
-        const offsetY = matrix.m42;
+        // Only calculate the screen center once per overlay; reuse and log it.
+        if (!preProcessed.screenCenter) {
+            // Calculate the screen coordinates of the item's center
+            const style = window.getComputedStyle(contentWrapper);
+            const matrix = new WebKitCSSMatrix(style.transform);
+            const offsetX = matrix.m41;
+            const offsetY = matrix.m42;
 
-        const boundingBox = baseImage.getBoundingClientRect();
-                        const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
-                        const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
+            const boundingBox = baseImage.getBoundingClientRect();
+            const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
+            const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
 
-                        const scaleX = boundingBox.width / refWidth;
-                        const scaleY = boundingBox.height / refHeight;
+            const scaleX = boundingBox.width / refWidth;
+            const scaleY = boundingBox.height / refHeight;
 
-                        const centerX = (preProcessed.centerX * scaleX) + offsetX;
-                        const centerY = (preProcessed.centerY * scaleY) + offsetY;
+            const centerX = (preProcessed.centerX * scaleX) + offsetX;
+            const centerY = (preProcessed.centerY * scaleY) + offsetY;
 
-                        confettiExplosion(centerX, centerY);
+            preProcessed.screenCenter = { centerX, centerY };
 
-                        setTimeout(async () => {
-                       		window.parent.postMessage(overlay.urlLink, "*");
-                        	console.log('Url enviada:' + overlay.urlLink);
-                		}, 1000);
+            console.log(
+                'Computed screen center for overlay',
+                overlay.nomeImagem || overlay.urlLink || lastClosestImageIndex,
+                JSON.stringify(preProcessed.screenCenter)
+            );
+        } else {
+            console.log(
+                'Using cached screen center for overlay',
+                overlay.nomeImagem || overlay.urlLink || lastClosestImageIndex,
+                JSON.stringify(preProcessed.screenCenter)
+            );
+        }
 
+        const centerX = preProcessed.screenCenter.centerX;
+        const centerY = preProcessed.screenCenter.centerY;
 
-                    }
-                });
+        confettiExplosion(centerX, centerY);
+
+        setTimeout(async () => {
+            window.parent.postMessage(overlay.urlLink, "*");
+            console.log('Url enviada:' + overlay.urlLink);
+        }, 1000);
+    }
+});
             }
 
-            // Pre-process overlays to find center of mass
+            // Pre-process overlays to find center of mass.
+            // If a precomputed entry exists for this image URL, use it and log it;
+            // otherwise compute, log the result, and return it.
             function preProcessOverlays(overlay) {
+                const key = overlay.src || overlay.currentSrc || '';
+
+                if (key && precomputedCentersByUrl[key]) {
+                    console.log('Using precomputed center data for image:', key, precomputedCentersByUrl[key]);
+                    return precomputedCentersByUrl[key];
+                }
+
                 const offScreenCanvas = document.createElement('canvas');
                 const ctx = offScreenCanvas.getContext('2d');
 
@@ -249,7 +305,7 @@ imageContainer.addEventListener('click', function (e) {
                 const bboxCenterX = minX + (maxX - minX) / 2;
                 const bboxCenterY = minY + (maxY - minY) / 2;
 
-                return {
+                const result = {
                     centerX,
                     centerY,
                     bboxCenterX,
@@ -259,6 +315,28 @@ imageContainer.addEventListener('click', function (e) {
                     contentWidth: (maxX - minX) + 1,
                     contentHeight: (maxY - minY) + 1
                 };
+
+                if (key) {
+                    let logicalName = null;
+                    // Try to match this URL with one of the overlay metadata entries, to log a friendly name.
+                    if (Array.isArray(overlayImages)) {
+                        const match = overlayImages.find(o => (baseUrl + o.arquivo) === key || o.arquivo === key);
+                        if (match) {
+                            logicalName = match.nomeImagem;
+                        }
+                    }
+
+                    console.log(
+                        'Computed center data for image:',
+                        logicalName || key,
+                        key,
+                        JSON.stringify(result)
+                    );
+                } else {
+                    console.log('Computed center data for image without src:', JSON.stringify(result));
+                }
+
+                return result;
             }
 
             // Function to find the closest image based on center of mass
