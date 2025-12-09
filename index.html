@@ -199,7 +199,7 @@ imageContainer.addEventListener('click', function (e) {
         var overlay = overlayImages[lastClosestImageIndex];
         var preProcessed = preProcessedOverlays[lastClosestImageIndex];
 
-        // Only calculate the screen center once per overlay; reuse and log it.
+        // Only calculate the screen center once per overlay; reuse it.
         if (!preProcessed.screenCenter) {
             // Calculate the screen coordinates of the item's center
             const style = window.getComputedStyle(contentWrapper);
@@ -218,18 +218,6 @@ imageContainer.addEventListener('click', function (e) {
             const centerY = (preProcessed.centerY * scaleY) + offsetY;
 
             preProcessed.screenCenter = { centerX, centerY };
-
-            console.log(
-                'Computed screen center for overlay',
-                overlay.nomeImagem || overlay.urlLink || lastClosestImageIndex,
-                JSON.stringify(preProcessed.screenCenter)
-            );
-        } else {
-            console.log(
-                'Using cached screen center for overlay',
-                overlay.nomeImagem || overlay.urlLink || lastClosestImageIndex,
-                JSON.stringify(preProcessed.screenCenter)
-            );
         }
 
         const centerX = preProcessed.screenCenter.centerX;
