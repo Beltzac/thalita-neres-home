@@ -543,14 +543,15 @@ imageContainer.addEventListener('click', function (e) {
 
         #instructionText {
             position: fixed;
-            top: 4vh;
-            left: 0;
-            width: 100%;
+            top: calc(50% - 30vh); /* Center vertically */
+            right: calc(50% - 45vw); ;
+            left: auto;
+            width: 20vw;
             z-index: 2000;
             font-family: 'Thata', sans-serif;
             font-size: 5vh;
             color: #000;
-            text-align: center;
+            text-align: left;
             pointer-events: none;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
         }
