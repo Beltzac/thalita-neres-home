@@ -544,9 +544,9 @@ imageContainer.addEventListener('click', function (e) {
         #instructionText {
             position: fixed;
             top: calc(50% - 30vh); /* Center vertically */
-            right: calc(50% - 45vw); ;
+            right: calc(50% - (60vh + 15vw)); /* Center horizontally with offset */
             left: auto;
-            width: 20vw;
+            width: calc(20vw); /* Fixed width */
             z-index: 2000;
             font-family: 'Thata', sans-serif;
             font-size: 5vh;
