@@ -7,62 +7,61 @@
         const baseImageFilename = "https://static.wixstatic.com/media/c1926f_8e6efa1fa9d14176af07cd73ec97ac5c~mv2.png"; // Base image
         const margin = 60; // Configurable margin
 
+        // Cursor images (64x64) + hotspot middle-top (32,0)
+        const CURSOR_NORMAL = 'url("https://static.wixstatic.com/ficons/c1926f_399a50bac406469293fc94e423792f80~mv2.ico") 32 0, auto';
+        const CURSOR_HOVER = 'url("https://static.wixstatic.com/ficons/c1926f_e709764e60a443dd8f35a92720005ffe~mv2.ico") 32 0, pointer';
+
+        // Activate only when close to a centerpoint (in natural image pixels, ~3000x3000 space)
+        const ACTIVE_RADIUS = 500;
+
         // Optional precomputed center data to avoid recalculating on every load.
-        // "https://...image.png": { centerX, centerY, bboxCenterX, bboxCenterY, width, height, contentWidth, contentHeight }
-        const precomputedCentersByUrl = { "https://static.wixstatic.com/media/c1926f_8e6efa1fa9d14176af07cd73ec97ac5c~mv2.png": { "centerX": 1491.8787593220952, "centerY": 1958.447764654168, "bboxCenterX": 1521, "bboxCenterY": 1810.5, "width": 3000, "height": 3000, "contentWidth": 2813, "contentHeight": 1898 }, "https://static.wixstatic.com/media/c1926f_c7fbeefb9a8740518c8d888fd8624771~mv2.png": { "centerX": 1485.1601967049653, "centerY": 1936.1135661461992, "bboxCenterX": 1443, "bboxCenterY": 1894, "width": 3000, "height": 3000, "contentWidth": 1091, "contentHeight": 1063 }, "https://static.wixstatic.com/media/c1926f_68000578d47140e4b1812f5b17b11afc~mv2.png": { "centerX": 528.3096606786427, "centerY": 1695.7314171656687, "bboxCenterX": 524, "bboxCenterY": 1699.5, "width": 3000, "height": 3000, "contentWidth": 331, "contentHeight": 236 }, "https://static.wixstatic.com/media/c1926f_81d02541dfb34f6ba30a004f8df72cb7~mv2.png": { "centerX": 2471.880391652334, "centerY": 2506.325158109993, "bboxCenterX": 1725.5, "bboxCenterY": 2390.5, "width": 3000, "height": 3000, "contentWidth": 2404, "contentHeight": 738 }, "https://static.wixstatic.com/media/c1926f_91b1bca2e29e44a79253c83382add706~mv2.png": { "centerX": 1156.9078077314343, "centerY": 1428.7547049847406, "bboxCenterX": 1159.5, "bboxCenterY": 1430, "width": 3000, "height": 3000, "contentWidth": 172, "contentHeight": 135 }, "https://static.wixstatic.com/media/c1926f_1da1efe6ea8744b986bac8d595ae7144~mv2.png": { "centerX": 2063.289977046672, "centerY": 1376.321364388534, "bboxCenterX": 1978, "bboxCenterY": 1412.5, "width": 3000, "height": 3000, "contentWidth": 631, "contentHeight": 1102 }, "https://static.wixstatic.com/media/c1926f_64c0f9a6ef9141a09b1ff35df079cf38~mv2.png": { "centerX": 511.2009772916124, "centerY": 1974.7309223499647, "bboxCenterX": 532, "bboxCenterY": 1956.5, "width": 3000, "height": 3000, "contentWidth": 835, "contentHeight": 532 }, "https://static.wixstatic.com/media/c1926f_4013caefa05a461b9f9a8397f6c0d24f~mv2.png": { "centerX": 1847.4779774088393, "centerY": 1823.971344098249, "bboxCenterX": 1842, "bboxCenterY": 1822.5, "width": 3000, "height": 3000, "contentWidth": 161, "contentHeight": 138 }, "https://static.wixstatic.com/media/c1926f_61cb5cedd5d9464faa83a4cb8e73ad8d~mv2.png": { "centerX": 1858.8244060171517, "centerY": 1615.5856178827498, "bboxCenterX": 1862.5, "bboxCenterY": 1608.5, "width": 3000, "height": 3000, "contentWidth": 164, "contentHeight": 152 } };
+        const precomputedCentersByUrl = {
+            "https://static.wixstatic.com/media/c1926f_8e6efa1fa9d14176af07cd73ec97ac5c~mv2.png": { "centerX": 1491.8787593220952, "centerY": 1958.447764654168, "bboxCenterX": 1521, "bboxCenterY": 1810.5, "width": 3000, "height": 3000, "contentWidth": 2813, "contentHeight": 1898 },
+            "https://static.wixstatic.com/media/c1926f_c7fbeefb9a8740518c8d888fd8624771~mv2.png": { "centerX": 1485.1601967049653, "centerY": 1936.1135661461992, "bboxCenterX": 1443, "bboxCenterY": 1894, "width": 3000, "height": 3000, "contentWidth": 1091, "contentHeight": 1063 },
+            "https://static.wixstatic.com/media/c1926f_68000578d47140e4b1812f5b17b11afc~mv2.png": { "centerX": 528.3096606786427, "centerY": 1695.7314171656687, "bboxCenterX": 524, "bboxCenterY": 1699.5, "width": 3000, "height": 3000, "contentWidth": 331, "contentHeight": 236 },
+            "https://static.wixstatic.com/media/c1926f_81d02541dfb34f6ba30a004f8df72cb7~mv2.png": { "centerX": 2471.880391652334, "centerY": 2506.325158109993, "bboxCenterX": 1725.5, "bboxCenterY": 2390.5, "width": 3000, "height": 3000, "contentWidth": 2404, "contentHeight": 738 },
+            "https://static.wixstatic.com/media/c1926f_91b1bca2e29e44a79253c83382add706~mv2.png": { "centerX": 1156.9078077314343, "centerY": 1428.7547049847406, "bboxCenterX": 1159.5, "bboxCenterY": 1430, "width": 3000, "height": 3000, "contentWidth": 172, "contentHeight": 135 },
+            "https://static.wixstatic.com/media/c1926f_1da1efe6ea8744b986bac8d595ae7144~mv2.png": { "centerX": 2063.289977046672, "centerY": 1376.321364388534, "bboxCenterX": 1978, "bboxCenterY": 1412.5, "width": 3000, "height": 3000, "contentWidth": 631, "contentHeight": 1102 },
+            "https://static.wixstatic.com/media/c1926f_64c0f9a6ef9141a09b1ff35df079cf38~mv2.png": { "centerX": 511.2009772916124, "centerY": 1974.7309223499647, "bboxCenterX": 532, "bboxCenterY": 1956.5, "width": 3000, "height": 3000, "contentWidth": 835, "contentHeight": 532 },
+            "https://static.wixstatic.com/media/c1926f_4013caefa05a461b9f9a8397f6c0d24f~mv2.png": { "centerX": 1847.4779774088393, "centerY": 1823.971344098249, "bboxCenterX": 1842, "bboxCenterY": 1822.5, "width": 3000, "height": 3000, "contentWidth": 161, "contentHeight": 138 },
+            "https://static.wixstatic.com/media/c1926f_61cb5cedd5d9464faa83a4cb8e73ad8d~mv2.png": { "centerX": 1858.8244060171517, "centerY": 1615.5856178827498, "bboxCenterX": 1862.5, "bboxCenterY": 1608.5, "width": 3000, "height": 3000, "contentWidth": 164, "contentHeight": 152 }
+        };
 
         const overlayImages =
             [
-                {
-                    "nomeImagem": "Portfólio de Arquitetura",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_c7fbeefb9a8740518c8d888fd8624771~mv2.png",
-                    "urlLink": "/portfolio-arquitetura"
-                },
-                {
-                    "nomeImagem": "Fotografias",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_68000578d47140e4b1812f5b17b11afc~mv2.png",
-                    "urlLink": "/fotografia"
-                },
-                {
-                    "nomeImagem": "Ilustrações",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_81d02541dfb34f6ba30a004f8df72cb7~mv2.png",
-                    "urlLink": "/ilustracao"
-                },
-                {
-                    "nomeImagem": "Exposições",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_91b1bca2e29e44a79253c83382add706~mv2.png",
-                    "urlLink": "/nenhuma-linha-e-inocente"
-                },
-                {
-                    "nomeImagem": "Podcast",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_1da1efe6ea8744b986bac8d595ae7144~mv2.png",
-                    "urlLink": "/espera"
-                },
-                {
-                    "nomeImagem": "Meus Livros",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_64c0f9a6ef9141a09b1ff35df079cf38~mv2.png",
-                    "urlLink": "/meuslivros"
-                },
-                {
-                    "nomeImagem": "Sobre",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_4013caefa05a461b9f9a8397f6c0d24f~mv2.png",
-                    "urlLink": "/sobremim"
-                },
-                {
-                    "nomeImagem": "Vídeo",
-                    "arquivo": "https://static.wixstatic.com/media/c1926f_61cb5cedd5d9464faa83a4cb8e73ad8d~mv2.png",
-                    "urlLink": "/espera"
-                }
-            ]
-
+                { "nomeImagem": "Portfólio de Arquitetura", "arquivo": "https://static.wixstatic.com/media/c1926f_c7fbeefb9a8740518c8d888fd8624771~mv2.png", "urlLink": "/portfolio-arquitetura" },
+                { "nomeImagem": "Fotografias", "arquivo": "https://static.wixstatic.com/media/c1926f_68000578d47140e4b1812f5b17b11afc~mv2.png", "urlLink": "/fotografia" },
+                { "nomeImagem": "Ilustrações", "arquivo": "https://static.wixstatic.com/media/c1926f_81d02541dfb34f6ba30a004f8df72cb7~mv2.png", "urlLink": "/ilustracao" },
+                { "nomeImagem": "Exposições", "arquivo": "https://static.wixstatic.com/media/c1926f_91b1bca2e29e44a79253c83382add706~mv2.png", "urlLink": "/nenhuma-linha-e-inocente" },
+                { "nomeImagem": "Podcast", "arquivo": "https://static.wixstatic.com/media/c1926f_1da1efe6ea8744b986bac8d595ae7144~mv2.png", "urlLink": "/espera" },
+                { "nomeImagem": "Meus Livros", "arquivo": "https://static.wixstatic.com/media/c1926f_64c0f9a6ef9141a09b1ff35df079cf38~mv2.png", "urlLink": "/meuslivros" },
+                { "nomeImagem": "Sobre", "arquivo": "https://static.wixstatic.com/media/c1926f_4013caefa05a461b9f9a8397f6c0d24f~mv2.png", "urlLink": "/sobremim" },
+                { "nomeImagem": "Vídeo", "arquivo": "https://static.wixstatic.com/media/c1926f_61cb5cedd5d9464faa83a4cb8e73ad8d~mv2.png", "urlLink": "/espera" }
+            ];
 
         document.addEventListener("DOMContentLoaded", function () {
 
+            // Inject cursor CSS (global + except text inputs)
+            {
+                const style = document.createElement('style');
+                style.type = 'text/css';
+                style.innerHTML = `
+          body { cursor: ${CURSOR_NORMAL}; }
+          input, textarea, [contenteditable="true"] { cursor: text !important; }
+        `;
+                document.head.appendChild(style);
+            }
+
             console.log(overlayImages.length + " imagens");
 
-            let lastClosestImageIndex = -1; // To keep track of the closest image
+            let lastClosestImageIndex = -1;
+            let lastMinDistance = Infinity;
 
             const imageContainer = document.getElementById('imageContainer');
+
+            // Ensure this container uses our cursor switching (and doesn't get stuck with default)
+            imageContainer.style.cursor = CURSOR_NORMAL;
+
             const contentWrapper = document.createElement('div');
             contentWrapper.id = 'contentWrapper';
             contentWrapper.style.position = 'absolute';
@@ -74,7 +73,6 @@
 
             let preProcessedOverlays = [];
 
-            // Function to create an image and append it to the container
             function createAndAppendImage(src, zIndex, visible) {
                 const img = document.createElement('img');
                 img.crossOrigin = "anonymous";
@@ -83,17 +81,16 @@
                 img.style.zIndex = zIndex;
                 img.style.display = visible ? '' : 'none';
                 contentWrapper.appendChild(img);
-                return img; // Return the image element for further use if necessary
+                return img;
             }
 
-            // Create images
             const baseImage = createAndAppendImage(baseUrl + baseImageFilename, 1, true);
             let overlayElements = overlayImages.map((overlay, index) =>
                 createAndAppendImage(baseUrl + overlay.arquivo, index + 2, false)
             );
 
-            var loadedImages = 0;
-            var totalImages = overlayElements.length + 1; // +1 for base image
+            let loadedImages = 0;
+            let totalImages = overlayElements.length + 1;
 
             let globalBaseCenter = null;
             let centersLogged = false;
@@ -106,9 +103,7 @@
             };
 
             window.addEventListener('resize', () => {
-                if (globalBaseCenter) {
-                    centerMenu(globalBaseCenter);
-                }
+                if (globalBaseCenter) centerMenu(globalBaseCenter);
             });
 
             overlayElements.forEach((img, index) => {
@@ -124,18 +119,14 @@
                     setupImagesEvents();
                     document.querySelector('.lds-facebook').style.display = 'none';
 
-                    // Log a single JSON object with all centers so it can be pasted into precomputedCentersByUrl.
                     if (!centersLogged) {
                         centersLogged = true;
-
                         const exportMap = {};
 
-                        // Base image entry
                         if (globalBaseCenter && baseImage && baseImage.src) {
                             exportMap[baseImage.src] = globalBaseCenter;
                         }
 
-                        // Overlay entries
                         overlayImages.forEach((overlay, index) => {
                             const data = preProcessedOverlays[index];
                             if (data) {
@@ -144,27 +135,22 @@
                             }
                         });
 
-                        // Single JSON output you can paste into the code later.
                         console.log('precomputedCentersByUrl JSON:', JSON.stringify(exportMap));
                     }
                 }
             }
+
             function centerMenu(baseCenter) {
                 const viewportWidth = window.innerWidth;
                 const viewportHeight = window.innerHeight;
 
-                // Calculate available space with margins
-                // Margin only applies to top and bottom as requested
                 const availableWidth = viewportWidth;
                 const availableHeight = viewportHeight - (2 * margin);
 
-                // Calculate scale to fit within the available space (contain)
-                // Use content dimensions instead of full image dimensions
                 const scaleX = availableWidth / baseCenter.contentWidth;
                 const scaleY = availableHeight / baseCenter.contentHeight;
                 const scale = Math.min(scaleX, scaleY);
 
-                // Apply the calculated size to all images
                 const targetHeight = baseCenter.height * scale;
                 baseImage.style.height = targetHeight + "px";
                 baseImage.style.width = "auto";
@@ -174,68 +160,63 @@
                     img.style.width = "auto";
                 });
 
-                // Calculate the offset to center the base image's bounding box center
                 const scaledCenterX = baseCenter.bboxCenterX * scale;
                 const scaledCenterY = baseCenter.bboxCenterY * scale;
-const offsetX = (viewportWidth / 2) - scaledCenterX;
-const offsetY = (viewportHeight / 2) - scaledCenterY;
 
-contentWrapper.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-}
+                const offsetX = (viewportWidth / 2) - scaledCenterX;
+                const offsetY = (viewportHeight / 2) - scaledCenterY;
 
-function setupImagesEvents() {
-imageContainer.addEventListener('mousemove', function (e) {
-    findClosestImage(overlayElements, e.clientX, e.clientY);
-});
-
-imageContainer.addEventListener('mousemove', function (e) {
-    var imageName = overlayImages[lastClosestImageIndex]?.nomeImagem;
-    changeCursor(imageName);
-    showName(imageName, e.clientX, e.clientY);
-});
-
-imageContainer.addEventListener('click', function (e) {
-    if (lastClosestImageIndex >= 0) {
-        var overlay = overlayImages[lastClosestImageIndex];
-        var preProcessed = preProcessedOverlays[lastClosestImageIndex];
-
-        // Only calculate the screen center once per overlay; reuse it.
-        if (!preProcessed.screenCenter) {
-            // Calculate the screen coordinates of the item's center
-            const style = window.getComputedStyle(contentWrapper);
-            const matrix = new WebKitCSSMatrix(style.transform);
-            const offsetX = matrix.m41;
-            const offsetY = matrix.m42;
-
-            const boundingBox = baseImage.getBoundingClientRect();
-            const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
-            const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
-
-            const scaleX = boundingBox.width / refWidth;
-            const scaleY = boundingBox.height / refHeight;
-
-            const centerX = (preProcessed.centerX * scaleX) + offsetX;
-            const centerY = (preProcessed.centerY * scaleY) + offsetY;
-
-            preProcessed.screenCenter = { centerX, centerY };
-        }
-
-        const centerX = preProcessed.screenCenter.centerX;
-        const centerY = preProcessed.screenCenter.centerY;
-
-        confettiExplosion(centerX, centerY);
-
-        setTimeout(async () => {
-            window.parent.postMessage(overlay.urlLink, "*");
-            console.log('Url enviada:' + overlay.urlLink);
-        }, 500);
-    }
-});
+                contentWrapper.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             }
 
-            // Pre-process overlays to find center of mass.
-            // If a precomputed entry exists for this image URL, use it and log it;
-            // otherwise compute, log the result, and return it.
+            function setupImagesEvents() {
+                imageContainer.addEventListener('mousemove', function (e) {
+                    const isActive = findClosestImage(overlayElements, e.clientX, e.clientY);
+
+                    const imageName = isActive ? overlayImages[lastClosestImageIndex]?.nomeImagem : null;
+
+                    changeCursor(isActive);
+                    showName(imageName, e.clientX, e.clientY);
+                });
+
+                imageContainer.addEventListener('click', function () {
+                    // Only click if active
+                    if (lastClosestImageIndex < 0 || lastMinDistance > ACTIVE_RADIUS) return;
+
+                    const overlay = overlayImages[lastClosestImageIndex];
+                    const preProcessed = preProcessedOverlays[lastClosestImageIndex];
+
+                    if (!preProcessed.screenCenter) {
+                        const style = window.getComputedStyle(contentWrapper);
+                        const matrix = new WebKitCSSMatrix(style.transform);
+                        const offsetX = matrix.m41;
+                        const offsetY = matrix.m42;
+
+                        const boundingBox = baseImage.getBoundingClientRect();
+                        const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
+                        const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
+
+                        const scaleX = boundingBox.width / refWidth;
+                        const scaleY = boundingBox.height / refHeight;
+
+                        const centerX = (preProcessed.centerX * scaleX) + offsetX;
+                        const centerY = (preProcessed.centerY * scaleY) + offsetY;
+
+                        preProcessed.screenCenter = { centerX, centerY };
+                    }
+
+                    const centerX = preProcessed.screenCenter.centerX;
+                    const centerY = preProcessed.screenCenter.centerY;
+
+                    confettiExplosion(centerX, centerY);
+
+                    setTimeout(() => {
+                        window.parent.postMessage(overlay.urlLink, "*");
+                        console.log('Url enviada:' + overlay.urlLink);
+                    }, 500);
+                });
+            }
+
             function preProcessOverlays(overlay) {
                 const key = overlay.src || overlay.currentSrc || '';
 
@@ -282,7 +263,6 @@ imageContainer.addEventListener('click', function (e) {
                 const centerX = count > 0 ? totalX / count : offScreenCanvas.width / 2;
                 const centerY = count > 0 ? totalY / count : offScreenCanvas.height / 2;
 
-                // If no pixels found (empty image), fallback to full size
                 if (count === 0) {
                     minX = 0;
                     maxX = offScreenCanvas.width;
@@ -306,20 +286,12 @@ imageContainer.addEventListener('click', function (e) {
 
                 if (key) {
                     let logicalName = null;
-                    // Try to match this URL with one of the overlay metadata entries, to log a friendly name.
                     if (Array.isArray(overlayImages)) {
                         const match = overlayImages.find(o => (baseUrl + o.arquivo) === key || o.arquivo === key);
-                        if (match) {
-                            logicalName = match.nomeImagem;
-                        }
+                        if (match) logicalName = match.nomeImagem;
                     }
 
-                    console.log(
-                        'Computed center data for image:',
-                        logicalName || key,
-                        key,
-                        JSON.stringify(result)
-                    );
+                    console.log('Computed center data for image:', logicalName || key, key, JSON.stringify(result));
                 } else {
                     console.log('Computed center data for image without src:', JSON.stringify(result));
                 }
@@ -327,24 +299,20 @@ imageContainer.addEventListener('click', function (e) {
                 return result;
             }
 
-            // Function to find the closest image based on center of mass
+            // Finds closest overlay; "active" only if within ACTIVE_RADIUS
             function findClosestImage(overlayElements, x, y) {
                 lastClosestImageIndex = -1;
                 let minDistance = Infinity;
 
-                // Get the current transform of the contentWrapper
                 const style = window.getComputedStyle(contentWrapper);
                 const matrix = new WebKitCSSMatrix(style.transform);
                 const offsetX = matrix.m41;
                 const offsetY = matrix.m42;
 
-                // Adjust x and y to be relative to the contentWrapper
                 const localX = x - offsetX;
                 const localY = y - offsetY;
 
                 const boundingBox = baseImage.getBoundingClientRect();
-                // Assuming all images have the same aspect ratio and size as the base image
-                // Use the first overlay or base image for scale reference if overlays are empty (unlikely)
                 const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
                 const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
 
@@ -365,14 +333,20 @@ imageContainer.addEventListener('click', function (e) {
                         lastClosestImageIndex = i;
                     }
 
-                    // Hide all initially
                     overlayElements[i].style.display = 'none';
                 }
 
-                // Show only the closest one
-                if (lastClosestImageIndex >= 0) {
+                lastMinDistance = minDistance;
+
+                const isActive = (lastClosestImageIndex >= 0) && (minDistance <= ACTIVE_RADIUS);
+
+                if (isActive) {
                     overlayElements[lastClosestImageIndex].style.display = '';
+                } else {
+                    lastClosestImageIndex = -1;
                 }
+
+                return isActive;
             }
 
             function showToast(message) {
@@ -381,18 +355,13 @@ imageContainer.addEventListener('click', function (e) {
                 toast.classList.add('toast');
                 toast.textContent = message;
 
-                // Add the toast to the container
                 toastContainer.appendChild(toast);
 
-                // Show the toast
-                setTimeout(() => {
-                    toast.style.opacity = 1;
-                }, 100);
+                setTimeout(() => { toast.style.opacity = 1; }, 100);
 
-                // Hide and remove the toast after 3 seconds
                 setTimeout(() => {
                     toast.style.opacity = 0;
-                    setTimeout(() => toastContainer.removeChild(toast), 500); // Ensure fade out completes
+                    setTimeout(() => toastContainer.removeChild(toast), 500);
                 }, 3000);
             }
 
@@ -404,35 +373,30 @@ imageContainer.addEventListener('click', function (e) {
                     return;
                 }
 
-                // Set the text content
                 nameContainer.textContent = name;
 
-                // Position the container at the mouse coordinates with an offset
-                // at the center bottom of the container
-                // if it would be out of the screen put it at the bottom instead
+                const halfDescriptionHeight = nameContainer.offsetHeight / 2;
+                const halfDescriptionWidth = nameContainer.offsetWidth / 2;
+                const verticalOffset = 50;
+                const borderOffset = 10;
 
-                var halfDescriptionHeight = nameContainer.offsetHeight / 2;
-                var halfDescriptionWidth = nameContainer.offsetWidth / 2;
-                var verticalOffset = 50;
-                var borderOffset = 10;
-
-                // x and y are already screen coordinates (clientX/Y)
                 const adjustedX = x;
                 const adjustedY = y;
 
-                nameContainer.style.left = adjustedX - halfDescriptionWidth + 'px';
+                nameContainer.style.left = (adjustedX - halfDescriptionWidth) + 'px';
+
                 if (adjustedY - verticalOffset - halfDescriptionHeight - borderOffset < 0) {
-                    nameContainer.style.top = adjustedY - halfDescriptionHeight + verticalOffset + 'px';
+                    nameContainer.style.top = (adjustedY - halfDescriptionHeight + verticalOffset) + 'px';
                 } else {
-                    nameContainer.style.top = adjustedY - halfDescriptionHeight - verticalOffset + 'px';
+                    nameContainer.style.top = (adjustedY - halfDescriptionHeight - verticalOffset) + 'px';
                 }
 
-                // Make the container visible
                 nameContainer.style.display = 'block';
             }
 
-            function changeCursor(enabled) {
-                imageContainer.style.cursor = enabled ? 'pointer' : 'default';
+            function changeCursor(isActive) {
+                // Keep text inputs "text" cursor (CSS handles it). Here we only change our container.
+                imageContainer.style.cursor = isActive ? CURSOR_HOVER : CURSOR_NORMAL;
             }
         });
 
@@ -444,12 +408,10 @@ imageContainer.addEventListener('click', function (e) {
                 confetti.style.left = x + 'px';
                 confetti.style.top = y + 'px';
 
-                // Random size between 5px and 15px
                 const size = Math.random() * 10 + 5;
                 confetti.style.width = size + 'px';
                 confetti.style.height = size + 'px';
 
-                // Random explosion properties: angle and distance
                 const angle = Math.random() * 2 * Math.PI;
                 const distance = Math.random() * 250 + 50;
                 const translateX = Math.cos(angle) * distance;
@@ -457,27 +419,23 @@ imageContainer.addEventListener('click', function (e) {
                 confetti.style.setProperty('--translateX', translateX + 'px');
                 confetti.style.setProperty('--translateY', translateY + 'px');
 
-                // Random initial rotation
                 const initialRotation = Math.random() * 360;
                 confetti.style.transform = `rotate(${initialRotation}deg)`;
 
-                // Random animation duration between 2.5s and 3.5s
                 const duration = Math.random() * 1 + 2.5;
                 confetti.style.animationDuration = duration + 's';
 
-                // Slight random animation delay
                 confetti.style.animationDelay = Math.random() * 0.2 + 's';
 
-                // Improved color using HSL with softer saturation/lightness
                 confetti.style.backgroundColor = `hsl(${Math.floor(Math.random() * 360)}, 80%, 60%)`;
 
                 document.body.appendChild(confetti);
 
-                // Remove the confetti element after the animation ends
                 setTimeout(() => confetti.remove(), duration * 1000);
             }
         }
     </script>
+
     <style>
         @font-face {
             font-family: 'Thata';
@@ -508,8 +466,7 @@ imageContainer.addEventListener('click', function (e) {
         .imageLayer,
         canvas {
             position: absolute;
-            /* height: 100%; Removed to allow JS resizing */
-            width: auto; /* Maintain aspect ratio */
+            width: auto;
         }
 
         #toastContainer {
@@ -543,10 +500,10 @@ imageContainer.addEventListener('click', function (e) {
 
         #instructionText {
             position: fixed;
-            top: calc(50% - 30vh); /* Center vertically */
-            right: calc(50% - (60vh + 15vw)); /* Center horizontally with offset */
+            top: calc(50% - 30vh);
+            right: calc(50% - (60vh + 15vw));
             left: auto;
-            width: calc(20vw); /* Fixed width */
+            width: calc(20vw);
             z-index: 2000;
             font-family: 'Thata', sans-serif;
             font-size: 5vh;
@@ -609,7 +566,6 @@ imageContainer.addEventListener('click', function (e) {
             pointer-events: none;
             z-index: 10000;
             opacity: 1;
-            /* Use clip-path to create a star shape */
             clip-path: polygon(50% 0%,
                     61% 35%,
                     98% 35%,
@@ -647,7 +603,8 @@ imageContainer.addEventListener('click', function (e) {
     </div>
     <div id="objectDescription"></div>
     <div id="toastContainer"></div>
-    <div id="instructionText">Para acessar os portfólios, recomendações e outros recursos, clique em qualquer item da ilustração.</div>
+    <div id="instructionText">Para acessar os portfólios, recomendações e outros recursos, clique em qualquer item da
+        ilustração.</div>
     <div id="imageContainer"></div>
 </body>
 
