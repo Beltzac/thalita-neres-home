@@ -640,8 +640,8 @@
 
         .hand-drawn-arrow {
             fill: none;
-            stroke: #000; /* Black ink color */
-            stroke-width: 3;
+            stroke: red; /* Yellow ink color */
+            stroke-width: 1.5;
             stroke-linecap: round;
             stroke-linejoin: round;
             filter: url(#roughpaper); /* Optional: could add a filter for texture */
@@ -754,8 +754,8 @@
     <svg id="arrowLayer">
         <!-- Definition for arrow head marker -->
         <defs>
-            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
-                <polygon points="0 0, 10 3.5, 0 7" fill="#000" />
+            <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="0" refY="2" orient="auto">
+                <polygon points="0 0, 6 2, 0 4" fill="red" />
             </marker>
         </defs>
         <path id="dynamicArrow" class="hand-drawn-arrow" d="" marker-end="url(#arrowhead)" />
