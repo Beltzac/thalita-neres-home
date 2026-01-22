@@ -388,18 +388,15 @@
 
             function showName(name, desc, x, y) {
                 const nameContainer = document.getElementById('objectDescription');
-                const titleEl = document.getElementById('descTitle');
-                const subtitleEl = document.getElementById('descSubtitle');
 
-                if (!name) {
+                if (!desc) {
                     nameContainer.style.display = 'none';
                     return;
                 }
 
-                titleEl.textContent = name;
-                subtitleEl.textContent = desc || "";
+                nameContainer.textContent = desc;
 
-                // Calculate position logic (similar to previous, but might need adjustment for 2 lines)
+                // Calculate position logic
                 const halfDescriptionHeight = nameContainer.offsetHeight / 2;
                 const halfDescriptionWidth = nameContainer.offsetWidth / 2;
                 const verticalOffset = 50;
@@ -516,25 +513,13 @@
             display: none;
             z-index: 3000;
             background-color: rgb(243, 243, 243);
-            padding: 8px;
+            padding: 12px;
             border-radius: 4px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             font-family: 'Thata', sans-serif;
             text-align: center;
-        }
-
-        #descTitle {
-            font-size: 4vh;
-            font-weight: bold;
-            display: block;
-        }
-        
-        #descSubtitle {
-             font-size: 2vh;
-             display: block;
-             margin-top: 4px;
-             max-width: 300px;
-             color: #555;
+            font-size: 5vh;
+            max-width: 500px;
         }
 
         #instructionText {
@@ -640,10 +625,7 @@
         <div></div>
         <div></div>
     </div>
-    <div id="objectDescription">
-        <span id="descTitle"></span>
-        <span id="descSubtitle"></span>
-    </div>
+    <div id="objectDescription"></div>
     <div id="toastContainer"></div>
     <div id="imageContainer"></div>
 </body>
