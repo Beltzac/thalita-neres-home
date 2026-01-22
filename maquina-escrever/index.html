@@ -19,33 +19,33 @@
         const precomputedCentersByUrl = {};
 
         const overlayImages = [
-            { 
-                "nomeImagem": "Blog de arquitetura", 
-                "arquivo": "imagens/BLOG.png", 
+            {
+                "nomeImagem": "Blog de arquitetura",
+                "arquivo": "imagens/BLOG.png",
                 "urlLink": "/blog-arquitetura",
                 "description": "Arquitetos, movimentos, direção. História e crítica da arquitetura em reflexão."
             },
-            { 
-                "nomeImagem": "Substack", 
-                "arquivo": "imagens/SUBSTACK.png", 
+            {
+                "nomeImagem": "Substack",
+                "arquivo": "imagens/SUBSTACK.png",
                 "urlLink": "/substack",
                 "description": "Textos livres, temas diversos. Pensar curto, pensar disperso."
             },
-            { 
-                "nomeImagem": "Ela Não Vai Quebrar (2020)", 
-                "arquivo": "imagens/ELA N VAI QUEBRAR.png", 
+            {
+                "nomeImagem": "Ela Não Vai Quebrar (2020)",
+                "arquivo": "imagens/ELA N VAI QUEBRAR.png",
                 "urlLink": "/ela-nao-vai-quebrar",
                 "description": "Livro de poesia, corpo sensível. Fragilidade como força visível."
             },
-            { 
-                "nomeImagem": "Moramos nas Chegadas e Também nas Partidas (2024)", 
-                "arquivo": "imagens/MORAMOS NAS CHEGADAS.png", 
+            {
+                "nomeImagem": "Moramos nas Chegadas e Também nas Partidas (2024)",
+                "arquivo": "imagens/MORAMOS NAS CHEGADAS.png",
                 "urlLink": "/moramos-nas-chegadas",
                 "description": "Prosa em cartas, tempo suspenso. Ficar e ir no mesmo gesto denso."
             },
-            { 
-                "nomeImagem": "Opúsculo (2021–2023)", 
-                "arquivo": "imagens/OPUSCULO.png", 
+            {
+                "nomeImagem": "Opúsculo (2021–2023)",
+                "arquivo": "imagens/OPUSCULO.png",
                 "urlLink": "/opusculo",
                 "description": "Textos reunidos sem mediação. Download livre, circulação."
             }
@@ -113,7 +113,7 @@
                 loadedImages++;
                 checkAllLoaded();
             };
-            
+
             baseImage.onerror = () => {
                 console.error("Failed to load base image: " + baseImage.src);
             }
@@ -188,6 +188,32 @@
                 contentWrapper.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             }
 
+            function getScreenCoordinates(preProcessed) {
+                const style = window.getComputedStyle(contentWrapper);
+                const matrix = new WebKitCSSMatrix(style.transform);
+                const offsetX = matrix.m41;
+                const offsetY = matrix.m42;
+
+                const boundingBox = baseImage.getBoundingClientRect();
+                const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
+                const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
+
+                const scaleX = boundingBox.width / refWidth;
+                const scaleY = boundingBox.height / refHeight;
+
+                const bboxCenterX = preProcessed.bboxCenterX;
+                const bboxCenterY = preProcessed.bboxCenterY;
+                const halfWidth = preProcessed.contentWidth / 2;
+
+                const centerX = (bboxCenterX * scaleX) + offsetX;
+                const centerY = (bboxCenterY * scaleY) + offsetY;
+
+                const leftX = ((bboxCenterX - halfWidth) * scaleX) + offsetX;
+                const rightX = ((bboxCenterX + halfWidth) * scaleX) + offsetX;
+
+                return { x: centerX, y: centerY, leftX: leftX, rightX: rightX };
+            }
+
             function setupImagesEvents() {
                 imageContainer.addEventListener('mousemove', function (e) {
                     const isActive = findClosestImage(overlayElements, e.clientX, e.clientY);
@@ -196,8 +222,18 @@
                     const imageName = overlayData ? overlayData.nomeImagem : null;
                     const imageDesc = overlayData ? overlayData.description : null;
 
+                    let targetX = e.clientX;
+                    let targetY = e.clientY;
+
+                    if (isActive && lastClosestImageIndex !== -1) {
+                        const preProcessed = preProcessedOverlays[lastClosestImageIndex];
+                        const coords = getScreenCoordinates(preProcessed);
+                        targetX = coords.x;
+                        targetY = coords.y;
+                    }
+
                     changeCursor(isActive);
-                    showName(imageName, imageDesc, e.clientX, e.clientY);
+                    showName(imageName, imageDesc, e.clientX, e.clientY, targetX, targetY, isActive);
                 });
 
                 imageContainer.addEventListener('click', function () {
@@ -386,34 +422,101 @@
                 }, 3000);
             }
 
-            function showName(name, desc, x, y) {
+            function showName(name, desc, mouseX, mouseY, targetX, targetY, isActive) {
                 const nameContainer = document.getElementById('objectDescription');
+                const arrowPath = document.getElementById('dynamicArrow');
 
-                if (!desc) {
+                if (!desc || !isActive) {
                     nameContainer.style.display = 'none';
+                    arrowPath.setAttribute('d', ''); // Clear arrow
                     return;
                 }
 
                 nameContainer.textContent = desc;
+                nameContainer.style.display = 'block';
 
-                // Calculate position logic
-                const halfDescriptionHeight = nameContainer.offsetHeight / 2;
-                const halfDescriptionWidth = nameContainer.offsetWidth / 2;
-                const verticalOffset = 50;
-                const borderOffset = 10;
+                const viewportWidth = window.innerWidth;
+                const marginSide = 20;
 
-                const adjustedX = x;
-                const adjustedY = y;
+                // Text Position Logic: Fixed to the side opposite to the MOUSE (to avoid covering view)
+                // We still use mouseX for determining side, but arrow points to targetX/Y
+                let textX, textY;
 
-                nameContainer.style.left = (adjustedX - halfDescriptionWidth) + 'px';
+                // Seeded randomness helper
+                const seed = name ? name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 0;
+                const randomOffset = Math.sin(seed) * (window.innerHeight * 0.2); // +/- 20% of height variation
 
-                if (adjustedY - verticalOffset - halfDescriptionHeight - borderOffset < 0) {
-                    nameContainer.style.top = (adjustedY - halfDescriptionHeight + verticalOffset) + 'px';
+                let textTop = targetY + randomOffset;
+
+                const minTop = window.innerHeight * 0.1;
+                const maxTop = window.innerHeight * 0.8;
+                if (textTop < minTop) textTop = minTop;
+                if (textTop > maxTop) textTop = maxTop;
+
+                // Fixed side based on seed
+                const onRightSide = (seed % 2 === 0);
+
+                if (onRightSide) {
+                    // Put text on RIGHT
+                    nameContainer.style.left = 'auto';
+                    nameContainer.style.right = marginSide + 'px';
+                    nameContainer.style.top = textTop + 'px';
+                    nameContainer.style.textAlign = 'right';
+
+                    // Text anchor point for arrow (left-middle of text box)
+                    textX = viewportWidth - marginSide - nameContainer.offsetWidth;
+                    textY = textTop + (nameContainer.offsetHeight / 2);
                 } else {
-                    nameContainer.style.top = (adjustedY - halfDescriptionHeight - verticalOffset) + 'px';
+                    // Put text on LEFT
+                    nameContainer.style.right = 'auto';
+                    nameContainer.style.left = marginSide + 'px';
+                    nameContainer.style.top = textTop + 'px';
+                    nameContainer.style.textAlign = 'left';
+
+                     // Text anchor point for arrow (right-middle of text box)
+                    textX = marginSide + nameContainer.offsetWidth;
+                    textY = textTop + (nameContainer.offsetHeight / 2);
                 }
 
-                nameContainer.style.display = 'block';
+                // Arrow Drawing Logic
+                // Direction: Object (Center) -> Menu (Side)
+                const boundingBox = baseImage.getBoundingClientRect();
+                const currentScale = baseImage.naturalWidth ? (boundingBox.width / baseImage.naturalWidth) : 1;
+
+                const gapText = 10 * currentScale; // Offset from text box
+                const gapMenu = 300 * currentScale; // Offset from text box
+
+                const startX = targetX;
+                const startY = targetY;
+
+                let endX;
+                if (onRightSide) {
+                     // Text on Right, Arrow points to Left side of text
+                     endX = textX - gapText;
+                } else {
+                     // Text on Left, Arrow points to Right side of text
+                     endX = textX + gapText;
+                }
+                const endY = textY;
+
+                const adjustedStartX = onRightSide
+                    ? startX + gapMenu
+                    : startX - gapMenu;
+                const adjustedStartY = startY;
+
+                // Control Point Logic for S-Curve (Cubic Bezier)
+                const deltaX = endX - adjustedStartX;
+
+                // CP1 (Start/Object): Leave horizontally towards text
+                const cp1X = adjustedStartX + (deltaX * 0.5);
+                const cp1Y = adjustedStartY;
+
+                // CP2 (End/Text): Arrive horizontally from object
+                const cp2X = endX - (deltaX * 0.5);
+                const cp2Y = endY;
+
+                const pathData = `M ${adjustedStartX} ${adjustedStartY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
+                arrowPath.setAttribute('d', pathData);
             }
 
             function changeCursor(isActive) {
@@ -509,17 +612,39 @@
 
         #objectDescription {
             pointer-events: none;
-            position: absolute;
+            position: fixed;
             display: none;
             z-index: 3000;
-            background-color: rgb(243, 243, 243);
-            padding: 12px;
-            border-radius: 4px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            background-color: transparent; /* Transparent background for hand-drawn look */
+            /* padding: 12px; */ /* Removed padding */
+            /* border-radius: 4px; */ /* Removed border radius */
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */ /* Removed shadow */
             font-family: 'Thata', sans-serif;
-            text-align: center;
-            font-size: 5vh;
-            max-width: 500px;
+            text-align: left; /* Align text to left or right depending on side */
+            font-size: 4vh;
+            max-width: 30vw;
+            top: 20%; /* Fixed vertical position */
+            /* left/right will be set dynamically */
+        }
+
+        /* SVG Layer for Arrows */
+        #arrowLayer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2500; /* Below text, above images */
+        }
+
+        .hand-drawn-arrow {
+            fill: none;
+            stroke: #000; /* Black ink color */
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: url(#roughpaper); /* Optional: could add a filter for texture */
         }
 
         #instructionText {
@@ -626,6 +751,15 @@
         <div></div>
     </div>
     <div id="objectDescription"></div>
+    <svg id="arrowLayer">
+        <!-- Definition for arrow head marker -->
+        <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#000" />
+            </marker>
+        </defs>
+        <path id="dynamicArrow" class="hand-drawn-arrow" d="" marker-end="url(#arrowhead)" />
+    </svg>
     <div id="toastContainer"></div>
     <div id="imageContainer"></div>
 </body>
