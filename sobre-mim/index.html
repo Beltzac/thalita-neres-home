@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        const baseUrl = "";
+        const baseImageFilename = "imagens/EU_BASE.png"; // Base image (Disabled/Grayscale)
+        const margin = 60; // Configurable margin
+
+        // Cursor images (64x64) + hotspot middle-top (32,0)
+        const CURSOR_NORMAL = 'url("https://static.wixstatic.com/ficons/c1926f_399a50bac406469293fc94e423792f80~mv2.ico") 32 0, auto';
+        const CURSOR_HOVER = 'url("https://static.wixstatic.com/ficons/c1926f_e709764e60a443dd8f35a92720005ffe~mv2.ico") 32 0, pointer';
+
+        // Activate only when close to a centerpoint (in natural image pixels)
+        const ACTIVE_RADIUS = 800; // Increased radius for single large image to ensure it activates easily
+
+        const precomputedCentersByUrl = {};
+
+        const overlayImages = [
+            {
+                "nomeImagem": "Sobre Mim",
+                "arquivo": "imagens/EU.png",
+                "urlLink": "/sobremim",
+                "description": "Sobre Mim"
+            }
+        ];
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // Inject cursor CSS
+            {
+                const style = document.createElement('style');
+                style.type = 'text/css';
+                style.innerHTML = `
+          body { cursor: ${CURSOR_NORMAL}; }
+          input, textarea, [contenteditable="true"] { cursor: text !important; }
+        `;
+                document.head.appendChild(style);
+            }
+
+            console.log(overlayImages.length + " imagens");
+
+            let lastClosestImageIndex = -1;
+            let lastMinDistance = Infinity;
+
+            const imageContainer = document.getElementById('imageContainer');
+            imageContainer.style.cursor = CURSOR_NORMAL;
+
+            const contentWrapper = document.createElement('div');
+            contentWrapper.id = 'contentWrapper';
+            contentWrapper.style.position = 'absolute';
+            contentWrapper.style.top = '0';
+            contentWrapper.style.left = '0';
+            contentWrapper.style.width = '100%';
+            contentWrapper.style.height = '100%';
+            imageContainer.appendChild(contentWrapper);
+
+            let preProcessedOverlays = [];
+
+            function createAndAppendImage(src, zIndex, visible) {
+                const img = document.createElement('img');
+                img.crossOrigin = "anonymous";
+                img.src = src;
+                img.classList.add('imageLayer');
+                img.style.zIndex = zIndex;
+                img.style.display = visible ? '' : 'none';
+                contentWrapper.appendChild(img);
+                return img;
+            }
+
+            const baseImage = createAndAppendImage(baseUrl + baseImageFilename, 1, true);
+            let overlayElements = overlayImages.map((overlay, index) =>
+                createAndAppendImage(baseUrl + overlay.arquivo, index + 2, false)
+            );
+
+            let loadedImages = 0;
+            let totalImages = overlayElements.length + 1;
+
+            let globalBaseCenter = null;
+
+            baseImage.onload = () => {
+                globalBaseCenter = preProcessOverlays(baseImage);
+                centerMenu(globalBaseCenter);
+                loadedImages++;
+                checkAllLoaded();
+            };
+
+            baseImage.onerror = () => {
+                 console.error("Failed to load base image", baseImage.src);
+            }
+
+            window.addEventListener('resize', () => {
+                if (globalBaseCenter) centerMenu(globalBaseCenter);
+            });
+
+            overlayElements.forEach((img, index) => {
+                img.onload = () => {
+                    preProcessedOverlays[index] = preProcessOverlays(img, index);
+                    loadedImages++;
+                    checkAllLoaded();
+                };
+                img.onerror = () => {
+                     console.error("Failed to load overlay image", img.src);
+                }
+            });
+
+            function checkAllLoaded() {
+                if (loadedImages === totalImages) {
+                    setupImagesEvents();
+                    document.querySelector('.lds-facebook').style.display = 'none';
+                }
+            }
+
+            function centerMenu(baseCenter) {
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+
+                const availableWidth = viewportWidth;
+                const availableHeight = viewportHeight - (2 * margin);
+
+                const scaleX = availableWidth / baseCenter.contentWidth;
+                const scaleY = availableHeight / baseCenter.contentHeight;
+                const scale = Math.min(scaleX, scaleY);
+
+                const targetHeight = baseCenter.height * scale;
+                baseImage.style.height = targetHeight + "px";
+                baseImage.style.width = "auto";
+
+                overlayElements.forEach(img => {
+                    img.style.height = targetHeight + "px";
+                    img.style.width = "auto";
+                });
+
+                const scaledCenterX = baseCenter.bboxCenterX * scale;
+                const scaledCenterY = baseCenter.bboxCenterY * scale;
+
+                const offsetX = (viewportWidth / 2) - scaledCenterX;
+                const offsetY = (viewportHeight / 2) - scaledCenterY;
+
+                contentWrapper.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            }
+
+            function setupImagesEvents() {
+                imageContainer.addEventListener('mousemove', function (e) {
+                    const isActive = findClosestImage(overlayElements, e.clientX, e.clientY);
+                    changeCursor(isActive);
+                });
+
+                imageContainer.addEventListener('click', function () {
+                    if (lastClosestImageIndex < 0 || lastMinDistance > ACTIVE_RADIUS) return;
+
+                    const overlay = overlayImages[lastClosestImageIndex];
+                    const preProcessed = preProcessedOverlays[lastClosestImageIndex];
+
+                     // Calculate screen center for confetti if not cached
+                    if (!preProcessed.screenCenter) {
+                        const style = window.getComputedStyle(contentWrapper);
+                        const matrix = new WebKitCSSMatrix(style.transform);
+                        const offsetX = matrix.m41;
+                        const offsetY = matrix.m42;
+
+                        const boundingBox = baseImage.getBoundingClientRect();
+                        const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
+                        const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
+
+                        const scaleX = boundingBox.width / refWidth;
+                        const scaleY = boundingBox.height / refHeight;
+
+                        const centerX = (preProcessed.centerX * scaleX) + offsetX;
+                        const centerY = (preProcessed.centerY * scaleY) + offsetY;
+
+                        preProcessed.screenCenter = { centerX, centerY };
+                    }
+
+                    const centerX = preProcessed.screenCenter.centerX;
+                    const centerY = preProcessed.screenCenter.centerY;
+
+                    confettiExplosion(centerX, centerY);
+
+                    setTimeout(() => {
+                        window.parent.postMessage(overlay.urlLink, "*");
+                        console.log('Url enviada:' + overlay.urlLink);
+                    }, 500);
+                });
+            }
+
+            function preProcessOverlays(overlay) {
+                const offScreenCanvas = document.createElement('canvas');
+                const ctx = offScreenCanvas.getContext('2d');
+
+                offScreenCanvas.width = overlay.naturalWidth;
+                offScreenCanvas.height = overlay.naturalHeight;
+
+                ctx.drawImage(overlay, 0, 0);
+
+                const imageData = ctx.getImageData(0, 0, offScreenCanvas.width, offScreenCanvas.height);
+                const data = imageData.data;
+                let totalX = 0;
+                let totalY = 0;
+                let count = 0;
+
+                let minX = offScreenCanvas.width;
+                let maxX = 0;
+                let minY = offScreenCanvas.height;
+                let maxY = 0;
+
+                for (let y = 0; y < offScreenCanvas.height; y++) {
+                    for (let x = 0; x < offScreenCanvas.width; x++) {
+                        const alpha = data[(y * offScreenCanvas.width + x) * 4 + 3];
+                        if (alpha > 0) {
+                            totalX += x;
+                            totalY += y;
+                            count++;
+
+                            if (x < minX) minX = x;
+                            if (x > maxX) maxX = x;
+                            if (y < minY) minY = y;
+                            if (y > maxY) maxY = y;
+                        }
+                    }
+                }
+
+                const centerX = count > 0 ? totalX / count : offScreenCanvas.width / 2;
+                const centerY = count > 0 ? totalY / count : offScreenCanvas.height / 2;
+
+                if (count === 0) {
+                    minX = 0;
+                    maxX = offScreenCanvas.width;
+                    minY = 0;
+                    maxY = offScreenCanvas.height;
+                }
+
+                return {
+                    centerX,
+                    centerY,
+                    bboxCenterX: minX + (maxX - minX) / 2,
+                    bboxCenterY: minY + (maxY - minY) / 2,
+                    width: offScreenCanvas.width,
+                    height: offScreenCanvas.height,
+                    contentWidth: (maxX - minX) + 1,
+                    contentHeight: (maxY - minY) + 1
+                };
+            }
+
+            function findClosestImage(overlayElements, x, y) {
+                lastClosestImageIndex = -1;
+                let minDistance = Infinity;
+
+                const style = window.getComputedStyle(contentWrapper);
+                const matrix = new WebKitCSSMatrix(style.transform);
+                const offsetX = matrix.m41;
+                const offsetY = matrix.m42;
+
+                const localX = x - offsetX;
+                const localY = y - offsetY;
+
+                const boundingBox = baseImage.getBoundingClientRect();
+                const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
+                const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
+
+                const scaleX = refWidth / boundingBox.width;
+                const scaleY = refHeight / boundingBox.height;
+
+                const scaledX = localX * scaleX;
+                const scaledY = localY * scaleY;
+
+                for (let i = 0; i < overlayElements.length; i++) {
+                    const preProcessed = preProcessedOverlays[i];
+                    const dx = scaledX - preProcessed.centerX;
+                    const dy = scaledY - preProcessed.centerY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        lastClosestImageIndex = i;
+                    }
+                    // For single reactive image, we toggle it based on distance
+                    overlayElements[i].style.display = 'none';
+                }
+
+                lastMinDistance = minDistance;
+                const isActive = (lastClosestImageIndex >= 0) && (minDistance <= ACTIVE_RADIUS);
+
+                if (isActive) {
+                    overlayElements[lastClosestImageIndex].style.display = '';
+                } else {
+                    lastClosestImageIndex = -1;
+                }
+
+                return isActive;
+            }
+
+            function changeCursor(isActive) {
+                imageContainer.style.cursor = isActive ? CURSOR_HOVER : CURSOR_NORMAL;
+            }
+        });
+
+        function confettiExplosion(x, y) {
+             const numConfetti = 30;
+            for (let i = 0; i < numConfetti; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = x + 'px';
+                confetti.style.top = y + 'px';
+
+                const size = Math.random() * 10 + 5;
+                confetti.style.width = size + 'px';
+                confetti.style.height = size + 'px';
+
+                const angle = Math.random() * 2 * Math.PI;
+                const distance = Math.random() * 250 + 50;
+                const translateX = Math.cos(angle) * distance;
+                const translateY = Math.sin(angle) * distance;
+                confetti.style.setProperty('--translateX', translateX + 'px');
+                confetti.style.setProperty('--translateY', translateY + 'px');
+
+                const initialRotation = Math.random() * 360;
+                confetti.style.transform = `rotate(${initialRotation}deg)`;
+
+                const duration = Math.random() * 1 + 2.5;
+                confetti.style.animationDuration = duration + 's';
+
+                confetti.style.animationDelay = Math.random() * 0.2 + 's';
+
+                confetti.style.backgroundColor = `hsl(${Math.floor(Math.random() * 360)}, 80%, 60%)`;
+
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), duration * 1000);
+            }
+        }
+    </script>
+
+    <style>
+        @font-face {
+            font-family: 'Thata';
+            src: url('https://static.wixstatic.com/ufonts/c1926f_163cafe5c04d48cbbb27552644b8fe60/file.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #imageContainer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .imageLayer {
+            position: absolute;
+            width: auto;
+        }
+
+        /* Loader */
+        .lds-facebook {
+            display: inline-block;
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            z-index: 100000;
+            top: calc(50% - 40px);
+            left: calc(50% - 40px);
+        }
+
+        .lds-facebook div {
+            display: inline-block;
+            position: absolute;
+            left: 8px;
+            width: 16px;
+            background: #000000;
+            animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+        }
+
+        .lds-facebook div:nth-child(1) {
+            left: 8px;
+            animation-delay: -0.24s;
+        }
+
+        .lds-facebook div:nth-child(2) {
+            left: 32px;
+            animation-delay: -0.12s;
+        }
+
+        .lds-facebook div:nth-child(3) {
+            left: 56px;
+            animation-delay: 0;
+        }
+
+        @keyframes lds-facebook {
+            0% {
+                top: 8px;
+                height: 64px;
+            }
+
+            50%,
+            100% {
+                top: 24px;
+                height: 32px;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            opacity: 1;
+            clip-path: polygon(50% 0%,
+                    61% 35%,
+                    98% 35%,
+                    68% 57%,
+                    79% 91%,
+                    50% 70%,
+                    21% 91%,
+                    32% 57%,
+                    2% 35%,
+                    39% 35%);
+            animation-name: confettiFall;
+            animation-timing-function: ease-out;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--translateX), var(--translateY)) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="lds-facebook">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div id="imageContainer"></div>
+</body>
+
+</html>
