@@ -444,6 +444,11 @@
 
                 // Seeded randomness helper
                 const seed = name ? name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 0;
+
+                // Seeded rotation for hand-drawn look (+/- 2 degrees)
+                const rotation = (Math.sin(seed) * 10);
+                nameContainer.style.transform = `rotate(${rotation}deg)`;
+
                 const randomOffset = Math.sin(seed) * (window.innerHeight * 0.2); // +/- 20% of height variation
 
                 let textTop = targetY + randomOffset;
@@ -483,7 +488,7 @@
                 const boundingBox = baseImage.getBoundingClientRect();
                 const currentScale = baseImage.naturalWidth ? (boundingBox.width / baseImage.naturalWidth) : 1;
 
-                const gapText = 10 * currentScale; // Offset from text box
+                const gapText = 20 * currentScale; // Offset from text box
                 const gapMenu = 300 * currentScale; // Offset from text box
 
                 const startX = targetX;
