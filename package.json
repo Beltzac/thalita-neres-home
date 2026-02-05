@@ -5,11 +5,12 @@
   "scripts": {
     "dev": "vite",
     "precompute:centers": "node scripts/precompute-centers.js",
-    "build": "npm run precompute:centers && vite build",
+    "build": "npm run precompute:centers && node scripts/build-singlefile.js",
     "preview": "vite preview"
   },
   "devDependencies": {
     "vite": "^5.0.0",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "vite-plugin-singlefile": "^2.0.1"
   }
 }
