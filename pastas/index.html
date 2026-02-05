@@ -46,6 +46,9 @@
             `;
             document.head.appendChild(style);
 
+            const renderedItems = [];
+            let lastActiveIndex = -1;
+
             desktopItems.forEach((item, index) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.classList.add('desktop-item');
@@ -74,39 +77,79 @@
                 itemDiv.appendChild(label);
                 desktopContainer.appendChild(itemDiv);
 
-                // Events
-                itemDiv.addEventListener('mouseenter', () => {
-                    imgActive.style.opacity = '1';
-                    imgBase.style.opacity = '0';
-                    itemDiv.classList.add('hovered'); // For label styling if needed
+                renderedItems.push({
+                    item,
+                    itemDiv,
+                    iconWrapper,
+                    imgBase,
+                    imgActive
+                });
+            });
+
+            function setActiveIndex(nextIndex) {
+                if (nextIndex === lastActiveIndex) return;
+
+                renderedItems.forEach((entry, i) => {
+                    const isActive = i === nextIndex;
+                    entry.imgActive.style.opacity = isActive ? '1' : '0';
+                    entry.imgBase.style.opacity = isActive ? '0' : '1';
+                    entry.itemDiv.classList.toggle('hovered', isActive);
                 });
 
-                itemDiv.addEventListener('mouseleave', () => {
-                    imgActive.style.opacity = '0';
-                    imgBase.style.opacity = '1';
-                    itemDiv.classList.remove('hovered');
-                });
+                lastActiveIndex = nextIndex;
+            }
 
-                itemDiv.addEventListener('mousedown', () => {
-                    // Deselect others
-                    document.querySelectorAll('.desktop-item').forEach(el => el.classList.remove('selected'));
-                    // Select this one
-                    itemDiv.classList.add('selected');
-                });
+            function updateActiveFromPointer(x, y) {
+                let closestIndex = -1;
+                let closestDistance = Infinity;
 
-                itemDiv.addEventListener('click', (e) => {
-                    // Center confetti on the icon
-                    const rect = itemDiv.getBoundingClientRect();
+                renderedItems.forEach((entry, i) => {
+                    const rect = entry.iconWrapper.getBoundingClientRect();
                     const centerX = rect.left + rect.width / 2;
                     const centerY = rect.top + rect.height / 2;
+                    const radius = Math.min(rect.width, rect.height) / 2;
 
-                    confettiExplosion(centerX, centerY);
+                    const dx = x - centerX;
+                    const dy = y - centerY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
 
-                    setTimeout(() => {
-                        window.parent.postMessage(item.urlLink, "*");
-                        console.log('Url enviada:' + item.urlLink);
-                    }, 500);
+                    if (distance <= radius && distance < closestDistance) {
+                        closestDistance = distance;
+                        closestIndex = i;
+                    }
                 });
+
+                setActiveIndex(closestIndex);
+            }
+
+            desktopContainer.addEventListener('mousemove', (e) => {
+                updateActiveFromPointer(e.clientX, e.clientY);
+            });
+
+            desktopContainer.addEventListener('mouseleave', () => {
+                setActiveIndex(-1);
+            });
+
+            desktopContainer.addEventListener('mousedown', () => {
+                if (lastActiveIndex < 0) return;
+                document.querySelectorAll('.desktop-item').forEach(el => el.classList.remove('selected'));
+                renderedItems[lastActiveIndex].itemDiv.classList.add('selected');
+            });
+
+            desktopContainer.addEventListener('click', () => {
+                if (lastActiveIndex < 0) return;
+
+                const entry = renderedItems[lastActiveIndex];
+                const rect = entry.iconWrapper.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                confettiExplosion(centerX, centerY);
+
+                setTimeout(() => {
+                    window.parent.postMessage(entry.item.urlLink, "*");
+                    console.log('Url enviada:' + entry.item.urlLink);
+                }, 500);
             });
 
             // Hide loader
@@ -162,7 +205,7 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #55aaaa; /* Teal Windows 95/98 background */
+            background-color: #ffffff;
             overflow: hidden;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
@@ -172,7 +215,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 2vw;
+            gap: 1vw;
             width: 100%;
             height: 100%;
             padding: 1vw;
@@ -180,9 +223,10 @@
         }
 
         .desktop-item {
+            --icon-size: clamp(420px, 60vw, 880px);
             flex: 1;
-            max-width: 600px;
-            min-width: 120px;
+            max-width: 700px;
+            min-width: 180px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -195,8 +239,9 @@
 
         .icon-wrapper {
             position: relative;
-            width: 100%;
-            padding-bottom: 100%; /* Maintain 1:1 Aspect Ratio */
+            width: var(--icon-size);
+            aspect-ratio: 1 / 1;
+            padding-bottom: 0;
             margin-bottom: 0px;
         }
 
@@ -220,13 +265,15 @@
 
         .icon-label {
             font-family: 'Thata', sans-serif;
-            font-size: clamp(1.5rem, 4vw, 5.0rem);
-            color: #ffffff;
+            font-size: calc(var(--icon-size) / 9);
+            color: #000000;
             text-align: center;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            text-shadow: none;
             padding: 0;
-            margin-top: -25%; /* Pull the label up closer to the icon content */
-            min-height: 1.2em; /* Reduced min-height */
+            margin-top: 0;
+            transform: translateY(calc(var(--icon-size) * -0.28));
+            min-height: 0.8em; /* Reduced min-height */
+            line-height: 0.9;
             display: flex;
             align-items: flex-start;
             justify-content: center;
@@ -317,95 +364,6 @@
                 opacity: 0;
             }
         }
-        /* Taskbar Styles */
-        #taskbar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 40px;
-            background-color: #c0c0c0;
-            border-top: 2px solid #dfdfdf;
-            display: flex;
-            align-items: center;
-            padding: 2px;
-            box-sizing: border-box;
-            z-index: 9999;
-            box-shadow: 0 -1px 0 #000; /* Subtle border line */
-            font-family: 'Thata', sans-serif; /* Keep font consistent */
-        }
-
-        #startButton {
-            height: 32px;
-            background-color: #c0c0c0;
-            border-top: 2px solid #fff;
-            border-left: 2px solid #fff;
-            border-right: 2px solid #404040;
-            border-bottom: 2px solid #404040;
-            box-shadow: 1px 1px 0 #000;
-            display: flex;
-            align-items: center;
-            padding: 0 6px;
-            margin-right: 4px;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        #startButton:active {
-            border-top: 2px solid #404040;
-            border-left: 2px solid #404040;
-            border-right: 2px solid #fff;
-            border-bottom: 2px solid #fff;
-            box-shadow: none;
-            padding: 1px 5px 0 7px; /* Shift text for press effect */
-        }
-
-        .win-logo {
-            display: flex;
-            flex-direction: column;
-            width: 16px;
-            height: 16px;
-            transform: rotate(-10deg) skew(-10deg);
-        }
-
-        .win-logo-row {
-            display: flex;
-            flex: 1;
-        }
-
-        .win-square {
-            flex: 1;
-            margin: 0.5px;
-            background-color: #000;
-        }
-
-        .win-square.red { background-color: #ff3c3c; }
-        .win-square.green { background-color: #55ee55; }
-        .win-square.blue { background-color: #5555ff; }
-        .win-square.yellow { background-color: #ffff55; }
-
-        .taskbar-divider {
-            width: 2px;
-            height: 30px;
-            background-color: #808080;
-            border-right: 1px solid #fff;
-            margin: 0 4px;
-        }
-
-        #systemTray {
-            height: 32px;
-            background-color: #c0c0c0;
-            border-top: 2px solid #808080;
-            border-left: 2px solid #808080;
-            border-right: 2px solid #fff;
-            border-bottom: 2px solid #fff;
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-            margin-left: 2px;
-            font-size: 1.2rem;
-            color: #000;
-        }
     </style>
 </head>
 
@@ -416,41 +374,6 @@
         <div></div>
     </div>
     <div id="desktopContainer"></div>
-    <div id="taskbar">
-        <div id="startButton">
-            <div class="win-logo">
-                <div class="win-logo-row">
-                    <div class="win-square red"></div>
-                    <div class="win-square green"></div>
-                </div>
-                <div class="win-logo-row">
-                    <div class="win-square blue"></div>
-                    <div class="win-square yellow"></div>
-                </div>
-            </div>
-            <span style="font-weight: bold; margin-left: 4px; color: #000;">Início</span>
-        </div>
-        <div class="taskbar-divider"></div>
-        <!-- Placeholder for open apps could go here -->
-        <div style="flex-grow: 1;"></div>
-        <div class="taskbar-divider"></div>
-        <div id="systemTray">
-            <span id="clock">12:00</span>
-        </div>
-    </div>
-    <script>
-        function updateClock() {
-            const now = new Date();
-            let hours = now.getHours();
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12;
-            hours = hours ? hours : 12;
-            document.getElementById('clock').textContent = `${hours}:${minutes} ${ampm}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-    </script>
 </body>
 
 </html>
