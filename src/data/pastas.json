@@ -1,0 +1,27 @@
+{
+  "CURSOR_NORMAL": "url(https://static.wixstatic.com/ficons/c1926f_399a50bac406469293fc94e423792f80~mv2.ico) 32 0, auto",
+  "CURSOR_HOVER": "url(https://static.wixstatic.com/ficons/c1926f_e709764e60a443dd8f35a92720005ffe~mv2.ico) 32 0, pointer",
+  "desktopItems": [
+    {
+      "id": "arquitetura",
+      "label": "Arquitetura",
+      "baseImage": "imagens/ARQUITETURA_BASE.png",
+      "activeImage": "imagens/ARQUITETURA.png",
+      "urlLink": "/portfolio-arquitetura"
+    },
+    {
+      "id": "interiores",
+      "label": "Interiores",
+      "baseImage": "imagens/INTERIORES_BASE.png",
+      "activeImage": "imagens/INTERIORES.png",
+      "urlLink": "/interiores"
+    },
+    {
+      "id": "mobiliario",
+      "label": "Mobiliário",
+      "baseImage": "imagens/MOBILIARIO_BASE.png",
+      "activeImage": "imagens/MOBILIARIO.png",
+      "urlLink": "/mobiliario"
+    }
+  ]
+}

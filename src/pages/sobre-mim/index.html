@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre Mim</title>
+  <link rel="stylesheet" href="/src/shared/styles/global.css">
+  <style>
+    #imageContainer { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
+    .imageLayer, canvas { position: absolute; width: auto; }
+    #objectDescription {
+      pointer-events: none;
+      position: absolute;
+      display: none;
+      z-index: 3000;
+      background-color: rgb(243, 243, 243);
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 5vh;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      font-family: 'Thata', sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="lds-facebook">
+    <div></div><div></div><div></div>
+  </div>
+  <div id="objectDescription"></div>
+  <div id="toastContainer"></div>
+  <div id="imageContainer"></div>
+
+  <script type="module">
+    import { initMenuScene } from '/src/shared/scene/menuScene.js';
+    import config from '/src/data/sobre-mim.json';
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById('imageContainer');
+      const { init } = initMenuScene(config);
+      init(container);
+    });
+  </script>
+</body>
+</html>

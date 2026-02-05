@@ -1,0 +1,19 @@
+{
+  "baseUrl": "",
+  "baseImageFilename": "imagens/EU_BASE.png",
+  "margin": 60,
+  "CURSOR_NORMAL": "url(https://static.wixstatic.com/ficons/c1926f_399a50bac406469293fc94e423792f80~mv2.ico) 32 0, auto",
+  "CURSOR_HOVER": "url(https://static.wixstatic.com/ficons/c1926f_e709764e60a443dd8f35a92720005ffe~mv2.ico) 32 0, pointer",
+  "ACTIVE_RADIUS": 800,
+  "precomputedCentersByUrl": {},
+  "overlayImages": [
+    {
+      "nomeImagem": "Sobre Mim",
+      "arquivo": "imagens/EU.png",
+      "urlLink": "/sobremim",
+      "description": "Sobre Mim"
+    }
+  ],
+  "instructionText": "Site inspirado em jogos indies dos anos 2010.\nAqui se navega com o mouse, não com pressa.\nMelhor visto no computador.\nPasse por cima. Veja o que acontece.",
+  "showArrow": false
+}
