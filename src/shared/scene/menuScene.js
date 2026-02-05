@@ -33,12 +33,34 @@ export function initMenuScene(config) {
     return img;
   }
 
+  function normalizePrecomputeKey(value) {
+    if (!value) return '';
+    const clean = value.split('#')[0].split('?')[0];
+    return clean.replace(/^\/+/, '').replace(/^\.\//, '');
+  }
+
+  function resolvePrecomputedCenter(key) {
+    if (!key) return null;
+
+    if (precomputedCentersByUrl[key]) {
+      return precomputedCentersByUrl[key];
+    }
+
+    const normalized = normalizePrecomputeKey(key);
+    if (normalized && precomputedCentersByUrl[normalized]) {
+      return precomputedCentersByUrl[normalized];
+    }
+
+    return null;
+  }
+
   function preProcessOverlays(overlay) {
     const key = overlay.src || overlay.currentSrc || '';
+    const precomputed = resolvePrecomputedCenter(key);
 
-    if (key && precomputedCentersByUrl[key]) {
-      console.log('Using precomputed center data for image:', key, precomputedCentersByUrl[key]);
-      return precomputedCentersByUrl[key];
+    if (precomputed) {
+      console.log('Using precomputed center data for image:', key, precomputed);
+      return precomputed;
     }
 
     const offScreenCanvas = document.createElement('canvas');

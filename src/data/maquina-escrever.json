@@ -5,7 +5,68 @@
   "CURSOR_NORMAL": "url(https://static.wixstatic.com/ficons/c1926f_399a50bac406469293fc94e423792f80~mv2.ico) 32 0, auto",
   "CURSOR_HOVER": "url(https://static.wixstatic.com/ficons/c1926f_e709764e60a443dd8f35a92720005ffe~mv2.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 500,
-  "precomputedCentersByUrl": {},
+  "precomputedCentersByUrl": {
+    "imagens/MAQUINA DE ESCREVER.png": {
+      "centerX": 1523.0589520567355,
+      "centerY": 2159.5342019543973,
+      "bboxCenterX": 1503.5,
+      "bboxCenterY": 1805,
+      "width": 3000,
+      "height": 3000,
+      "contentWidth": 1512,
+      "contentHeight": 2221
+    },
+    "imagens/BLOG.png": {
+      "centerX": 1519.2749818585394,
+      "centerY": 2710.0554488410808,
+      "bboxCenterX": 1528,
+      "bboxCenterY": 2710,
+      "width": 3000,
+      "height": 3000,
+      "contentWidth": 367,
+      "contentHeight": 95
+    },
+    "imagens/SUBSTACK.png": {
+      "centerX": 1517.4711049146044,
+      "centerY": 2158.995712791914,
+      "bboxCenterX": 1520.5,
+      "bboxCenterY": 2155,
+      "width": 3000,
+      "height": 3000,
+      "contentWidth": 482,
+      "contentHeight": 91
+    },
+    "imagens/ELA N VAI QUEBRAR.png": {
+      "centerX": 1548.0743820878163,
+      "centerY": 1375.6786856644374,
+      "bboxCenterX": 1553,
+      "bboxCenterY": 1376,
+      "width": 3000,
+      "height": 3000,
+      "contentWidth": 893,
+      "contentHeight": 57
+    },
+    "imagens/MORAMOS NAS CHEGADAS.png": {
+      "centerX": 1545.5891446336386,
+      "centerY": 1172.7757907646674,
+      "bboxCenterX": 1519,
+      "bboxCenterY": 1172,
+      "width": 3000,
+      "height": 3000,
+      "contentWidth": 1011,
+      "contentHeight": 131
+    },
+    "imagens/OPUSCULO.png": {
+      "centerX": 1544.3053662282807,
+      "centerY": 977.4596332917347,
+      "bboxCenterX": 1552,
+      "bboxCenterY": 975,
+      "width": 3000,
+      "height": 3000,
+      "contentWidth": 569,
+      "contentHeight": 61
+    }
+  },
   "overlayImages": [
     {
       "nomeImagem": "Blog de arquitetura",

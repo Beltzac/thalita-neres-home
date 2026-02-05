@@ -5,7 +5,28 @@
   "CURSOR_NORMAL": "url(https://static.wixstatic.com/ficons/c1926f_399a50bac406469293fc94e423792f80~mv2.ico) 32 0, auto",
   "CURSOR_HOVER": "url(https://static.wixstatic.com/ficons/c1926f_e709764e60a443dd8f35a92720005ffe~mv2.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 800,
-  "precomputedCentersByUrl": {},
+  "precomputedCentersByUrl": {
+    "imagens/EU_BASE.png": {
+      "centerX": 714.9709252517001,
+      "centerY": 962.3506419300173,
+      "bboxCenterX": 722,
+      "bboxCenterY": 907,
+      "width": 1414,
+      "height": 2000,
+      "contentWidth": 1293,
+      "contentHeight": 1557
+    },
+    "imagens/EU.png": {
+      "centerX": 714.784446963383,
+      "centerY": 964.7780929368281,
+      "bboxCenterX": 722,
+      "bboxCenterY": 910,
+      "width": 1414,
+      "height": 2000,
+      "contentWidth": 1293,
+      "contentHeight": 1557
+    }
+  },
   "overlayImages": [
     {
       "nomeImagem": "Sobre Mim",
