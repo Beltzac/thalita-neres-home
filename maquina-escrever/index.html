@@ -51,6 +51,14 @@
             }
         ];
 
+        const arrowStartOffsetsByName = {
+            "Blog de arquitetura": 280,
+            "Substack": 260,
+            "Ela Não Vai Quebrar (2020)": 500,
+            "Moramos nas Chegadas e Também nas Partidas (2024)": 500,
+            "Opúsculo (2021–2023)": 300
+        };
+
         document.addEventListener("DOMContentLoaded", function () {
 
             // Inject cursor CSS (global + except text inputs)
@@ -489,7 +497,8 @@
                 const currentScale = baseImage.naturalWidth ? (boundingBox.width / baseImage.naturalWidth) : 1;
 
                 const gapText = 20 * currentScale; // Offset from text box
-                const gapMenu = 300 * currentScale; // Offset from text box
+                const baseMenuOffset = arrowStartOffsetsByName[name] ?? 300;
+                const gapMenu = baseMenuOffset * currentScale; // Scaled per-item offset
 
                 const startX = targetX;
                 const startY = targetY;
@@ -645,7 +654,7 @@
 
         .hand-drawn-arrow {
             fill: none;
-            stroke: red; /* Yellow ink color */
+            stroke: #1f1f1f; /* Ink-like neutral for the theme */
             stroke-width: 1.5;
             stroke-linecap: round;
             stroke-linejoin: round;
@@ -760,7 +769,7 @@
         <!-- Definition for arrow head marker -->
         <defs>
             <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="0" refY="2" orient="auto">
-                <polygon points="0 0, 6 2, 0 4" fill="red" />
+                <polygon points="0 0, 6 2, 0 4" fill="#1f1f1f" />
             </marker>
         </defs>
         <path id="dynamicArrow" class="hand-drawn-arrow" d="" marker-end="url(#arrowhead)" />
