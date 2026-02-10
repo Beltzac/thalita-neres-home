@@ -78,10 +78,30 @@ async function loadImageBuffer(imageKey, pageDir) {
 
   const isAbsoluteFromRoot = /^\//.test(imageKey);
   const cleanedKey = imageKey.replace(/^\/+/, '').replace(/^\.\//, '');
-  const filePath = isAbsoluteFromRoot
-    ? path.join(rootDir, cleanedKey)
-    : path.join(pageDir, cleanedKey);
-  return fs.readFile(filePath);
+  const candidates = [];
+
+  if (isAbsoluteFromRoot) {
+    // Public-style absolute path (served from "/...")
+    candidates.push(path.join(rootDir, cleanedKey));
+    // Source pages fallback (for paths like "/filme-fotografico/imagens/..." that live under src/pages)
+    candidates.push(path.join(pagesDir, cleanedKey));
+  } else {
+    // Relative to current page folder first
+    candidates.push(path.join(pageDir, cleanedKey));
+    // Then project root as fallback
+    candidates.push(path.join(rootDir, cleanedKey));
+  }
+
+  for (const filePath of candidates) {
+    try {
+      await fs.access(filePath);
+      return fs.readFile(filePath);
+    } catch {
+      // try next candidate
+    }
+  }
+
+  throw new Error(`Unable to resolve local image path for key: ${imageKey}`);
 }
 
 async function computeCenter(buffer) {

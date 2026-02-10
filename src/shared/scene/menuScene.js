@@ -36,7 +36,15 @@ export function initMenuScene(config) {
   function normalizePrecomputeKey(value) {
     if (!value) return '';
     const clean = value.split('#')[0].split('?')[0];
-    return clean.replace(/^\/+/, '').replace(/^\.\//, '');
+
+    // Handle absolute URLs (e.g. https://domain.com/home/imagens/base.png)
+    try {
+      const parsed = new URL(clean, window.location.origin);
+      const pathname = decodeURIComponent(parsed.pathname || clean);
+      return pathname.replace(/^\/+/, '').replace(/^\.\//, '');
+    } catch {
+      return decodeURIComponent(clean).replace(/^\/+/, '').replace(/^\.\//, '');
+    }
   }
 
   function resolvePrecomputedCenter(key) {
@@ -44,6 +52,17 @@ export function initMenuScene(config) {
 
     if (precomputedCentersByUrl[key]) {
       return precomputedCentersByUrl[key];
+    }
+
+    // Absolute URL -> pathname (with leading slash)
+    try {
+      const parsed = new URL(key, window.location.origin);
+      const pathname = decodeURIComponent(parsed.pathname || '');
+      if (pathname && precomputedCentersByUrl[pathname]) {
+        return precomputedCentersByUrl[pathname];
+      }
+    } catch {
+      // ignore malformed URL and continue fallback normalization
     }
 
     const normalized = normalizePrecomputeKey(key);
@@ -63,65 +82,10 @@ export function initMenuScene(config) {
       return precomputed;
     }
 
-    const offScreenCanvas = document.createElement('canvas');
-    const ctx = offScreenCanvas.getContext('2d');
-
-    offScreenCanvas.width = overlay.naturalWidth;
-    offScreenCanvas.height = overlay.naturalHeight;
-
-    ctx.drawImage(overlay, 0, 0);
-
-    const imageData = ctx.getImageData(0, 0, offScreenCanvas.width, offScreenCanvas.height);
-    const data = imageData.data;
-    let totalX = 0, totalY = 0, count = 0;
-    let minX = offScreenCanvas.width, maxX = 0, minY = offScreenCanvas.height, maxY = 0;
-
-    for (let y = 0; y < offScreenCanvas.height; y++) {
-      for (let x = 0; x < offScreenCanvas.width; x++) {
-        const alpha = data[(y * offScreenCanvas.width + x) * 4 + 3];
-        if (alpha > 0) {
-          totalX += x;
-          totalY += y;
-          count++;
-          if (x < minX) minX = x;
-          if (x > maxX) maxX = x;
-          if (y < minY) minY = y;
-          if (y > maxY) maxY = y;
-        }
-      }
-    }
-
-    const centerX = count > 0 ? totalX / count : offScreenCanvas.width / 2;
-    const centerY = count > 0 ? totalY / count : offScreenCanvas.height / 2;
-
-    if (count === 0) {
-      minX = 0; maxX = offScreenCanvas.width;
-      minY = 0; maxY = offScreenCanvas.height;
-    }
-
-    const result = {
-      centerX,
-      centerY,
-      bboxCenterX: minX + (maxX - minX) / 2,
-      bboxCenterY: minY + (maxY - minY) / 2,
-      width: offScreenCanvas.width,
-      height: offScreenCanvas.height,
-      contentWidth: (maxX - minX) + 1,
-      contentHeight: (maxY - minY) + 1
-    };
-
-    if (key) {
-      let logicalName = null;
-      if (Array.isArray(overlayImages)) {
-        const match = overlayImages.find(o => (baseUrl + o.arquivo) === key || o.arquivo === key);
-        if (match) logicalName = match.nomeImagem;
-      }
-      console.log('Computed center data for image:', logicalName || key, key, JSON.stringify(result));
-    } else {
-      console.log('Computed center data for image without src:', JSON.stringify(result));
-    }
-
-    return result;
+    const normalized = normalizePrecomputeKey(key);
+    const error = `Missing precomputed center data for image: ${key || '(empty src)'} (normalized: ${normalized || '(empty)'})`;
+    console.error(error);
+    throw new Error(error);
   }
 
   function centerMenu(baseCenter) {

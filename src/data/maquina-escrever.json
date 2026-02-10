@@ -1,12 +1,12 @@
 {
   "baseUrl": "",
-  "baseImageFilename": "imagens/MAQUINA DE ESCREVER.png",
+  "baseImageFilename": "/maquina-escrever/imagens/MAQUINA DE ESCREVER.png",
   "margin": 60,
   "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 500,
   "precomputedCentersByUrl": {
-    "imagens/MAQUINA DE ESCREVER.png": {
+    "/maquina-escrever/imagens/MAQUINA DE ESCREVER.png": {
       "centerX": 1523.0589520567355,
       "centerY": 2159.5342019543973,
       "bboxCenterX": 1503.5,
@@ -16,7 +16,17 @@
       "contentWidth": 1512,
       "contentHeight": 2221
     },
-    "imagens/BLOG.png": {
+    "maquina-escrever/imagens/MAQUINA DE ESCREVER.png": {
+      "centerX": 1523.0589520567355,
+      "centerY": 2159.5342019543973,
+      "bboxCenterX": 1503.5,
+      "bboxCenterY": 1805,
+      "width": 3000,
+      "height": 3000,
+      "contentWidth": 1512,
+      "contentHeight": 2221
+    },
+    "/maquina-escrever/imagens/BLOG.png": {
       "centerX": 1519.2749818585394,
       "centerY": 2710.0554488410808,
       "bboxCenterX": 1528,
@@ -26,7 +36,17 @@
       "contentWidth": 367,
       "contentHeight": 95
     },
-    "imagens/SUBSTACK.png": {
+    "maquina-escrever/imagens/BLOG.png": {
+      "centerX": 1519.2749818585394,
+      "centerY": 2710.0554488410808,
+      "bboxCenterX": 1528,
+      "bboxCenterY": 2710,
+      "width": 3000,
+      "height": 3000,
+      "contentWidth": 367,
+      "contentHeight": 95
+    },
+    "/maquina-escrever/imagens/SUBSTACK.png": {
       "centerX": 1517.4711049146044,
       "centerY": 2158.995712791914,
       "bboxCenterX": 1520.5,
@@ -36,7 +56,17 @@
       "contentWidth": 482,
       "contentHeight": 91
     },
-    "imagens/ELA N VAI QUEBRAR.png": {
+    "maquina-escrever/imagens/SUBSTACK.png": {
+      "centerX": 1517.4711049146044,
+      "centerY": 2158.995712791914,
+      "bboxCenterX": 1520.5,
+      "bboxCenterY": 2155,
+      "width": 3000,
+      "height": 3000,
+      "contentWidth": 482,
+      "contentHeight": 91
+    },
+    "/maquina-escrever/imagens/ELA N VAI QUEBRAR.png": {
       "centerX": 1548.0743820878163,
       "centerY": 1375.6786856644374,
       "bboxCenterX": 1553,
@@ -46,7 +76,17 @@
       "contentWidth": 893,
       "contentHeight": 57
     },
-    "imagens/MORAMOS NAS CHEGADAS.png": {
+    "maquina-escrever/imagens/ELA N VAI QUEBRAR.png": {
+      "centerX": 1548.0743820878163,
+      "centerY": 1375.6786856644374,
+      "bboxCenterX": 1553,
+      "bboxCenterY": 1376,
+      "width": 3000,
+      "height": 3000,
+      "contentWidth": 893,
+      "contentHeight": 57
+    },
+    "/maquina-escrever/imagens/MORAMOS NAS CHEGADAS.png": {
       "centerX": 1545.5891446336386,
       "centerY": 1172.7757907646674,
       "bboxCenterX": 1519,
@@ -56,7 +96,27 @@
       "contentWidth": 1011,
       "contentHeight": 131
     },
-    "imagens/OPUSCULO.png": {
+    "maquina-escrever/imagens/MORAMOS NAS CHEGADAS.png": {
+      "centerX": 1545.5891446336386,
+      "centerY": 1172.7757907646674,
+      "bboxCenterX": 1519,
+      "bboxCenterY": 1172,
+      "width": 3000,
+      "height": 3000,
+      "contentWidth": 1011,
+      "contentHeight": 131
+    },
+    "/maquina-escrever/imagens/OPUSCULO.png": {
+      "centerX": 1544.3053662282807,
+      "centerY": 977.4596332917347,
+      "bboxCenterX": 1552,
+      "bboxCenterY": 975,
+      "width": 3000,
+      "height": 3000,
+      "contentWidth": 569,
+      "contentHeight": 61
+    },
+    "maquina-escrever/imagens/OPUSCULO.png": {
       "centerX": 1544.3053662282807,
       "centerY": 977.4596332917347,
       "bboxCenterX": 1552,
@@ -70,35 +130,35 @@
   "overlayImages": [
     {
       "nomeImagem": "Blog de arquitetura",
-      "arquivo": "imagens/BLOG.png",
+      "arquivo": "/maquina-escrever/imagens/BLOG.png",
       "urlLink": "/blog-arquitetura",
       "description": "Arquitetos, movimentos, direção. História e crítica da arquitetura em reflexão.",
       "arrowStartOffset": 280
     },
     {
       "nomeImagem": "Substack",
-      "arquivo": "imagens/SUBSTACK.png",
+      "arquivo": "/maquina-escrever/imagens/SUBSTACK.png",
       "urlLink": "/substack",
       "description": "Textos livres, temas diversos. Pensar curto, pensar disperso.",
       "arrowStartOffset": 260
     },
     {
       "nomeImagem": "Ela Não Vai Quebrar (2020)",
-      "arquivo": "imagens/ELA N VAI QUEBRAR.png",
+      "arquivo": "/maquina-escrever/imagens/ELA N VAI QUEBRAR.png",
       "urlLink": "/ela-nao-vai-quebrar",
       "description": "Livro de poesia, corpo sensível. Fragilidade como força visível.",
       "arrowStartOffset": 500
     },
     {
       "nomeImagem": "Moramos nas Chegadas e Também nas Partidas (2024)",
-      "arquivo": "imagens/MORAMOS NAS CHEGADAS.png",
+      "arquivo": "/maquina-escrever/imagens/MORAMOS NAS CHEGADAS.png",
       "urlLink": "/moramos-nas-chegadas",
       "description": "Prosa em cartas, tempo suspenso. Ficar e ir no mesmo gesto denso.",
       "arrowStartOffset": 500
     },
     {
       "nomeImagem": "Opúsculo (2021–2023)",
-      "arquivo": "imagens/OPUSCULO.png",
+      "arquivo": "/maquina-escrever/imagens/OPUSCULO.png",
       "urlLink": "/opusculo",
       "description": "Textos reunidos sem mediação. Download livre, circulação.",
       "arrowStartOffset": 300

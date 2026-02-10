@@ -1,12 +1,12 @@
 {
   "baseUrl": "",
-  "baseImageFilename": "imagens/EU_BASE.png",
+  "baseImageFilename": "/sobre-mim/imagens/EU_BASE.png",
   "margin": 60,
   "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 800,
   "precomputedCentersByUrl": {
-    "imagens/EU_BASE.png": {
+    "/sobre-mim/imagens/EU_BASE.png": {
       "centerX": 714.9709252517001,
       "centerY": 962.3506419300173,
       "bboxCenterX": 722,
@@ -16,7 +16,27 @@
       "contentWidth": 1293,
       "contentHeight": 1557
     },
-    "imagens/EU.png": {
+    "sobre-mim/imagens/EU_BASE.png": {
+      "centerX": 714.9709252517001,
+      "centerY": 962.3506419300173,
+      "bboxCenterX": 722,
+      "bboxCenterY": 907,
+      "width": 1414,
+      "height": 2000,
+      "contentWidth": 1293,
+      "contentHeight": 1557
+    },
+    "/sobre-mim/imagens/EU.png": {
+      "centerX": 714.784446963383,
+      "centerY": 964.7780929368281,
+      "bboxCenterX": 722,
+      "bboxCenterY": 910,
+      "width": 1414,
+      "height": 2000,
+      "contentWidth": 1293,
+      "contentHeight": 1557
+    },
+    "sobre-mim/imagens/EU.png": {
       "centerX": 714.784446963383,
       "centerY": 964.7780929368281,
       "bboxCenterX": 722,
@@ -30,7 +50,7 @@
   "overlayImages": [
     {
       "nomeImagem": "Sobre Mim",
-      "arquivo": "imagens/EU.png",
+      "arquivo": "/sobre-mim/imagens/EU.png",
       "urlLink": "/sobremim",
       "description": "Sobre Mim"
     }
