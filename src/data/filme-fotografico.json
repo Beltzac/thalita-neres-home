@@ -1,12 +1,12 @@
 {
   "baseUrl": "",
-  "baseImageFilename": "https://static.wixstatic.com/media/c1926f_d92b156b760a4fd99520525bee3ea42b~mv2.png",
+  "baseImageFilename": "/src/pages/filme-fotografico/imagens/BASE.png",
   "margin": 60,
-  "CURSOR_NORMAL": "url(https://static.wixstatic.com/ficons/c1926f_399a50bac406469293fc94e423792f80~mv2.ico) 32 0, auto",
-  "CURSOR_HOVER": "url(https://static.wixstatic.com/ficons/c1926f_e709764e60a443dd8f35a92720005ffe~mv2.ico) 32 0, pointer",
+  "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
+  "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 500,
   "precomputedCentersByUrl": {
-    "https://static.wixstatic.com/media/c1926f_d92b156b760a4fd99520525bee3ea42b~mv2.png": {
+    "/src/pages/filme-fotografico/imagens/BASE.png": {
       "centerX": 995.3617707974449,
       "centerY": 1520.2025748557535,
       "bboxCenterX": 1031,
@@ -16,7 +16,7 @@
       "contentWidth": 1777,
       "contentHeight": 872
     },
-    "media/c1926f_d92b156b760a4fd99520525bee3ea42b~mv2.png": {
+    "src/pages/filme-fotografico/imagens/BASE.png": {
       "centerX": 995.3617707974449,
       "centerY": 1520.2025748557535,
       "bboxCenterX": 1031,
@@ -26,7 +26,7 @@
       "contentWidth": 1777,
       "contentHeight": 872
     },
-    "https://static.wixstatic.com/media/c1926f_2627768826444076966d3f590d02b5fa~mv2.png": {
+    "/src/pages/filme-fotografico/imagens/FANTASIA.png": {
       "centerX": 1138.806439891223,
       "centerY": 1527.8946455363841,
       "bboxCenterX": 1131,
@@ -36,7 +36,7 @@
       "contentWidth": 387,
       "contentHeight": 400
     },
-    "media/c1926f_2627768826444076966d3f590d02b5fa~mv2.png": {
+    "src/pages/filme-fotografico/imagens/FANTASIA.png": {
       "centerX": 1138.806439891223,
       "centerY": 1527.8946455363841,
       "bboxCenterX": 1131,
@@ -46,7 +46,7 @@
       "contentWidth": 387,
       "contentHeight": 400
     },
-    "https://static.wixstatic.com/media/c1926f_6e81fbc828814fd68b7c4f7b377b7cf8~mv2.png": {
+    "/src/pages/filme-fotografico/imagens/CIDADE.png": {
       "centerX": 1505.372410243212,
       "centerY": 1587.8735040535323,
       "bboxCenterX": 1487.5,
@@ -56,7 +56,7 @@
       "contentWidth": 320,
       "contentHeight": 315
     },
-    "media/c1926f_6e81fbc828814fd68b7c4f7b377b7cf8~mv2.png": {
+    "src/pages/filme-fotografico/imagens/CIDADE.png": {
       "centerX": 1505.372410243212,
       "centerY": 1587.8735040535323,
       "bboxCenterX": 1487.5,
@@ -66,7 +66,7 @@
       "contentWidth": 320,
       "contentHeight": 315
     },
-    "https://static.wixstatic.com/media/c1926f_8df0493cf53c4171b761d7cd7134d7cf~mv2.png": {
+    "/src/pages/filme-fotografico/imagens/ROTINEIRO.png": {
       "centerX": 757.4519180241724,
       "centerY": 1513.6781397792959,
       "bboxCenterX": 757.5,
@@ -76,7 +76,7 @@
       "contentWidth": 354,
       "contentHeight": 385
     },
-    "media/c1926f_8df0493cf53c4171b761d7cd7134d7cf~mv2.png": {
+    "src/pages/filme-fotografico/imagens/ROTINEIRO.png": {
       "centerX": 757.4519180241724,
       "centerY": 1513.6781397792959,
       "bboxCenterX": 757.5,
@@ -90,17 +90,17 @@
   "overlayImages": [
     {
       "nomeImagem": "Fantasia",
-      "arquivo": "https://static.wixstatic.com/media/c1926f_2627768826444076966d3f590d02b5fa~mv2.png",
+      "arquivo": "/src/pages/filme-fotografico/imagens/FANTASIA.png",
       "urlLink": "/portfolio-arquitetura"
     },
     {
       "nomeImagem": "Cidade",
-      "arquivo": "https://static.wixstatic.com/media/c1926f_6e81fbc828814fd68b7c4f7b377b7cf8~mv2.png",
+      "arquivo": "/src/pages/filme-fotografico/imagens/CIDADE.png",
       "urlLink": "/fotografia"
     },
     {
       "nomeImagem": "Rotineiro",
-      "arquivo": "https://static.wixstatic.com/media/c1926f_8df0493cf53c4171b761d7cd7134d7cf~mv2.png",
+      "arquivo": "/src/pages/filme-fotografico/imagens/ROTINEIRO.png",
       "urlLink": "/ilustracao"
     }
   ],

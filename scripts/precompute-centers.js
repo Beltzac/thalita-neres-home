@@ -76,8 +76,11 @@ async function loadImageBuffer(imageKey, pageDir) {
     return download(imageKey);
   }
 
+  const isAbsoluteFromRoot = /^\//.test(imageKey);
   const cleanedKey = imageKey.replace(/^\/+/, '').replace(/^\.\//, '');
-  const filePath = path.join(pageDir, cleanedKey);
+  const filePath = isAbsoluteFromRoot
+    ? path.join(rootDir, cleanedKey)
+    : path.join(pageDir, cleanedKey);
   return fs.readFile(filePath);
 }
 

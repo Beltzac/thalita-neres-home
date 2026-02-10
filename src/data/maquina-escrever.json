@@ -2,8 +2,8 @@
   "baseUrl": "",
   "baseImageFilename": "imagens/MAQUINA DE ESCREVER.png",
   "margin": 60,
-  "CURSOR_NORMAL": "url(https://static.wixstatic.com/ficons/c1926f_399a50bac406469293fc94e423792f80~mv2.ico) 32 0, auto",
-  "CURSOR_HOVER": "url(https://static.wixstatic.com/ficons/c1926f_e709764e60a443dd8f35a92720005ffe~mv2.ico) 32 0, pointer",
+  "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
+  "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 500,
   "precomputedCentersByUrl": {
     "imagens/MAQUINA DE ESCREVER.png": {

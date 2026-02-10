@@ -1,10 +1,10 @@
 {
   "baseUrl": "",
-  "baseImageFilename": "https://static.wixstatic.com/media/c1926f_8e6efa1fa9d14176af07cd73ec97ac5c~mv2.png",
+  "baseImageFilename": "/home/imagens/base.png",
   "margin": 60,
   "ACTIVE_RADIUS": 500,
   "precomputedCentersByUrl": {
-    "https://static.wixstatic.com/media/c1926f_8e6efa1fa9d14176af07cd73ec97ac5c~mv2.png": {
+    "/home/imagens/base.png": {
       "centerX": 1491.8787593220952,
       "centerY": 1958.447764654168,
       "bboxCenterX": 1521,
@@ -14,7 +14,7 @@
       "contentWidth": 2813,
       "contentHeight": 1898
     },
-    "media/c1926f_8e6efa1fa9d14176af07cd73ec97ac5c~mv2.png": {
+    "home/imagens/base.png": {
       "centerX": 1491.8787593220952,
       "centerY": 1958.447764654168,
       "bboxCenterX": 1521,
@@ -24,7 +24,7 @@
       "contentWidth": 2813,
       "contentHeight": 1898
     },
-    "https://static.wixstatic.com/media/c1926f_c7fbeefb9a8740518c8d888fd8624771~mv2.png": {
+    "/home/imagens/arquitetura.png": {
       "centerX": 1485.1601967049653,
       "centerY": 1936.1135661461992,
       "bboxCenterX": 1443,
@@ -34,7 +34,7 @@
       "contentWidth": 1091,
       "contentHeight": 1063
     },
-    "media/c1926f_c7fbeefb9a8740518c8d888fd8624771~mv2.png": {
+    "home/imagens/arquitetura.png": {
       "centerX": 1485.1601967049653,
       "centerY": 1936.1135661461992,
       "bboxCenterX": 1443,
@@ -44,7 +44,7 @@
       "contentWidth": 1091,
       "contentHeight": 1063
     },
-    "https://static.wixstatic.com/media/c1926f_68000578d47140e4b1812f5b17b11afc~mv2.png": {
+    "/home/imagens/camera.png": {
       "centerX": 528.3096606786427,
       "centerY": 1695.7314171656687,
       "bboxCenterX": 524,
@@ -54,7 +54,7 @@
       "contentWidth": 331,
       "contentHeight": 236
     },
-    "media/c1926f_68000578d47140e4b1812f5b17b11afc~mv2.png": {
+    "home/imagens/camera.png": {
       "centerX": 528.3096606786427,
       "centerY": 1695.7314171656687,
       "bboxCenterX": 524,
@@ -64,7 +64,7 @@
       "contentWidth": 331,
       "contentHeight": 236
     },
-    "https://static.wixstatic.com/media/c1926f_81d02541dfb34f6ba30a004f8df72cb7~mv2.png": {
+    "/home/imagens/desenho.png": {
       "centerX": 2471.880391652334,
       "centerY": 2506.325158109993,
       "bboxCenterX": 1725.5,
@@ -74,7 +74,7 @@
       "contentWidth": 2404,
       "contentHeight": 738
     },
-    "media/c1926f_81d02541dfb34f6ba30a004f8df72cb7~mv2.png": {
+    "home/imagens/desenho.png": {
       "centerX": 2471.880391652334,
       "centerY": 2506.325158109993,
       "bboxCenterX": 1725.5,
@@ -84,7 +84,7 @@
       "contentWidth": 2404,
       "contentHeight": 738
     },
-    "https://static.wixstatic.com/media/c1926f_91b1bca2e29e44a79253c83382add706~mv2.png": {
+    "/home/imagens/expo.png": {
       "centerX": 1156.9078077314343,
       "centerY": 1428.7547049847406,
       "bboxCenterX": 1159.5,
@@ -94,7 +94,7 @@
       "contentWidth": 172,
       "contentHeight": 135
     },
-    "media/c1926f_91b1bca2e29e44a79253c83382add706~mv2.png": {
+    "home/imagens/expo.png": {
       "centerX": 1156.9078077314343,
       "centerY": 1428.7547049847406,
       "bboxCenterX": 1159.5,
@@ -104,7 +104,7 @@
       "contentWidth": 172,
       "contentHeight": 135
     },
-    "https://static.wixstatic.com/media/c1926f_1da1efe6ea8744b986bac8d595ae7144~mv2.png": {
+    "/home/imagens/fone.png": {
       "centerX": 2063.289977046672,
       "centerY": 1376.321364388534,
       "bboxCenterX": 1978,
@@ -114,7 +114,7 @@
       "contentWidth": 631,
       "contentHeight": 1102
     },
-    "media/c1926f_1da1efe6ea8744b986bac8d595ae7144~mv2.png": {
+    "home/imagens/fone.png": {
       "centerX": 2063.289977046672,
       "centerY": 1376.321364388534,
       "bboxCenterX": 1978,
@@ -124,7 +124,7 @@
       "contentWidth": 631,
       "contentHeight": 1102
     },
-    "https://static.wixstatic.com/media/c1926f_64c0f9a6ef9141a09b1ff35df079cf38~mv2.png": {
+    "/home/imagens/livros.png": {
       "centerX": 511.2009772916124,
       "centerY": 1974.7309223499647,
       "bboxCenterX": 532,
@@ -134,7 +134,7 @@
       "contentWidth": 835,
       "contentHeight": 532
     },
-    "media/c1926f_64c0f9a6ef9141a09b1ff35df079cf38~mv2.png": {
+    "home/imagens/livros.png": {
       "centerX": 511.2009772916124,
       "centerY": 1974.7309223499647,
       "bboxCenterX": 532,
@@ -144,7 +144,7 @@
       "contentWidth": 835,
       "contentHeight": 532
     },
-    "https://static.wixstatic.com/media/c1926f_4013caefa05a461b9f9a8397f6c0d24f~mv2.png": {
+    "/home/imagens/sobre.png": {
       "centerX": 1847.4779774088393,
       "centerY": 1823.971344098249,
       "bboxCenterX": 1842,
@@ -154,7 +154,7 @@
       "contentWidth": 161,
       "contentHeight": 138
     },
-    "media/c1926f_4013caefa05a461b9f9a8397f6c0d24f~mv2.png": {
+    "home/imagens/sobre.png": {
       "centerX": 1847.4779774088393,
       "centerY": 1823.971344098249,
       "bboxCenterX": 1842,
@@ -164,7 +164,7 @@
       "contentWidth": 161,
       "contentHeight": 138
     },
-    "https://static.wixstatic.com/media/c1926f_61cb5cedd5d9464faa83a4cb8e73ad8d~mv2.png": {
+    "/home/imagens/video.png": {
       "centerX": 1858.8244060171517,
       "centerY": 1615.5856178827498,
       "bboxCenterX": 1862.5,
@@ -174,7 +174,7 @@
       "contentWidth": 164,
       "contentHeight": 152
     },
-    "media/c1926f_61cb5cedd5d9464faa83a4cb8e73ad8d~mv2.png": {
+    "home/imagens/video.png": {
       "centerX": 1858.8244060171517,
       "centerY": 1615.5856178827498,
       "bboxCenterX": 1862.5,
@@ -188,42 +188,42 @@
   "overlayImages": [
     {
       "nomeImagem": "Portfólio de Arquitetura",
-      "arquivo": "https://static.wixstatic.com/media/c1926f_c7fbeefb9a8740518c8d888fd8624771~mv2.png",
+      "arquivo": "/home/imagens/arquitetura.png",
       "urlLink": "/portfolio-arquitetura"
     },
     {
       "nomeImagem": "Fotografias",
-      "arquivo": "https://static.wixstatic.com/media/c1926f_68000578d47140e4b1812f5b17b11afc~mv2.png",
+      "arquivo": "/home/imagens/camera.png",
       "urlLink": "/fotografia"
     },
     {
       "nomeImagem": "Ilustrações",
-      "arquivo": "https://static.wixstatic.com/media/c1926f_81d02541dfb34f6ba30a004f8df72cb7~mv2.png",
+      "arquivo": "/home/imagens/desenho.png",
       "urlLink": "/ilustracao"
     },
     {
       "nomeImagem": "Exposições",
-      "arquivo": "https://static.wixstatic.com/media/c1926f_91b1bca2e29e44a79253c83382add706~mv2.png",
+      "arquivo": "/home/imagens/expo.png",
       "urlLink": "/nenhuma-linha-e-inocente"
     },
     {
       "nomeImagem": "Podcast",
-      "arquivo": "https://static.wixstatic.com/media/c1926f_1da1efe6ea8744b986bac8d595ae7144~mv2.png",
+      "arquivo": "/home/imagens/fone.png",
       "urlLink": "/espera"
     },
     {
       "nomeImagem": "Meus Livros",
-      "arquivo": "https://static.wixstatic.com/media/c1926f_64c0f9a6ef9141a09b1ff35df079cf38~mv2.png",
+      "arquivo": "/home/imagens/livros.png",
       "urlLink": "/meuslivros"
     },
     {
       "nomeImagem": "Sobre",
-      "arquivo": "https://static.wixstatic.com/media/c1926f_4013caefa05a461b9f9a8397f6c0d24f~mv2.png",
+      "arquivo": "/home/imagens/sobre.png",
       "urlLink": "/sobremim"
     },
     {
       "nomeImagem": "Vídeo",
-      "arquivo": "https://static.wixstatic.com/media/c1926f_61cb5cedd5d9464faa83a4cb8e73ad8d~mv2.png",
+      "arquivo": "/home/imagens/video.png",
       "urlLink": "/espera"
     }
   ],
