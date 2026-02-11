@@ -3,6 +3,7 @@
   "baseImageFilename": "/home/imagens/base.png",
   "margin": 60,
   "ACTIVE_RADIUS": 500,
+  "labelStyle": "tooltip",
   "precomputedCentersByUrl": {
     "/home/imagens/base.png": {
       "centerX": 1491.8787593220952,

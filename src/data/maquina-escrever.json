@@ -5,6 +5,7 @@
   "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 500,
+  "labelStyle": "side",
   "precomputedCentersByUrl": {
     "/maquina-escrever/imagens/MAQUINA DE ESCREVER.png": {
       "centerX": 1523.0589520567355,

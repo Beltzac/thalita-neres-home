@@ -5,6 +5,8 @@
   "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 800,
+  "labelStyle": "tooltip",
+  "labelMode": "none",
   "precomputedCentersByUrl": {
     "/sobre-mim/imagens/EU_BASE.png": {
       "centerX": 714.9709252517001,

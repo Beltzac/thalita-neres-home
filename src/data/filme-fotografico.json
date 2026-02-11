@@ -5,6 +5,7 @@
   "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 500,
+  "labelMode": "name",
   "precomputedCentersByUrl": {
     "/filme-fotografico/imagens/BASE.png": {
       "centerX": 995.3617707974449,

@@ -4,6 +4,7 @@ export function initMenuDesktop(config) {
   const {
     CURSOR_NORMAL = 'url("/assets/cursors/cursor-normal.ico") 32 0, auto',
     CURSOR_HOVER = 'url("/assets/cursors/cursor-hover.ico") 32 0, pointer',
+    labelStyle = 'classic',
     desktopItems = [],
   } = config;
 
@@ -78,6 +79,9 @@ export function initMenuDesktop(config) {
       const label = document.createElement('div');
       label.classList.add('icon-label');
       label.textContent = item.label;
+      if (labelStyle === 'none') {
+        label.style.display = 'none';
+      }
 
       itemDiv.appendChild(iconWrapper);
       itemDiv.appendChild(label);

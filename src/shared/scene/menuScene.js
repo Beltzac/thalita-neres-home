@@ -10,6 +10,8 @@ export function initMenuScene(config) {
     ACTIVE_RADIUS = 500,
     precomputedCentersByUrl = {},
     overlayImages = [],
+    labelMode = 'description',
+    labelStyle = 'tooltip',
     instructionText = null,
     showArrow = false,
   } = config;
@@ -199,6 +201,22 @@ export function initMenuScene(config) {
     nameContainer.style.display = 'block';
   }
 
+  function resolveLabelText(name, desc) {
+    switch (labelMode) {
+      case 'none':
+        return null;
+      case 'name':
+        return name;
+      case 'descriptionOrName':
+        return desc || name;
+      case 'nameOrDescription':
+        return name || desc;
+      case 'description':
+      default:
+        return desc;
+    }
+  }
+
   function getScreenCoordinates(preProcessed) {
     const style = window.getComputedStyle(contentWrapper);
     const matrix = new WebKitCSSMatrix(style.transform);
@@ -288,14 +306,15 @@ export function initMenuScene(config) {
   function showNameWithArrow(name, desc, mouseX, mouseY, targetX, targetY, isActive) {
     const nameContainer = document.getElementById('objectDescription');
     const arrowPath = document.getElementById('dynamicArrow');
+    const labelText = resolveLabelText(name, desc);
 
-    if (!desc || !isActive) {
+    if (!labelText || !isActive) {
       nameContainer.style.display = 'none';
       if (arrowPath) arrowPath.setAttribute('d', '');
       return;
     }
 
-    nameContainer.textContent = desc;
+    nameContainer.textContent = labelText;
     nameContainer.style.display = 'block';
 
     const viewportWidth = window.innerWidth;
@@ -359,6 +378,7 @@ export function initMenuScene(config) {
   function setupImagesEvents() {
     imageContainer.addEventListener('mousemove', function (e) {
       const isActive = findClosestImage(overlayElements, e.clientX, e.clientY);
+      const arrowPath = document.getElementById('dynamicArrow');
 
       if (isActive && lastClosestImageIndex !== -1) {
         const preProcessed = preProcessedOverlays[lastClosestImageIndex];
@@ -367,11 +387,23 @@ export function initMenuScene(config) {
         const targetY = coords.y;
         const imageName = overlayImages[lastClosestImageIndex]?.nomeImagem;
         const imageDesc = overlayImages[lastClosestImageIndex]?.description;
+        const labelText = resolveLabelText(imageName, imageDesc);
         changeCursor(isActive);
-        showNameWithArrow(imageName, imageDesc, e.clientX, e.clientY, targetX, targetY, isActive);
+
+        if (labelStyle === 'side') {
+          showNameWithArrow(imageName, imageDesc, e.clientX, e.clientY, targetX, targetY, isActive);
+        } else {
+          showName(labelText, e.clientX, e.clientY);
+          if (arrowPath) arrowPath.setAttribute('d', '');
+        }
       } else {
         changeCursor(isActive);
-        showNameWithArrow(null, null, e.clientX, e.clientY, 0, 0, false);
+        if (labelStyle === 'side') {
+          showNameWithArrow(null, null, e.clientX, e.clientY, 0, 0, false);
+        } else {
+          showName(null, e.clientX, e.clientY);
+          if (arrowPath) arrowPath.setAttribute('d', '');
+        }
       }
     });
 
