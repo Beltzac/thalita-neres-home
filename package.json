@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "precompute:centers": "node scripts/precompute-centers.js",
-    "build": "npm run precompute:centers && node scripts/build-singlefile.js",
+    "optimize:images": "node scripts/optimize-images.js",
+    "build": "npm run precompute:centers && node scripts/build-singlefile.js && npm run optimize:images",
     "preview": "vite preview"
   },
   "devDependencies": {
