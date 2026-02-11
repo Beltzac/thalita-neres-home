@@ -6,6 +6,8 @@
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 500,
   "labelStyle": "side",
+  "labelMaxDistanceFromSource": 520,
+  "labelFontSize": "7.8vh",
   "showArrow": true,
   "precomputedCentersByUrl": {
     "/maquina-escrever/imagens/MAQUINA DE ESCREVER.png": {

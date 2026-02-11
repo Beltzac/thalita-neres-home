@@ -8,6 +8,7 @@
   "labelMode": "name",
   "labelStyle": "horizontal",
   "labelFontSize": "7.8vh",
+  "labelMaxDistanceFromSource": 520,
   "labelMaxWidth": "34vw",
   "showArrow": true,
   "arrowStartOffset": 280,

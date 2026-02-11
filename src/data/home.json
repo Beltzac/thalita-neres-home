@@ -6,6 +6,7 @@
   "labelStyle": "side",
   "labelMode": "name",
   "labelFontSize": "7.8vh",
+  "labelMaxDistanceFromSource": 520,
   "showArrow": true,
   "arrowStartOffset": 320,
   "arrowEndOffset": 44,

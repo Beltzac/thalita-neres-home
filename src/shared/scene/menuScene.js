@@ -16,6 +16,7 @@ export function initMenuScene(config) {
     arrowEndOffset = 20,
     labelFontSize = null,
     labelMaxWidth = null,
+    labelMaxDistanceFromSource = null,
     instructionText = null,
     showArrow = false,
   } = config;
@@ -382,6 +383,64 @@ export function initMenuScene(config) {
     };
   }
 
+  function chooseLabelPositionWithRules(candidates, width, height, forbiddenRects, viewportWidth, viewportHeight, sourceX, sourceY) {
+    for (const candidate of candidates) {
+      const clamped = {
+        left: clamp(candidate.left, 8, Math.max(8, viewportWidth - width - 8)),
+        top: clamp(candidate.top, 8, Math.max(8, viewportHeight - height - 8)),
+      };
+
+      const limited = enforceLabelMaxDistance(
+        clamped,
+        width,
+        height,
+        sourceX,
+        sourceY,
+        viewportWidth,
+        viewportHeight
+      );
+
+      const rect = {
+        left: limited.left,
+        top: limited.top,
+        right: limited.left + width,
+        bottom: limited.top + height,
+      };
+
+      if (!collidesWithForbidden(rect, forbiddenRects)) {
+        return limited;
+      }
+    }
+
+    const fallback = chooseLabelPosition(candidates, width, height, forbiddenRects, viewportWidth, viewportHeight);
+    return enforceLabelMaxDistance(fallback, width, height, sourceX, sourceY, viewportWidth, viewportHeight);
+  }
+
+  function enforceLabelMaxDistance(chosen, width, height, sourceX, sourceY, viewportWidth, viewportHeight) {
+    if (!Number.isFinite(labelMaxDistanceFromSource) || labelMaxDistanceFromSource <= 0) {
+      return chosen;
+    }
+
+    const centerX = chosen.left + (width / 2);
+    const centerY = chosen.top + (height / 2);
+    const dx = centerX - sourceX;
+    const dy = centerY - sourceY;
+    const distance = Math.hypot(dx, dy);
+
+    if (distance <= labelMaxDistanceFromSource || distance === 0) {
+      return chosen;
+    }
+
+    const ratio = labelMaxDistanceFromSource / distance;
+    const limitedCenterX = sourceX + (dx * ratio);
+    const limitedCenterY = sourceY + (dy * ratio);
+
+    return {
+      left: clamp(limitedCenterX - (width / 2), 8, Math.max(8, viewportWidth - width - 8)),
+      top: clamp(limitedCenterY - (height / 2), 8, Math.max(8, viewportHeight - height - 8)),
+    };
+  }
+
   function getSideVector(side) {
     if (side === 'left') return { x: -1, y: 0 };
     if (side === 'right') return { x: 1, y: 0 };
@@ -565,13 +624,15 @@ export function initMenuScene(config) {
         { left: baseLeft + 260, top: baseTop },
         { left: baseLeft, top: onTop ? (baseTop + 120) : (baseTop - 120) },
       ];
-      const chosen = chooseLabelPosition(
+      const chosen = chooseLabelPositionWithRules(
         candidates,
         nameContainer.offsetWidth,
         nameContainer.offsetHeight,
         forbiddenRects,
         viewportWidth,
-        viewportHeight
+        viewportHeight,
+        targetX,
+        targetY
       );
       const left = chosen.left;
       const top = chosen.top;
@@ -648,13 +709,15 @@ export function initMenuScene(config) {
         top: desiredTop,
       },
     ];
-    const chosen = chooseLabelPosition(
+    const chosen = chooseLabelPositionWithRules(
       candidates,
       nameContainer.offsetWidth,
       nameContainer.offsetHeight,
       forbiddenRects,
       viewportWidth,
-      window.innerHeight
+      window.innerHeight,
+      targetX,
+      targetY
     );
 
     nameContainer.style.left = chosen.left + 'px';
