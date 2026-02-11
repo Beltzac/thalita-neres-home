@@ -5,7 +5,7 @@
   "ACTIVE_RADIUS": 500,
   "labelStyle": "side",
   "labelMode": "name",
-  "labelFontSize": "4.8vh",
+  "labelFontSize": "7.8vh",
   "showArrow": true,
   "arrowStartOffset": 320,
   "arrowEndOffset": 44,

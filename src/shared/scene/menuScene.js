@@ -292,7 +292,159 @@ export function initMenuScene(config) {
     return { x: centerX, y: centerY, leftX, rightX, topY, bottomY };
   }
 
-  function drawArrow(targetX, targetY, overlayIndex) {
+  function rectsOverlap(a, b) {
+    return !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
+  }
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function lineIntersectsLine(a, b, c, d) {
+    const denominator = ((d.y - c.y) * (b.x - a.x)) - ((d.x - c.x) * (b.y - a.y));
+    if (denominator === 0) return false;
+
+    const ua = (((d.x - c.x) * (a.y - c.y)) - ((d.y - c.y) * (a.x - c.x))) / denominator;
+    const ub = (((b.x - a.x) * (a.y - c.y)) - ((b.y - a.y) * (a.x - c.x))) / denominator;
+
+    return ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1;
+  }
+
+  function segmentIntersectsRect(p1, p2, rect) {
+    if (!rect) return false;
+
+    const insideP1 = p1.x >= rect.left && p1.x <= rect.right && p1.y >= rect.top && p1.y <= rect.bottom;
+    const insideP2 = p2.x >= rect.left && p2.x <= rect.right && p2.y >= rect.top && p2.y <= rect.bottom;
+    if (insideP1 || insideP2) return true;
+
+    const edges = [
+      [{ x: rect.left, y: rect.top }, { x: rect.right, y: rect.top }],
+      [{ x: rect.right, y: rect.top }, { x: rect.right, y: rect.bottom }],
+      [{ x: rect.right, y: rect.bottom }, { x: rect.left, y: rect.bottom }],
+      [{ x: rect.left, y: rect.bottom }, { x: rect.left, y: rect.top }],
+    ];
+
+    return edges.some(([e1, e2]) => lineIntersectsLine(p1, p2, e1, e2));
+  }
+
+  function getInstructionRect() {
+    const instructionEl = document.getElementById('instructionText');
+    if (!instructionEl) return null;
+
+    const style = window.getComputedStyle(instructionEl);
+    if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return null;
+
+    const rect = instructionEl.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return null;
+    return rect;
+  }
+
+  function getOverlayBoundingRectByIndex(index) {
+    if (index < 0 || !preProcessedOverlays[index]) return null;
+    const c = getScreenCoordinates(preProcessedOverlays[index]);
+    return { left: c.leftX, right: c.rightX, top: c.topY, bottom: c.bottomY };
+  }
+
+  function getForbiddenRectsForLabel(excludeOverlayIndex = -1) {
+    const forbidden = [];
+    const instructionRect = getInstructionRect();
+    if (instructionRect) forbidden.push(instructionRect);
+
+    for (let i = 0; i < preProcessedOverlays.length; i++) {
+      if (i === excludeOverlayIndex) continue;
+      const rect = getOverlayBoundingRectByIndex(i);
+      if (!rect) continue;
+      forbidden.push(rect);
+    }
+
+    return forbidden;
+  }
+
+  function collidesWithForbidden(rect, forbiddenRects) {
+    return forbiddenRects.some((forbidden) => rectsOverlap(rect, forbidden));
+  }
+
+  function chooseLabelPosition(candidates, width, height, forbiddenRects, viewportWidth, viewportHeight) {
+    for (const candidate of candidates) {
+      const left = clamp(candidate.left, 8, Math.max(8, viewportWidth - width - 8));
+      const top = clamp(candidate.top, 8, Math.max(8, viewportHeight - height - 8));
+      const rect = { left, top, right: left + width, bottom: top + height };
+
+      if (!collidesWithForbidden(rect, forbiddenRects)) {
+        return { left, top };
+      }
+    }
+
+    const fallback = candidates[0] || { left: 8, top: 8 };
+    return {
+      left: clamp(fallback.left, 8, Math.max(8, viewportWidth - width - 8)),
+      top: clamp(fallback.top, 8, Math.max(8, viewportHeight - height - 8)),
+    };
+  }
+
+  function getSideVector(side) {
+    if (side === 'left') return { x: -1, y: 0 };
+    if (side === 'right') return { x: 1, y: 0 };
+    if (side === 'top') return { x: 0, y: -1 };
+    return { x: 0, y: 1 };
+  }
+
+  function buildArrowPathAvoidingInstruction(startX, startY, endX, endY, startSide = 'right', endSide = 'left') {
+    const instructionRect = getInstructionRect();
+    const start = { x: startX, y: startY };
+    const end = { x: endX, y: endY };
+    const distance = Math.hypot(endX - startX, endY - startY);
+    const handle = clamp(distance * 0.35, 40, 220);
+    const startVec = getSideVector(startSide);
+    const endVec = getSideVector(endSide);
+
+    const cp1X = startX + (startVec.x * handle);
+    const cp1Y = startY + (startVec.y * handle);
+    const cp2X = endX + (endVec.x * handle);
+    const cp2Y = endY + (endVec.y * handle);
+
+    if (!instructionRect || !segmentIntersectsRect(start, end, instructionRect)) {
+      return `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
+    }
+
+    const viewportHeight = window.innerHeight;
+    const routePadding = 30;
+    const routeAbove = Math.max(8, instructionRect.top - routePadding);
+    const routeBelow = Math.min(viewportHeight - 8, instructionRect.bottom + routePadding);
+    const routeY = (Math.abs(startY - routeAbove) + Math.abs(endY - routeAbove))
+      <= (Math.abs(startY - routeBelow) + Math.abs(endY - routeBelow))
+      ? routeAbove
+      : routeBelow;
+
+    const midX = (startX + endX) / 2;
+    const midY = routeY;
+
+    const approach = clamp(distance * 0.22, 24, 120);
+    const waypoint1X = midX - approach;
+    const waypoint1Y = midY;
+    const waypoint2X = midX + approach;
+    const waypoint2Y = midY;
+
+    // Use "S" to force tangent continuity at the mid joint (smoother junction).
+    return `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${waypoint1X} ${waypoint1Y}, ${midX} ${midY} S ${waypoint2X} ${waypoint2Y}, ${endX} ${endY}`;
+  }
+
+  function getRectAnchorPoint(rect, side) {
+    if (side === 'left') return { x: rect.left, y: rect.top + (rect.height / 2) };
+    if (side === 'right') return { x: rect.right, y: rect.top + (rect.height / 2) };
+    if (side === 'top') return { x: rect.left + (rect.width / 2), y: rect.top };
+    return { x: rect.left + (rect.width / 2), y: rect.bottom };
+  }
+
+  function offsetPointBySide(point, side, amount, outward = true) {
+    const sign = outward ? 1 : -1;
+    if (side === 'left') return { x: point.x - (amount * sign), y: point.y };
+    if (side === 'right') return { x: point.x + (amount * sign), y: point.y };
+    if (side === 'top') return { x: point.x, y: point.y - (amount * sign) };
+    return { x: point.x, y: point.y + (amount * sign) };
+  }
+
+  function drawArrow(overlayIndex) {
     if (!showArrow) return;
 
     const arrowPath = document.getElementById('dynamicArrow');
@@ -302,31 +454,16 @@ export function initMenuScene(config) {
     const preProcessed = preProcessedOverlays[overlayIndex];
 
     const coords = getScreenCoordinates(preProcessed);
-    const startY = coords.y;
-
     const nameContainer = document.getElementById('objectDescription');
-    const viewportWidth = window.innerWidth;
-    const marginSide = 20;
-
-    const seed = overlay.nomeImagem ? overlay.nomeImagem.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 0;
-    const onRightSide = (seed % 2 === 0);
-
-    let textX, textY;
-    if (onRightSide) {
-      nameContainer.style.left = 'auto';
-      nameContainer.style.right = marginSide + 'px';
-      nameContainer.style.top = (targetY) + 'px';
-      nameContainer.style.textAlign = 'right';
-      textX = viewportWidth - marginSide - nameContainer.offsetWidth;
-      textY = targetY + (nameContainer.offsetHeight / 2);
-    } else {
-      nameContainer.style.right = 'auto';
-      nameContainer.style.left = marginSide + 'px';
-      nameContainer.style.top = (targetY) + 'px';
-      nameContainer.style.textAlign = 'left';
-      textX = marginSide + nameContainer.offsetWidth;
-      textY = targetY + (nameContainer.offsetHeight / 2);
-    }
+    const labelRect = nameContainer.getBoundingClientRect();
+    const objectRect = {
+      left: coords.leftX,
+      right: coords.rightX,
+      top: coords.topY,
+      bottom: coords.bottomY,
+      width: Math.max(1, coords.rightX - coords.leftX),
+      height: Math.max(1, coords.bottomY - coords.topY),
+    };
 
     const boundingBox = baseImage.getBoundingClientRect();
     const currentScale = baseImage.naturalWidth ? (boundingBox.width / baseImage.naturalWidth) : 1;
@@ -336,20 +473,47 @@ export function initMenuScene(config) {
     const baseMenuOffset = overlay.arrowStartOffset ?? arrowStartOffset;
     const gapMenu = baseMenuOffset * currentScale;
 
-    const endX = onRightSide ? textX - gapText : textX + gapText;
-    const endY = textY;
+    const objectCenterX = objectRect.left + (objectRect.width / 2);
+    const objectCenterY = objectRect.top + (objectRect.height / 2);
+    const labelCenterX = labelRect.left + (labelRect.width / 2);
+    const labelCenterY = labelRect.top + (labelRect.height / 2);
+    const dxCenter = labelCenterX - objectCenterX;
+    const dyCenter = labelCenterY - objectCenterY;
 
-    const baseStartX = onRightSide ? coords.rightX : coords.leftX;
-    const adjustedStartX = onRightSide ? baseStartX + gapMenu : baseStartX - gapMenu;
-    const adjustedStartY = startY;
+    const primaryHorizontal = Math.abs(dxCenter) >= Math.abs(dyCenter);
+    const sidePairs = primaryHorizontal
+      ? (dxCenter >= 0
+        ? [['right', 'left'], ['top', 'bottom'], ['bottom', 'top']]
+        : [['left', 'right'], ['top', 'bottom'], ['bottom', 'top']])
+      : (dyCenter >= 0
+        ? [['bottom', 'top'], ['right', 'left'], ['left', 'right']]
+        : [['top', 'bottom'], ['right', 'left'], ['left', 'right']]);
 
-    const deltaX = endX - adjustedStartX;
-    const cp1X = adjustedStartX + (deltaX * 0.5);
-    const cp1Y = adjustedStartY;
-    const cp2X = endX - (deltaX * 0.5);
-    const cp2Y = endY;
+    let best = null;
+    for (const [objSide, labelSide] of sidePairs) {
+      const objAnchor = getRectAnchorPoint(objectRect, objSide);
+      const labelAnchor = getRectAnchorPoint(labelRect, labelSide);
+      const start = offsetPointBySide(objAnchor, objSide, gapMenu, true);
+      const end = offsetPointBySide(labelAnchor, labelSide, gapText, true);
+      const dx = end.x - start.x;
+      const dy = end.y - start.y;
+      const score = (dx * dx) + (dy * dy);
 
-    const pathData = `M ${adjustedStartX} ${adjustedStartY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
+      if (!best || score < best.score) {
+        best = { start, end, score, objSide, labelSide };
+      }
+    }
+
+    if (!best) return;
+
+    const pathData = buildArrowPathAvoidingInstruction(
+      best.start.x,
+      best.start.y,
+      best.end.x,
+      best.end.y,
+      best.objSide,
+      best.labelSide
+    );
     arrowPath.setAttribute('d', pathData);
   }
 
@@ -389,15 +553,28 @@ export function initMenuScene(config) {
       nameContainer.style.transform = `rotate(${rotation}deg)`;
 
       const randomOffsetX = Math.sin(seed) * (viewportWidth * 0.2);
-      let left = (targetX - (nameContainer.offsetWidth / 2)) + randomOffsetX;
-      const minLeft = margin;
-      const maxLeft = Math.max(margin, viewportWidth - nameContainer.offsetWidth - margin);
-      if (left < minLeft) left = minLeft;
-      if (left > maxLeft) left = maxLeft;
+      const baseLeft = (targetX - (nameContainer.offsetWidth / 2)) + randomOffsetX;
+      const baseTop = onTop ? margin : viewportHeight - nameContainer.offsetHeight - margin;
 
-      const top = onTop
-        ? margin
-        : viewportHeight - nameContainer.offsetHeight - margin;
+      const forbiddenRects = getForbiddenRectsForLabel(lastClosestImageIndex);
+      const candidates = [
+        { left: baseLeft, top: baseTop },
+        { left: baseLeft - 140, top: baseTop },
+        { left: baseLeft + 140, top: baseTop },
+        { left: baseLeft - 260, top: baseTop },
+        { left: baseLeft + 260, top: baseTop },
+        { left: baseLeft, top: onTop ? (baseTop + 120) : (baseTop - 120) },
+      ];
+      const chosen = chooseLabelPosition(
+        candidates,
+        nameContainer.offsetWidth,
+        nameContainer.offsetHeight,
+        forbiddenRects,
+        viewportWidth,
+        viewportHeight
+      );
+      const left = chosen.left;
+      const top = chosen.top;
 
       nameContainer.style.left = left + 'px';
       nameContainer.style.right = 'auto';
@@ -427,13 +604,14 @@ export function initMenuScene(config) {
         const adjustedStartY = onTop ? (baseStartY - gapMenu) : (baseStartY + gapMenu);
         const adjustedStartX = coords.x;
 
-        const deltaY = textAnchorY - adjustedStartY;
-        const cp1X = adjustedStartX;
-        const cp1Y = adjustedStartY + (deltaY * 0.5);
-        const cp2X = textAnchorX;
-        const cp2Y = textAnchorY - (deltaY * 0.5);
-
-        const pathData = `M ${adjustedStartX} ${adjustedStartY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${textAnchorX} ${textAnchorY}`;
+        const pathData = buildArrowPathAvoidingInstruction(
+          adjustedStartX,
+          adjustedStartY,
+          textAnchorX,
+          textAnchorY,
+          onTop ? 'top' : 'bottom',
+          onTop ? 'bottom' : 'top'
+        );
         arrowPath.setAttribute('d', pathData);
       }
 
@@ -447,28 +625,45 @@ export function initMenuScene(config) {
     nameContainer.style.transform = `rotate(${rotation}deg)`;
 
     const randomOffset = Math.sin(seed) * (window.innerHeight * 0.2);
-    let textTop = targetY + randomOffset;
+    const baseTop = targetY + randomOffset;
     const minTop = window.innerHeight * 0.1;
     const maxTop = window.innerHeight * 0.8;
-    if (textTop < minTop) textTop = minTop;
-    if (textTop > maxTop) textTop = maxTop;
 
     const onRightSide = (seed % 2 === 0);
 
-    if (onRightSide) {
-      nameContainer.style.left = 'auto';
-      nameContainer.style.right = marginSide + 'px';
-      nameContainer.style.top = textTop + 'px';
-      nameContainer.style.textAlign = 'right';
-    } else {
-      nameContainer.style.right = 'auto';
-      nameContainer.style.left = marginSide + 'px';
-      nameContainer.style.top = textTop + 'px';
-      nameContainer.style.textAlign = 'left';
-    }
+    const desiredTop = clamp(baseTop, minTop, maxTop);
+    const desiredLeft = onRightSide
+      ? (viewportWidth - marginSide - nameContainer.offsetWidth)
+      : marginSide;
+
+    const forbiddenRects = getForbiddenRectsForLabel(lastClosestImageIndex);
+    const candidates = [
+      { left: desiredLeft, top: desiredTop },
+      { left: desiredLeft, top: desiredTop - 100 },
+      { left: desiredLeft, top: desiredTop + 100 },
+      { left: desiredLeft, top: desiredTop - 180 },
+      { left: desiredLeft, top: desiredTop + 180 },
+      {
+        left: onRightSide ? marginSide : (viewportWidth - marginSide - nameContainer.offsetWidth),
+        top: desiredTop,
+      },
+    ];
+    const chosen = chooseLabelPosition(
+      candidates,
+      nameContainer.offsetWidth,
+      nameContainer.offsetHeight,
+      forbiddenRects,
+      viewportWidth,
+      window.innerHeight
+    );
+
+    nameContainer.style.left = chosen.left + 'px';
+    nameContainer.style.right = 'auto';
+    nameContainer.style.top = chosen.top + 'px';
+    nameContainer.style.textAlign = onRightSide ? 'right' : 'left';
 
     if (showArrow) {
-      drawArrow(targetX, targetY, lastClosestImageIndex);
+      drawArrow(lastClosestImageIndex);
     }
   }
 

@@ -7,7 +7,7 @@
   "ACTIVE_RADIUS": 500,
   "labelMode": "name",
   "labelStyle": "horizontal",
-  "labelFontSize": "5vh",
+  "labelFontSize": "7.8vh",
   "labelMaxWidth": "34vw",
   "showArrow": true,
   "arrowStartOffset": 280,
