@@ -12,6 +12,10 @@ export function initMenuScene(config) {
     overlayImages = [],
     labelMode = 'description',
     labelStyle = 'tooltip',
+    arrowStartOffset = 300,
+    arrowEndOffset = 20,
+    labelFontSize = null,
+    labelMaxWidth = null,
     instructionText = null,
     showArrow = false,
   } = config;
@@ -175,6 +179,9 @@ export function initMenuScene(config) {
   function showName(name, x, y) {
     const nameContainer = document.getElementById('objectDescription');
 
+    if (labelFontSize) nameContainer.style.fontSize = labelFontSize;
+    if (labelMaxWidth) nameContainer.style.maxWidth = labelMaxWidth;
+
     if (!name) {
       nameContainer.style.display = 'none';
       return;
@@ -283,8 +290,9 @@ export function initMenuScene(config) {
     const boundingBox = baseImage.getBoundingClientRect();
     const currentScale = baseImage.naturalWidth ? (boundingBox.width / baseImage.naturalWidth) : 1;
 
-    const gapText = 20 * currentScale;
-    const baseMenuOffset = overlay.arrowStartOffset ?? 300;
+    const baseTextOffset = overlay.arrowEndOffset ?? arrowEndOffset;
+    const gapText = baseTextOffset * currentScale;
+    const baseMenuOffset = overlay.arrowStartOffset ?? arrowStartOffset;
     const gapMenu = baseMenuOffset * currentScale;
 
     const endX = onRightSide ? textX - gapText : textX + gapText;
@@ -308,6 +316,9 @@ export function initMenuScene(config) {
     const arrowPath = document.getElementById('dynamicArrow');
     const labelText = resolveLabelText(name, desc);
 
+    if (labelFontSize) nameContainer.style.fontSize = labelFontSize;
+    if (labelMaxWidth) nameContainer.style.maxWidth = labelMaxWidth;
+
     if (!labelText || !isActive) {
       nameContainer.style.display = 'none';
       if (arrowPath) arrowPath.setAttribute('d', '');
@@ -316,6 +327,64 @@ export function initMenuScene(config) {
 
     nameContainer.textContent = labelText;
     nameContainer.style.display = 'block';
+
+    if (labelStyle === 'horizontal') {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const margin = 20;
+
+      const seed = name ? name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 0;
+      const onTop = (seed % 2 === 0);
+
+      const rotation = (Math.sin(seed) * 10);
+      nameContainer.style.transform = `rotate(${rotation}deg)`;
+
+      const randomOffsetX = Math.sin(seed) * (viewportWidth * 0.2);
+      let left = (targetX - (nameContainer.offsetWidth / 2)) + randomOffsetX;
+      const minLeft = margin;
+      const maxLeft = Math.max(margin, viewportWidth - nameContainer.offsetWidth - margin);
+      if (left < minLeft) left = minLeft;
+      if (left > maxLeft) left = maxLeft;
+
+      const top = onTop
+        ? margin
+        : viewportHeight - nameContainer.offsetHeight - margin;
+
+      nameContainer.style.left = left + 'px';
+      nameContainer.style.right = 'auto';
+      nameContainer.style.top = top + 'px';
+      nameContainer.style.textAlign = 'center';
+
+      if (showArrow && arrowPath) {
+        const boundingBox = baseImage.getBoundingClientRect();
+        const currentScale = baseImage.naturalWidth ? (boundingBox.width / baseImage.naturalWidth) : 1;
+
+        const overlay = overlayImages[lastClosestImageIndex] || {};
+        const baseTextOffset = overlay.arrowEndOffset ?? arrowEndOffset;
+        const gapText = baseTextOffset * currentScale;
+        const baseMenuOffset = overlay.arrowStartOffset ?? arrowStartOffset;
+        const gapMenu = baseMenuOffset * currentScale;
+
+        const textAnchorX = left + (nameContainer.offsetWidth / 2);
+        const textAnchorY = onTop
+          ? (top + nameContainer.offsetHeight + gapText)
+          : (top - gapText);
+
+        const adjustedStartY = onTop ? (targetY - gapMenu) : (targetY + gapMenu);
+        const adjustedStartX = targetX;
+
+        const deltaY = textAnchorY - adjustedStartY;
+        const cp1X = adjustedStartX;
+        const cp1Y = adjustedStartY + (deltaY * 0.5);
+        const cp2X = textAnchorX;
+        const cp2Y = textAnchorY - (deltaY * 0.5);
+
+        const pathData = `M ${adjustedStartX} ${adjustedStartY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${textAnchorX} ${textAnchorY}`;
+        arrowPath.setAttribute('d', pathData);
+      }
+
+      return;
+    }
 
     const viewportWidth = window.innerWidth;
     const marginSide = 20;
@@ -390,7 +459,7 @@ export function initMenuScene(config) {
         const labelText = resolveLabelText(imageName, imageDesc);
         changeCursor(isActive);
 
-        if (labelStyle === 'side') {
+        if (labelStyle === 'side' || labelStyle === 'horizontal') {
           showNameWithArrow(imageName, imageDesc, e.clientX, e.clientY, targetX, targetY, isActive);
         } else {
           showName(labelText, e.clientX, e.clientY);
@@ -398,7 +467,7 @@ export function initMenuScene(config) {
         }
       } else {
         changeCursor(isActive);
-        if (labelStyle === 'side') {
+        if (labelStyle === 'side' || labelStyle === 'horizontal') {
           showNameWithArrow(null, null, e.clientX, e.clientY, 0, 0, false);
         } else {
           showName(null, e.clientX, e.clientY);

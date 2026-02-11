@@ -6,6 +6,12 @@
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 500,
   "labelMode": "name",
+  "labelStyle": "horizontal",
+  "labelFontSize": "5vh",
+  "labelMaxWidth": "34vw",
+  "showArrow": true,
+  "arrowStartOffset": 280,
+  "arrowEndOffset": 28,
   "precomputedCentersByUrl": {
     "/filme-fotografico/imagens/BASE.png": {
       "centerX": 995.3617707974449,
@@ -92,19 +98,24 @@
     {
       "nomeImagem": "Fantasia",
       "arquivo": "/filme-fotografico/imagens/FANTASIA.png",
-      "urlLink": "/portfolio-arquitetura"
+      "urlLink": "/portfolio-arquitetura",
+      "arrowStartOffset": 300,
+      "arrowEndOffset": 30
     },
     {
       "nomeImagem": "Cidade",
       "arquivo": "/filme-fotografico/imagens/CIDADE.png",
-      "urlLink": "/fotografia"
+      "urlLink": "/fotografia",
+      "arrowStartOffset": 340,
+      "arrowEndOffset": 24
     },
     {
       "nomeImagem": "Rotineiro",
       "arquivo": "/filme-fotografico/imagens/ROTINEIRO.png",
-      "urlLink": "/ilustracao"
+      "urlLink": "/ilustracao",
+      "arrowStartOffset": 320,
+      "arrowEndOffset": 34
     }
   ],
-  "instructionText": "Site inspirado em jogos indies dos anos 2010.\nAqui se navega com o mouse, não com pressa.\nMelhor visto no computador.\nPasse por cima. Veja o que acontece.",
-  "showArrow": false
+  "instructionText": "Site inspirado em jogos indies dos anos 2010.\nAqui se navega com o mouse, não com pressa.\nMelhor visto no computador.\nPasse por cima. Veja o que acontece."
 }
