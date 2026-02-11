@@ -99,23 +99,22 @@
       "nomeImagem": "Fantasia",
       "arquivo": "/filme-fotografico/imagens/FANTASIA.png",
       "urlLink": "/portfolio-arquitetura",
-      "arrowStartOffset": 300,
+      "arrowStartOffset": 100,
       "arrowEndOffset": 30
     },
     {
       "nomeImagem": "Cidade",
       "arquivo": "/filme-fotografico/imagens/CIDADE.png",
       "urlLink": "/fotografia",
-      "arrowStartOffset": 340,
+      "arrowStartOffset": 134,
       "arrowEndOffset": 24
     },
     {
       "nomeImagem": "Rotineiro",
       "arquivo": "/filme-fotografico/imagens/ROTINEIRO.png",
       "urlLink": "/ilustracao",
-      "arrowStartOffset": 320,
+      "arrowStartOffset": 103,
       "arrowEndOffset": 34
     }
-  ],
-  "instructionText": "Site inspirado em jogos indies dos anos 2010.\nAqui se navega com o mouse, não com pressa.\nMelhor visto no computador.\nPasse por cima. Veja o que acontece."
+  ]
 }

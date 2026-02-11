@@ -3,7 +3,12 @@
   "baseImageFilename": "/home/imagens/base.png",
   "margin": 60,
   "ACTIVE_RADIUS": 500,
-  "labelStyle": "tooltip",
+  "labelStyle": "side",
+  "labelMode": "name",
+  "labelFontSize": "4.8vh",
+  "showArrow": true,
+  "arrowStartOffset": 320,
+  "arrowEndOffset": 44,
   "precomputedCentersByUrl": {
     "/home/imagens/base.png": {
       "centerX": 1491.8787593220952,
@@ -190,42 +195,58 @@
     {
       "nomeImagem": "Portfólio de Arquitetura",
       "arquivo": "/home/imagens/arquitetura.png",
-      "urlLink": "/portfolio-arquitetura"
+      "urlLink": "/portfolio-arquitetura",
+      "arrowStartOffset": 36,
+      "arrowEndOffset": 44
     },
     {
       "nomeImagem": "Fotografias",
       "arquivo": "/home/imagens/camera.png",
-      "urlLink": "/fotografia"
+      "urlLink": "/fotografia",
+      "arrowStartOffset": 28,
+      "arrowEndOffset": 40
     },
     {
       "nomeImagem": "Ilustrações",
       "arquivo": "/home/imagens/desenho.png",
-      "urlLink": "/ilustracao"
+      "urlLink": "/ilustracao",
+      "arrowStartOffset": 42,
+      "arrowEndOffset": 48
     },
     {
       "nomeImagem": "Exposições",
       "arquivo": "/home/imagens/expo.png",
-      "urlLink": "/nenhuma-linha-e-inocente"
+      "urlLink": "/nenhuma-linha-e-inocente",
+      "arrowStartOffset": 26,
+      "arrowEndOffset": 36
     },
     {
       "nomeImagem": "Podcast",
       "arquivo": "/home/imagens/fone.png",
-      "urlLink": "/espera"
+      "urlLink": "/espera",
+      "arrowStartOffset": 34,
+      "arrowEndOffset": 44
     },
     {
       "nomeImagem": "Meus Livros",
       "arquivo": "/home/imagens/livros.png",
-      "urlLink": "/meuslivros"
+      "urlLink": "/meuslivros",
+      "arrowStartOffset": 30,
+      "arrowEndOffset": 42
     },
     {
       "nomeImagem": "Sobre",
       "arquivo": "/home/imagens/sobre.png",
-      "urlLink": "/sobremim"
+      "urlLink": "/sobremim",
+      "arrowStartOffset": 26,
+      "arrowEndOffset": 36
     },
     {
       "nomeImagem": "Vídeo",
       "arquivo": "/home/imagens/video.png",
-      "urlLink": "/espera"
+      "urlLink": "/espera",
+      "arrowStartOffset": 28,
+      "arrowEndOffset": 40
     }
   ],
   "instructionText": "Site inspirado em jogos indies dos anos 2010.\nAqui se navega com o mouse, não com pressa.\nMelhor visto no computador.\nPasse por cima. Veja o que acontece."

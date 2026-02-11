@@ -6,6 +6,7 @@
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 500,
   "labelStyle": "side",
+  "showArrow": true,
   "precomputedCentersByUrl": {
     "/maquina-escrever/imagens/MAQUINA DE ESCREVER.png": {
       "centerX": 1523.0589520567355,
@@ -134,37 +135,35 @@
       "arquivo": "/maquina-escrever/imagens/BLOG.png",
       "urlLink": "/blog-arquitetura",
       "description": "Arquitetos, movimentos, direção. História e crítica da arquitetura em reflexão.",
-      "arrowStartOffset": 280
+      "arrowStartOffset": 28
     },
     {
       "nomeImagem": "Substack",
       "arquivo": "/maquina-escrever/imagens/SUBSTACK.png",
       "urlLink": "/substack",
       "description": "Textos livres, temas diversos. Pensar curto, pensar disperso.",
-      "arrowStartOffset": 260
+      "arrowStartOffset": 26
     },
     {
       "nomeImagem": "Ela Não Vai Quebrar (2020)",
       "arquivo": "/maquina-escrever/imagens/ELA N VAI QUEBRAR.png",
       "urlLink": "/ela-nao-vai-quebrar",
       "description": "Livro de poesia, corpo sensível. Fragilidade como força visível.",
-      "arrowStartOffset": 500
+      "arrowStartOffset": 50
     },
     {
       "nomeImagem": "Moramos nas Chegadas e Também nas Partidas (2024)",
       "arquivo": "/maquina-escrever/imagens/MORAMOS NAS CHEGADAS.png",
       "urlLink": "/moramos-nas-chegadas",
       "description": "Prosa em cartas, tempo suspenso. Ficar e ir no mesmo gesto denso.",
-      "arrowStartOffset": 500
+      "arrowStartOffset": 50
     },
     {
       "nomeImagem": "Opúsculo (2021–2023)",
       "arquivo": "/maquina-escrever/imagens/OPUSCULO.png",
       "urlLink": "/opusculo",
       "description": "Textos reunidos sem mediação. Download livre, circulação.",
-      "arrowStartOffset": 300
+      "arrowStartOffset": 30
     }
-  ],
-  "instructionText": "Site inspirado em jogos indies dos anos 2010.\nAqui se navega com o mouse, não com pressa.\nMelhor visto no computador.\nPasse por cima. Veja o que acontece.",
-  "showArrow": true
+  ]
 }

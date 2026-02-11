@@ -28,6 +28,42 @@ export function initMenuScene(config) {
   let loadedImages = 0;
   let totalImages = 0;
 
+  function ensureGlobalArrowLayer() {
+    let arrowLayer = document.getElementById('arrowLayer');
+    if (arrowLayer) return arrowLayer;
+
+    const svgNS = 'http://www.w3.org/2000/svg';
+    arrowLayer = document.createElementNS(svgNS, 'svg');
+    arrowLayer.setAttribute('id', 'arrowLayer');
+
+    const defs = document.createElementNS(svgNS, 'defs');
+    const marker = document.createElementNS(svgNS, 'marker');
+    marker.setAttribute('id', 'arrowhead');
+    marker.setAttribute('markerWidth', '6');
+    marker.setAttribute('markerHeight', '4');
+    marker.setAttribute('refX', '0');
+    marker.setAttribute('refY', '2');
+    marker.setAttribute('orient', 'auto');
+
+    const polygon = document.createElementNS(svgNS, 'polygon');
+    polygon.setAttribute('points', '0 0, 6 2, 0 4');
+    polygon.setAttribute('fill', '#1f1f1f');
+    marker.appendChild(polygon);
+    defs.appendChild(marker);
+
+    const path = document.createElementNS(svgNS, 'path');
+    path.setAttribute('id', 'dynamicArrow');
+    path.setAttribute('class', 'hand-drawn-arrow');
+    path.setAttribute('d', '');
+    path.setAttribute('marker-end', 'url(#arrowhead)');
+
+    arrowLayer.appendChild(defs);
+    arrowLayer.appendChild(path);
+    document.body.appendChild(arrowLayer);
+
+    return arrowLayer;
+  }
+
   function createAndAppendImage(src, zIndex, visible) {
     const img = document.createElement('img');
     img.crossOrigin = "anonymous";
@@ -179,6 +215,9 @@ export function initMenuScene(config) {
   function showName(name, x, y) {
     const nameContainer = document.getElementById('objectDescription');
 
+    nameContainer.classList.remove('label-side', 'label-horizontal');
+    nameContainer.classList.add('label-tooltip');
+
     if (labelFontSize) nameContainer.style.fontSize = labelFontSize;
     if (labelMaxWidth) nameContainer.style.maxWidth = labelMaxWidth;
 
@@ -240,14 +279,17 @@ export function initMenuScene(config) {
     const bboxCenterX = preProcessed.bboxCenterX;
     const bboxCenterY = preProcessed.bboxCenterY;
     const halfWidth = preProcessed.contentWidth / 2;
+    const halfHeight = preProcessed.contentHeight / 2;
 
     const centerX = (bboxCenterX * scaleX) + offsetX;
     const centerY = (bboxCenterY * scaleY) + offsetY;
 
     const leftX = ((bboxCenterX - halfWidth) * scaleX) + offsetX;
     const rightX = ((bboxCenterX + halfWidth) * scaleX) + offsetX;
+    const topY = ((bboxCenterY - halfHeight) * scaleY) + offsetY;
+    const bottomY = ((bboxCenterY + halfHeight) * scaleY) + offsetY;
 
-    return { x: centerX, y: centerY, leftX, rightX };
+    return { x: centerX, y: centerY, leftX, rightX, topY, bottomY };
   }
 
   function drawArrow(targetX, targetY, overlayIndex) {
@@ -260,7 +302,6 @@ export function initMenuScene(config) {
     const preProcessed = preProcessedOverlays[overlayIndex];
 
     const coords = getScreenCoordinates(preProcessed);
-    const startX = coords.x;
     const startY = coords.y;
 
     const nameContainer = document.getElementById('objectDescription');
@@ -298,7 +339,8 @@ export function initMenuScene(config) {
     const endX = onRightSide ? textX - gapText : textX + gapText;
     const endY = textY;
 
-    const adjustedStartX = onRightSide ? startX + gapMenu : startX - gapMenu;
+    const baseStartX = onRightSide ? coords.rightX : coords.leftX;
+    const adjustedStartX = onRightSide ? baseStartX + gapMenu : baseStartX - gapMenu;
     const adjustedStartY = startY;
 
     const deltaX = endX - adjustedStartX;
@@ -315,6 +357,13 @@ export function initMenuScene(config) {
     const nameContainer = document.getElementById('objectDescription');
     const arrowPath = document.getElementById('dynamicArrow');
     const labelText = resolveLabelText(name, desc);
+
+    nameContainer.classList.remove('label-tooltip', 'label-side', 'label-horizontal');
+    if (labelStyle === 'horizontal') {
+      nameContainer.classList.add('label-horizontal');
+    } else {
+      nameContainer.classList.add('label-side');
+    }
 
     if (labelFontSize) nameContainer.style.fontSize = labelFontSize;
     if (labelMaxWidth) nameContainer.style.maxWidth = labelMaxWidth;
@@ -356,10 +405,14 @@ export function initMenuScene(config) {
       nameContainer.style.textAlign = 'center';
 
       if (showArrow && arrowPath) {
+        const overlayData = overlayImages[lastClosestImageIndex];
+        const preProcessed = preProcessedOverlays[lastClosestImageIndex];
+        const coords = preProcessed ? getScreenCoordinates(preProcessed) : { x: targetX, y: targetY, topY: targetY, bottomY: targetY };
+
         const boundingBox = baseImage.getBoundingClientRect();
         const currentScale = baseImage.naturalWidth ? (boundingBox.width / baseImage.naturalWidth) : 1;
 
-        const overlay = overlayImages[lastClosestImageIndex] || {};
+        const overlay = overlayData || {};
         const baseTextOffset = overlay.arrowEndOffset ?? arrowEndOffset;
         const gapText = baseTextOffset * currentScale;
         const baseMenuOffset = overlay.arrowStartOffset ?? arrowStartOffset;
@@ -370,8 +423,9 @@ export function initMenuScene(config) {
           ? (top + nameContainer.offsetHeight + gapText)
           : (top - gapText);
 
-        const adjustedStartY = onTop ? (targetY - gapMenu) : (targetY + gapMenu);
-        const adjustedStartX = targetX;
+        const baseStartY = onTop ? coords.topY : coords.bottomY;
+        const adjustedStartY = onTop ? (baseStartY - gapMenu) : (baseStartY + gapMenu);
+        const adjustedStartX = coords.x;
 
         const deltaY = textAnchorY - adjustedStartY;
         const cp1X = adjustedStartX;
@@ -514,6 +568,8 @@ export function initMenuScene(config) {
   }
 
   function init(container) {
+    ensureGlobalArrowLayer();
+
     imageContainer = container;
     imageContainer.style.cursor = CURSOR_NORMAL;
 
