@@ -5,7 +5,7 @@
   "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 800,
-  "labelStyle": "side",
+  "labelStyle": "horizontal",
   "labelMode": "description",
   "labelFontSize": "7.8vh",
   "showArrow": true,
@@ -57,7 +57,7 @@
       "arquivo": "/sobre-mim/imagens/EU.png",
       "urlLink": "/sobremim",
       "description": "Thata",
-      "arrowStartOffset": 50,
+      "arrowStartOffset": 0,
       "arrowEndOffset": 50
     }
   ],
