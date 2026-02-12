@@ -136,35 +136,35 @@
       "nomeImagem": "Blog de arquitetura",
       "arquivo": "/maquina-escrever/imagens/BLOG.png",
       "urlLink": "/blog-arquitetura",
-      "description": "Arquitetos, movimentos, direção. História e crítica da arquitetura em reflexão.",
+      "description": "Arquitetos, movimentos, direção.\nHistória e crítica da arquitetura em reflexão.",
       "arrowStartOffset": 28
     },
     {
       "nomeImagem": "Substack",
       "arquivo": "/maquina-escrever/imagens/SUBSTACK.png",
       "urlLink": "/substack",
-      "description": "Textos livres, temas diversos. Pensar curto, pensar disperso.",
+      "description": "Textos livres, temas diversos.\nPensar curto, pensar disperso.",
       "arrowStartOffset": 26
     },
     {
       "nomeImagem": "Ela Não Vai Quebrar (2020)",
       "arquivo": "/maquina-escrever/imagens/ELA N VAI QUEBRAR.png",
       "urlLink": "/ela-nao-vai-quebrar",
-      "description": "Livro de poesia, corpo sensível. Fragilidade como força visível.",
+      "description": "Livro de poesia, corpo sensível.\nFragilidade como força visível.",
       "arrowStartOffset": 50
     },
     {
       "nomeImagem": "Moramos nas Chegadas e Também nas Partidas (2024)",
       "arquivo": "/maquina-escrever/imagens/MORAMOS NAS CHEGADAS.png",
       "urlLink": "/moramos-nas-chegadas",
-      "description": "Prosa em cartas, tempo suspenso. Ficar e ir no mesmo gesto denso.",
+      "description": "Prosa em cartas, tempo suspenso.\nFicar e ir no mesmo gesto denso.",
       "arrowStartOffset": 50
     },
     {
       "nomeImagem": "Opúsculo (2021–2023)",
       "arquivo": "/maquina-escrever/imagens/OPUSCULO.png",
       "urlLink": "/opusculo",
-      "description": "Textos reunidos sem mediação. Download livre, circulação.",
+      "description": "Textos reunidos sem mediação.\nDownload livre, circulação.",
       "arrowStartOffset": 30
     }
   ]

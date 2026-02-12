@@ -135,4 +135,5 @@ html {
   font-size: 4vh;
   max-width: 30vw;
   top: 20%;
+  white-space: pre-line;
 }
