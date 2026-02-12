@@ -5,8 +5,10 @@
   "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 800,
-  "labelStyle": "tooltip",
-  "labelMode": "none",
+  "labelStyle": "side",
+  "labelMode": "description",
+  "labelFontSize": "7.8vh",
+  "showArrow": true,
   "precomputedCentersByUrl": {
     "/sobre-mim/imagens/EU_BASE.png": {
       "centerX": 714.9709252517001,
@@ -54,9 +56,10 @@
       "nomeImagem": "Sobre Mim",
       "arquivo": "/sobre-mim/imagens/EU.png",
       "urlLink": "/sobremim",
-      "description": "Sobre Mim"
+      "description": "Thata",
+      "arrowStartOffset": 50,
+      "arrowEndOffset": 50
     }
   ],
-  "instructionText": "Site inspirado em jogos indies dos anos 2010.\nAqui se navega com o mouse, não com pressa.\nMelhor visto no computador.\nPasse por cima. Veja o que acontece.",
-  "showArrow": false
+  "instructionText": "Thalita Neres\nManaus, AM\n1996."
 }

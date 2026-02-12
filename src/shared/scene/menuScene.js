@@ -828,6 +828,17 @@ export function initMenuScene(config) {
   function init(container) {
     ensureGlobalArrowLayer();
 
+    const instructionEl = document.getElementById('instructionText');
+    if (instructionEl) {
+      if (instructionText && String(instructionText).trim().length > 0) {
+        instructionEl.textContent = instructionText;
+        instructionEl.style.display = 'block';
+        instructionEl.style.whiteSpace = 'pre-line';
+      } else {
+        instructionEl.style.display = 'none';
+      }
+    }
+
     imageContainer = container;
     imageContainer.style.cursor = CURSOR_NORMAL;
 

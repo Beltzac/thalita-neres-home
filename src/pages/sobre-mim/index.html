@@ -8,6 +8,21 @@
   <style>
     #imageContainer { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
     .imageLayer, canvas { position: absolute; width: auto; }
+    #instructionText {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(30vw, 520px);
+      z-index: 2000;
+      font-family: 'Thata', sans-serif;
+      font-size: 9.8vh;
+      color: #000;
+      text-align: left;
+      pointer-events: none;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      white-space: pre-line;
+    }
   </style>
 </head>
 <body>
@@ -16,6 +31,7 @@
   </div>
   <div id="objectDescription"></div>
   <div id="toastContainer"></div>
+  <div id="instructionText"></div>
   <div id="imageContainer"></div>
 
   <script type="module">
@@ -26,6 +42,35 @@
       const container = document.getElementById('imageContainer');
       const { init } = initMenuScene(config);
       init(container);
+
+      const instructionEl = document.getElementById('instructionText');
+
+      function updateInstructionAnchor() {
+        if (!instructionEl) return;
+
+        const baseImageEl = container.querySelector('.imageLayer');
+        if (!baseImageEl || !baseImageEl.naturalWidth || !baseImageEl.naturalHeight) return;
+
+        const scaleX = baseImageEl.clientWidth / baseImageEl.naturalWidth;
+        const scaleY = baseImageEl.clientHeight / baseImageEl.naturalHeight;
+        const sceneScale = Math.min(scaleX, scaleY);
+
+        const offsetX = -620 * sceneScale;
+        const offsetY = -550 * sceneScale;
+
+        instructionEl.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`;
+      }
+
+      const onResize = () => updateInstructionAnchor();
+      window.addEventListener('resize', onResize);
+
+      const waitAndUpdate = () => {
+        updateInstructionAnchor();
+        requestAnimationFrame(updateInstructionAnchor);
+        setTimeout(updateInstructionAnchor, 120);
+      };
+
+      waitAndUpdate();
     });
   </script>
 </body>

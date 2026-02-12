@@ -13,6 +13,8 @@
   "showArrow": true,
   "arrowStartOffset": 280,
   "arrowEndOffset": 28,
+  "instructionText": "As fotografias são organizadas em álbuns.\nPara acessá-los, passe o mouse sobre o rolo da câmera e escolha uma das categorias.",
+
   "precomputedCentersByUrl": {
     "/filme-fotografico/imagens/BASE.png": {
       "centerX": 995.3617707974449,
