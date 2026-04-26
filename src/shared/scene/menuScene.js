@@ -19,6 +19,7 @@ export function initMenuScene(config) {
     labelMaxDistanceFromSource = null,
     instructionText = null,
     showArrow = false,
+    debug = false,
     spiralSearch = {
       enabled: false,
       preferredQuadrants: ['right', 'top', 'bottom', 'left'],
@@ -389,39 +390,26 @@ export function initMenuScene(config) {
     return 'bottom';
   }
 
-  function getQuadrantPriority(quadrant, preferredQuadrants) {
-    const idx = preferredQuadrants.indexOf(quadrant);
-    if (idx >= 0) {return idx;}
+  function getQuadrantPriority(quadrant, labelSide) {
+    if (!labelSide) {return 0;}
 
-    const quadrantGroups = {
-      'top-right': ['right', 'top'],
-      'bottom-right': ['right', 'bottom'],
-      'top-left': ['left', 'top'],
-      'bottom-left': ['left', 'bottom'],
-    };
+    // Direct match
+    if (quadrant === labelSide) {return 0;}
 
-    const partials = quadrantGroups[quadrant] || [];
-    let bestPartialIdx = Infinity;
-    for (const partial of partials) {
-      const pIdx = preferredQuadrants.indexOf(partial);
-      if (pIdx >= 0 && pIdx < bestPartialIdx) {
-        bestPartialIdx = pIdx;
-      }
-    }
+    // Partial match for cardinal directions
+    if (labelSide === 'right' && (quadrant === 'top-right' || quadrant === 'bottom-right')) {return 1;}
+    if (labelSide === 'left' && (quadrant === 'top-left' || quadrant === 'bottom-left')) {return 1;}
+    if (labelSide === 'top' && (quadrant === 'top-left' || quadrant === 'top-right')) {return 1;}
+    if (labelSide === 'bottom' && (quadrant === 'bottom-left' || quadrant === 'bottom-right')) {return 1;}
 
-    return bestPartialIdx < Infinity ? bestPartialIdx + 0.5 : preferredQuadrants.length;
-  }
+    // Partial match for diagonal directions
+    if (labelSide === 'top-right' && (quadrant === 'top' || quadrant === 'right')) {return 1;}
+    if (labelSide === 'top-left' && (quadrant === 'top' || quadrant === 'left')) {return 1;}
+    if (labelSide === 'bottom-right' && (quadrant === 'bottom' || quadrant === 'right')) {return 1;}
+    if (labelSide === 'bottom-left' && (quadrant === 'bottom' || quadrant === 'left')) {return 1;}
 
-  function labelSideToQuadrants(labelSide) {
-    if (labelSide === 'right') {return ['right', 'top', 'bottom', 'left'];}
-    if (labelSide === 'left') {return ['left', 'top', 'bottom', 'right'];}
-    if (labelSide === 'top') {return ['top', 'right', 'left', 'bottom'];}
-    if (labelSide === 'bottom') {return ['bottom', 'right', 'left', 'top'];}
-    if (labelSide === 'top-right') {return ['top-right', 'right', 'top', 'left', 'bottom'];}
-    if (labelSide === 'top-left') {return ['top-left', 'left', 'top', 'right', 'bottom'];}
-    if (labelSide === 'bottom-right') {return ['bottom-right', 'right', 'bottom', 'left', 'top'];}
-    if (labelSide === 'bottom-left') {return ['bottom-left', 'left', 'bottom', 'right', 'top'];}
-    return null;
+    // Opposite
+    return 2;
   }
 
   let debugCandidates = [];
@@ -430,8 +418,7 @@ export function initMenuScene(config) {
   let debugOverlayRects = [];
 
   function spiralSearchPosition(sourceX, sourceY, labelWidth, labelHeight, forbiddenRects, viewportWidth, viewportHeight, labelSide = null) {
-    const defaultQuadrants = ['right', 'top', 'bottom', 'left'];
-    const preferredQuadrants = labelSideToQuadrants(labelSide) || spiralSearch.preferredQuadrants || defaultQuadrants;
+    const preferredSide = labelSide || (spiralSearch.preferredQuadrants ? spiralSearch.preferredQuadrants[0] : null);
     const {
       minDistance: configMinDist,
       maxDistance: configMaxDist,
@@ -478,7 +465,7 @@ export function initMenuScene(config) {
         if (collidesWithForbidden(rect, forbiddenRects)) {continue;}
 
         const quadrant = getQuadrantForPoint(sourceX, sourceY, candidateCenterX, candidateCenterY);
-        const quadrantPriority = getQuadrantPriority(quadrant, preferredQuadrants);
+        const quadrantPriority = getQuadrantPriority(quadrant, preferredSide);
 
         const idealDistance = (effectiveMinDist + effectiveMaxDist) / 2;
         const distanceRange = (effectiveMaxDist - effectiveMinDist) / 2;
@@ -531,6 +518,12 @@ export function initMenuScene(config) {
   }
 
   function renderDebugCandidates() {
+    if (!debug) {
+      const existing = document.getElementById('debugCandidatesContainer');
+      if (existing) {existing.remove();}
+      return;
+    }
+
     let container = document.getElementById('debugCandidatesContainer');
     if (!container) {
       container = document.createElement('div');
