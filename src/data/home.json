@@ -5,7 +5,7 @@
   "ACTIVE_RADIUS": 500,
   "labelStyle": "side",
   "labelMode": "name",
-  "labelFontSize": "7.8vh",
+  "labelFontSize": "6.5vh",
   "labelMaxDistanceFromSource": 520,
   "showArrow": true,
   "arrowStartOffset": 320,
@@ -219,7 +219,8 @@
       "arquivo": "/home/imagens/expo.png",
       "urlLink": "/nenhuma-linha-e-inocente",
       "arrowStartOffset": 26,
-      "arrowEndOffset": 36
+      "arrowEndOffset": 36,
+      "labelSide": "left"
     },
     {
       "nomeImagem": "Podcast",
@@ -240,14 +241,16 @@
       "arquivo": "/home/imagens/sobre.png",
       "urlLink": "/sobremim",
       "arrowStartOffset": 26,
-      "arrowEndOffset": 36
+      "arrowEndOffset": 18,
+      "labelSide": "right"
     },
     {
       "nomeImagem": "Vídeo",
       "arquivo": "/home/imagens/video.png",
       "urlLink": "/espera",
       "arrowStartOffset": 28,
-      "arrowEndOffset": 40
+      "arrowEndOffset": 20,
+      "labelSide": "right"
     }
   ],
   "instructionText": "Site inspirado em jogos indies dos anos 2010.\nAqui se navega com o mouse, não com pressa.\nMelhor visto no computador.\nPasse por cima. Veja o que acontece."

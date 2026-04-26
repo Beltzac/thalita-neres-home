@@ -376,10 +376,32 @@ export function initMenuScene(config) {
       }
     }
 
-    const fallback = candidates[0] || { left: 8, top: 8 };
+    // Fallback: try opposite side of first candidate
+    const first = candidates[0] || { left: 8, top: 8 };
+    const oppositeLeft = first.left < viewportWidth / 2
+      ? (viewportWidth - 8 - width)
+      : 8;
+    const fallbackCandidates = [
+      { left: oppositeLeft, top: first.top },
+      { left: oppositeLeft, top: first.top - 100 },
+      { left: oppositeLeft, top: first.top + 100 },
+      { left: oppositeLeft, top: first.top - 180 },
+      { left: oppositeLeft, top: first.top + 180 },
+    ];
+
+    for (const candidate of fallbackCandidates) {
+      const left = clamp(candidate.left, 8, Math.max(8, viewportWidth - width - 8));
+      const top = clamp(candidate.top, 8, Math.max(8, viewportHeight - height - 8));
+      const rect = { left, top, right: left + width, bottom: top + height };
+      if (!collidesWithForbidden(rect, forbiddenRects)) {
+        return { left, top };
+      }
+    }
+
+    // Last resort
     return {
-      left: clamp(fallback.left, 8, Math.max(8, viewportWidth - width - 8)),
-      top: clamp(fallback.top, 8, Math.max(8, viewportHeight - height - 8)),
+      left: clamp(first.left, 8, Math.max(8, viewportWidth - width - 8)),
+      top: clamp(first.top, 8, Math.max(8, viewportHeight - height - 8)),
     };
   }
 
@@ -690,12 +712,22 @@ export function initMenuScene(config) {
     const minTop = window.innerHeight * 0.1;
     const maxTop = window.innerHeight * 0.8;
 
-    const onRightSide = (seed % 2 === 0);
+    const overlay = overlayImages[lastClosestImageIndex];
+    let onRightSide = (seed % 2 === 0);
+    if (overlay && overlay.labelSide === 'right') onRightSide = true;
+    if (overlay && overlay.labelSide === 'left') onRightSide = false;
 
     const desiredTop = clamp(baseTop, minTop, maxTop);
-    const desiredLeft = onRightSide
-      ? (viewportWidth - marginSide - nameContainer.offsetWidth)
-      : marginSide;
+    let desiredLeft;
+    if (overlay && overlay.labelSide === 'right') {
+      desiredLeft = Math.min(targetX + 200, viewportWidth - marginSide - nameContainer.offsetWidth);
+    } else if (overlay && overlay.labelSide === 'left') {
+      desiredLeft = Math.max(targetX - nameContainer.offsetWidth - 200, marginSide);
+    } else {
+      desiredLeft = onRightSide
+        ? (viewportWidth - marginSide - nameContainer.offsetWidth)
+        : marginSide;
+    }
 
     const forbiddenRects = getForbiddenRectsForLabel(lastClosestImageIndex);
     const candidates = [
@@ -704,11 +736,36 @@ export function initMenuScene(config) {
       { left: desiredLeft, top: desiredTop + 100 },
       { left: desiredLeft, top: desiredTop - 180 },
       { left: desiredLeft, top: desiredTop + 180 },
-      {
+    ];
+
+    if (overlay && overlay.labelSide) {
+      const closerLeft = overlay.labelSide === 'right'
+        ? Math.min(targetX + 150, viewportWidth - marginSide - nameContainer.offsetWidth)
+        : Math.max(targetX - nameContainer.offsetWidth - 150, marginSide);
+      candidates.push({ left: closerLeft, top: desiredTop });
+      candidates.push({ left: closerLeft, top: desiredTop - 120 });
+      candidates.push({ left: closerLeft, top: desiredTop + 120 });
+      // Opposite-side escape hatch if forced side blocked
+      const oppositeLeft = overlay.labelSide === 'right'
+        ? Math.max(targetX - nameContainer.offsetWidth - 150, marginSide)
+        : Math.min(targetX + 150, viewportWidth - marginSide - nameContainer.offsetWidth);
+      candidates.push({ left: oppositeLeft, top: desiredTop });
+      candidates.push({ left: oppositeLeft, top: desiredTop - 120 });
+      candidates.push({ left: oppositeLeft, top: desiredTop + 120 });
+    } else {
+      candidates.push({
         left: onRightSide ? marginSide : (viewportWidth - marginSide - nameContainer.offsetWidth),
         top: desiredTop,
-      },
-    ];
+      });
+      candidates.push({
+        left: onRightSide ? marginSide : (viewportWidth - marginSide - nameContainer.offsetWidth),
+        top: desiredTop - 120,
+      });
+      candidates.push({
+        left: onRightSide ? marginSide : (viewportWidth - marginSide - nameContainer.offsetWidth),
+        top: desiredTop + 120,
+      });
+    }
     const chosen = chooseLabelPositionWithRules(
       candidates,
       nameContainer.offsetWidth,
