@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import http from 'http';
 import https from 'https';
 import sharp from 'sharp';
+import { sceneConfigSchema } from './schemas.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,7 +24,7 @@ function isRemoteUrl(value) {
 }
 
 function normalizeKey(value) {
-  if (!value) return '';
+  if (!value) {return '';}
   const clean = value.split('#')[0].split('?')[0];
   if (isRemoteUrl(clean)) {
     try {
@@ -37,10 +38,10 @@ function normalizeKey(value) {
 }
 
 function resolveImageKey(baseUrl, filename) {
-  if (!filename) return '';
-  if (isRemoteUrl(filename)) return filename;
-  if (!baseUrl) return filename;
-  if (isRemoteUrl(baseUrl)) return new URL(filename, baseUrl).toString();
+  if (!filename) {return '';}
+  if (isRemoteUrl(filename)) {return filename;}
+  if (!baseUrl) {return filename;}
+  if (isRemoteUrl(baseUrl)) {return new URL(filename, baseUrl).toString();}
   return `${baseUrl}${filename}`;
 }
 
@@ -129,10 +130,10 @@ async function computeCenter(buffer) {
         totalX += x;
         totalY += y;
         count += 1;
-        if (x < minX) minX = x;
-        if (x > maxX) maxX = x;
-        if (y < minY) minY = y;
-        if (y > maxY) maxY = y;
+        if (x < minX) {minX = x;}
+        if (x > maxX) {maxX = x;}
+        if (y < minY) {minY = y;}
+        if (y > maxY) {maxY = y;}
       }
     }
   }
@@ -165,9 +166,17 @@ async function precomputeForConfig(fileName) {
   const pageDir = path.join(pagesDir, pageName);
 
   const raw = await fs.readFile(filePath, 'utf8');
-  const config = JSON.parse(raw);
+  const parsed = JSON.parse(raw);
 
-  const baseUrl = config.baseUrl || '';
+  const validation = sceneConfigSchema.safeParse(parsed);
+  if (!validation.success) {
+    console.error(`Config validation failed for ${fileName}:`);
+    console.error(validation.error.format());
+    throw new Error(`Invalid config: ${fileName}`);
+  }
+
+  const config = validation.data;
+  const baseUrl = config.baseUrl;
   const imageKeys = [];
 
   if (config.baseImageFilename) {
@@ -185,8 +194,8 @@ async function precomputeForConfig(fileName) {
   const precomputed = {};
 
   for (const imageKey of imageKeys) {
-    if (!imageKey) continue;
-    if (precomputed[imageKey]) continue;
+    if (!imageKey) {continue;}
+    if (precomputed[imageKey]) {continue;}
 
     const buffer = await loadImageBuffer(imageKey, pageDir);
     const centerData = await computeCenter(buffer);

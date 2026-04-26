@@ -31,7 +31,7 @@ export function initMenuScene(config) {
 
   function ensureGlobalArrowLayer() {
     let arrowLayer = document.getElementById('arrowLayer');
-    if (arrowLayer) return arrowLayer;
+    if (arrowLayer) {return arrowLayer;}
 
     const svgNS = 'http://www.w3.org/2000/svg';
     arrowLayer = document.createElementNS(svgNS, 'svg');
@@ -77,7 +77,7 @@ export function initMenuScene(config) {
   }
 
   function normalizePrecomputeKey(value) {
-    if (!value) return '';
+    if (!value) {return '';}
     const clean = value.split('#')[0].split('?')[0];
 
     // Handle absolute URLs (e.g. https://domain.com/home/imagens/base.png)
@@ -91,7 +91,7 @@ export function initMenuScene(config) {
   }
 
   function resolvePrecomputedCenter(key) {
-    if (!key) return null;
+    if (!key) {return null;}
 
     if (precomputedCentersByUrl[key]) {
       return precomputedCentersByUrl[key];
@@ -186,7 +186,7 @@ export function initMenuScene(config) {
       const preProcessed = preProcessedOverlays[i];
       const dx = scaledX - preProcessed.centerX;
       const dy = scaledY - preProcessed.centerY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
+      const distance = Math.hypot(dx, dy);
 
       if (distance < minDistance) {
         minDistance = distance;
@@ -219,8 +219,8 @@ export function initMenuScene(config) {
     nameContainer.classList.remove('label-side', 'label-horizontal');
     nameContainer.classList.add('label-tooltip');
 
-    if (labelFontSize) nameContainer.style.fontSize = labelFontSize;
-    if (labelMaxWidth) nameContainer.style.maxWidth = labelMaxWidth;
+    if (labelFontSize) {nameContainer.style.fontSize = labelFontSize;}
+    if (labelMaxWidth) {nameContainer.style.maxWidth = labelMaxWidth;}
 
     if (!name) {
       nameContainer.style.display = 'none';
@@ -303,7 +303,7 @@ export function initMenuScene(config) {
 
   function lineIntersectsLine(a, b, c, d) {
     const denominator = ((d.y - c.y) * (b.x - a.x)) - ((d.x - c.x) * (b.y - a.y));
-    if (denominator === 0) return false;
+    if (denominator === 0) {return false;}
 
     const ua = (((d.x - c.x) * (a.y - c.y)) - ((d.y - c.y) * (a.x - c.x))) / denominator;
     const ub = (((b.x - a.x) * (a.y - c.y)) - ((b.y - a.y) * (a.x - c.x))) / denominator;
@@ -312,11 +312,11 @@ export function initMenuScene(config) {
   }
 
   function segmentIntersectsRect(p1, p2, rect) {
-    if (!rect) return false;
+    if (!rect) {return false;}
 
     const insideP1 = p1.x >= rect.left && p1.x <= rect.right && p1.y >= rect.top && p1.y <= rect.bottom;
     const insideP2 = p2.x >= rect.left && p2.x <= rect.right && p2.y >= rect.top && p2.y <= rect.bottom;
-    if (insideP1 || insideP2) return true;
+    if (insideP1 || insideP2) {return true;}
 
     const edges = [
       [{ x: rect.left, y: rect.top }, { x: rect.right, y: rect.top }],
@@ -330,18 +330,18 @@ export function initMenuScene(config) {
 
   function getInstructionRect() {
     const instructionEl = document.getElementById('instructionText');
-    if (!instructionEl) return null;
+    if (!instructionEl) {return null;}
 
     const style = window.getComputedStyle(instructionEl);
-    if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return null;
+    if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {return null;}
 
     const rect = instructionEl.getBoundingClientRect();
-    if (rect.width <= 0 || rect.height <= 0) return null;
+    if (rect.width <= 0 || rect.height <= 0) {return null;}
     return rect;
   }
 
   function getOverlayBoundingRectByIndex(index) {
-    if (index < 0 || !preProcessedOverlays[index]) return null;
+    if (index < 0 || !preProcessedOverlays[index]) {return null;}
     const c = getScreenCoordinates(preProcessedOverlays[index]);
     return { left: c.leftX, right: c.rightX, top: c.topY, bottom: c.bottomY };
   }
@@ -349,12 +349,12 @@ export function initMenuScene(config) {
   function getForbiddenRectsForLabel(excludeOverlayIndex = -1) {
     const forbidden = [];
     const instructionRect = getInstructionRect();
-    if (instructionRect) forbidden.push(instructionRect);
+    if (instructionRect) {forbidden.push(instructionRect);}
 
     for (let i = 0; i < preProcessedOverlays.length; i++) {
-      if (i === excludeOverlayIndex) continue;
+      if (i === excludeOverlayIndex) {continue;}
       const rect = getOverlayBoundingRectByIndex(i);
-      if (!rect) continue;
+      if (!rect) {continue;}
       forbidden.push(rect);
     }
 
@@ -464,9 +464,9 @@ export function initMenuScene(config) {
   }
 
   function getSideVector(side) {
-    if (side === 'left') return { x: -1, y: 0 };
-    if (side === 'right') return { x: 1, y: 0 };
-    if (side === 'top') return { x: 0, y: -1 };
+    if (side === 'left') {return { x: -1, y: 0 };}
+    if (side === 'right') {return { x: 1, y: 0 };}
+    if (side === 'top') {return { x: 0, y: -1 };}
     return { x: 0, y: 1 };
   }
 
@@ -511,25 +511,25 @@ export function initMenuScene(config) {
   }
 
   function getRectAnchorPoint(rect, side) {
-    if (side === 'left') return { x: rect.left, y: rect.top + (rect.height / 2) };
-    if (side === 'right') return { x: rect.right, y: rect.top + (rect.height / 2) };
-    if (side === 'top') return { x: rect.left + (rect.width / 2), y: rect.top };
+    if (side === 'left') {return { x: rect.left, y: rect.top + (rect.height / 2) };}
+    if (side === 'right') {return { x: rect.right, y: rect.top + (rect.height / 2) };}
+    if (side === 'top') {return { x: rect.left + (rect.width / 2), y: rect.top };}
     return { x: rect.left + (rect.width / 2), y: rect.bottom };
   }
 
   function offsetPointBySide(point, side, amount, outward = true) {
     const sign = outward ? 1 : -1;
-    if (side === 'left') return { x: point.x - (amount * sign), y: point.y };
-    if (side === 'right') return { x: point.x + (amount * sign), y: point.y };
-    if (side === 'top') return { x: point.x, y: point.y - (amount * sign) };
+    if (side === 'left') {return { x: point.x - (amount * sign), y: point.y };}
+    if (side === 'right') {return { x: point.x + (amount * sign), y: point.y };}
+    if (side === 'top') {return { x: point.x, y: point.y - (amount * sign) };}
     return { x: point.x, y: point.y + (amount * sign) };
   }
 
   function drawArrow(overlayIndex) {
-    if (!showArrow) return;
+    if (!showArrow) {return;}
 
     const arrowPath = document.getElementById('dynamicArrow');
-    if (!arrowPath) return;
+    if (!arrowPath) {return;}
 
     const overlay = overlayImages[overlayIndex];
     const preProcessed = preProcessedOverlays[overlayIndex];
@@ -585,7 +585,7 @@ export function initMenuScene(config) {
       }
     }
 
-    if (!best) return;
+    if (!best) {return;}
 
     const pathData = buildArrowPathAvoidingInstruction(
       best.start.x,
@@ -610,12 +610,12 @@ export function initMenuScene(config) {
       nameContainer.classList.add('label-side');
     }
 
-    if (labelFontSize) nameContainer.style.fontSize = labelFontSize;
-    if (labelMaxWidth) nameContainer.style.maxWidth = labelMaxWidth;
+    if (labelFontSize) {nameContainer.style.fontSize = labelFontSize;}
+    if (labelMaxWidth) {nameContainer.style.maxWidth = labelMaxWidth;}
 
     if (!labelText || !isActive) {
       nameContainer.style.display = 'none';
-      if (arrowPath) arrowPath.setAttribute('d', '');
+      if (arrowPath) {arrowPath.setAttribute('d', '');}
       return;
     }
 
@@ -714,8 +714,8 @@ export function initMenuScene(config) {
 
     const overlay = overlayImages[lastClosestImageIndex];
     let onRightSide = (seed % 2 === 0);
-    if (overlay && overlay.labelSide === 'right') onRightSide = true;
-    if (overlay && overlay.labelSide === 'left') onRightSide = false;
+    if (overlay && overlay.labelSide === 'right') {onRightSide = true;}
+    if (overlay && overlay.labelSide === 'left') {onRightSide = false;}
 
     const desiredTop = clamp(baseTop, minTop, maxTop);
     let desiredLeft;
@@ -832,7 +832,7 @@ export function initMenuScene(config) {
           showNameWithArrow(imageName, imageDesc, e.clientX, e.clientY, targetX, targetY, isActive);
         } else {
           showName(labelText, e.clientX, e.clientY);
-          if (arrowPath) arrowPath.setAttribute('d', '');
+          if (arrowPath) {arrowPath.setAttribute('d', '');}
         }
       } else {
         changeCursor(isActive);
@@ -840,13 +840,13 @@ export function initMenuScene(config) {
           showNameWithArrow(null, null, e.clientX, e.clientY, 0, 0, false);
         } else {
           showName(null, e.clientX, e.clientY);
-          if (arrowPath) arrowPath.setAttribute('d', '');
+          if (arrowPath) {arrowPath.setAttribute('d', '');}
         }
       }
     });
 
     imageContainer.addEventListener('click', function () {
-      if (lastClosestImageIndex < 0 || lastMinDistance > ACTIVE_RADIUS) return;
+      if (lastClosestImageIndex < 0 || lastMinDistance > ACTIVE_RADIUS) {return;}
 
       const overlay = overlayImages[lastClosestImageIndex];
       const preProcessed = preProcessedOverlays[lastClosestImageIndex];
@@ -930,7 +930,7 @@ export function initMenuScene(config) {
     };
 
     window.addEventListener('resize', () => {
-      if (globalBaseCenter) centerMenu(globalBaseCenter);
+      if (globalBaseCenter) {centerMenu(globalBaseCenter);}
     });
 
     overlayElements.forEach((img, index) => {

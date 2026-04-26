@@ -7,13 +7,13 @@
   "ACTIVE_RADIUS": 500,
   "labelMode": "name",
   "labelStyle": "horizontal",
-  "labelFontSize": "7.8vh",
-  "labelMaxDistanceFromSource": 520,
-  "labelMaxWidth": "34vw",
-  "showArrow": true,
   "arrowStartOffset": 280,
   "arrowEndOffset": 28,
+  "labelFontSize": "7.8vh",
+  "labelMaxWidth": "34vw",
+  "labelMaxDistanceFromSource": 520,
   "instructionText": "As fotografias são organizadas em álbuns.\nPara acessá-los, passe o mouse sobre o rolo da câmera e escolha uma das categorias.",
+  "showArrow": true,
   "precomputedCentersByUrl": {
     "/filme-fotografico/imagens/BASE.png": {
       "centerX": 995.3617707974449,

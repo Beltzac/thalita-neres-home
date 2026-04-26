@@ -23,7 +23,7 @@ async function collectFiles(dir) {
       files.push(...await collectFiles(fullPath));
       continue;
     }
-    if (entry.isFile()) files.push(fullPath);
+    if (entry.isFile()) {files.push(fullPath);}
   }
 
   return files;
@@ -31,7 +31,7 @@ async function collectFiles(dir) {
 
 async function optimizeLossless(filePath) {
   const ext = path.extname(filePath).toLowerCase();
-  if (!LOSSLESS_EXTENSIONS.has(ext)) return { optimized: false, skipped: true };
+  if (!LOSSLESS_EXTENSIONS.has(ext)) {return { optimized: false, skipped: true };}
 
   const input = await fs.readFile(filePath);
   const image = sharp(input, { animated: true });
@@ -73,8 +73,8 @@ async function optimizeLossless(filePath) {
 }
 
 function formatBytes(bytes) {
-  if (!Number.isFinite(bytes) || bytes < 0) return '0 B';
-  if (bytes < 1024) return `${bytes} B`;
+  if (!Number.isFinite(bytes) || bytes < 0) {return '0 B';}
+  if (bytes < 1024) {return `${bytes} B`;}
   const units = ['KB', 'MB', 'GB'];
   let value = bytes / 1024;
   let unitIndex = 0;
@@ -90,14 +90,14 @@ function relativeFromRoot(fullPath) {
 }
 
 async function runWithConcurrency(items, worker, concurrency) {
-  if (items.length === 0) return;
+  if (items.length === 0) {return;}
 
   let index = 0;
   async function runWorker(workerId) {
     while (true) {
       const currentIndex = index;
       index += 1;
-      if (currentIndex >= items.length) return;
+      if (currentIndex >= items.length) {return;}
       await worker(items[currentIndex], currentIndex, workerId);
     }
   }

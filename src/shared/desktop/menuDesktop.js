@@ -11,7 +11,7 @@ export function initMenuDesktop(config) {
   let desktopContainer, renderedItems, lastActiveIndex = -1;
 
   function setActiveIndex(nextIndex) {
-    if (nextIndex === lastActiveIndex) return;
+    if (nextIndex === lastActiveIndex) {return;}
 
     renderedItems.forEach((entry, i) => {
       const isActive = i === nextIndex;
@@ -20,6 +20,7 @@ export function initMenuDesktop(config) {
       entry.itemDiv.classList.toggle('hovered', isActive);
     });
 
+    desktopContainer.style.cursor = nextIndex >= 0 ? CURSOR_HOVER : CURSOR_NORMAL;
     lastActiveIndex = nextIndex;
   }
 
@@ -35,7 +36,7 @@ export function initMenuDesktop(config) {
 
       const dx = x - centerX;
       const dy = y - centerY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
+      const distance = Math.hypot(dx, dy);
 
       if (distance <= radius && distance < closestDistance) {
         closestDistance = distance;
@@ -58,7 +59,7 @@ export function initMenuDesktop(config) {
 
     renderedItems = [];
 
-    desktopItems.forEach((item, index) => {
+    desktopItems.forEach((item, _index) => {
       const itemDiv = document.createElement('div');
       itemDiv.classList.add('desktop-item');
 
@@ -105,13 +106,13 @@ export function initMenuDesktop(config) {
     });
 
     desktopContainer.addEventListener('mousedown', () => {
-      if (lastActiveIndex < 0) return;
+      if (lastActiveIndex < 0) {return;}
       document.querySelectorAll('.desktop-item').forEach(el => el.classList.remove('selected'));
       renderedItems[lastActiveIndex].itemDiv.classList.add('selected');
     });
 
     desktopContainer.addEventListener('click', () => {
-      if (lastActiveIndex < 0) return;
+      if (lastActiveIndex < 0) {return;}
 
       const entry = renderedItems[lastActiveIndex];
       const rect = entry.iconWrapper.getBoundingClientRect();

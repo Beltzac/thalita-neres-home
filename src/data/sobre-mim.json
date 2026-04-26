@@ -5,8 +5,10 @@
   "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 800,
-  "labelStyle": "horizontal",
   "labelMode": "description",
+  "labelStyle": "horizontal",
+  "arrowStartOffset": 300,
+  "arrowEndOffset": 20,
   "labelFontSize": "7.8vh",
   "showArrow": true,
   "precomputedCentersByUrl": {

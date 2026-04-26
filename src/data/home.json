@@ -3,13 +3,14 @@
   "baseImageFilename": "/home/imagens/base.png",
   "margin": 60,
   "ACTIVE_RADIUS": 500,
-  "labelStyle": "side",
   "labelMode": "name",
-  "labelFontSize": "6.5vh",
-  "labelMaxDistanceFromSource": 520,
-  "showArrow": true,
+  "labelStyle": "side",
   "arrowStartOffset": 320,
   "arrowEndOffset": 44,
+  "labelFontSize": "6.5vh",
+  "labelMaxDistanceFromSource": 520,
+  "instructionText": "Site inspirado em jogos indies dos anos 2010.\nAqui se navega com o mouse, não com pressa.\nMelhor visto no computador.\nPasse por cima. Veja o que acontece.",
+  "showArrow": true,
   "precomputedCentersByUrl": {
     "/home/imagens/base.png": {
       "centerX": 1491.8787593220952,
@@ -252,6 +253,5 @@
       "arrowEndOffset": 20,
       "labelSide": "right"
     }
-  ],
-  "instructionText": "Site inspirado em jogos indies dos anos 2010.\nAqui se navega com o mouse, não com pressa.\nMelhor visto no computador.\nPasse por cima. Veja o que acontece."
+  ]
 }
