@@ -19,6 +19,15 @@ export function initMenuScene(config) {
     labelMaxDistanceFromSource = null,
     instructionText = null,
     showArrow = false,
+    spiralSearch = {
+      enabled: false,
+      preferredQuadrants: ['right', 'top', 'bottom', 'left'],
+      minDistance: 60,
+      maxDistance: 500,
+      angleStep: 20,
+      radiusStep: 14,
+      padding: 14,
+    },
   } = config;
 
   let imageContainer, contentWrapper, baseImage, overlayElements, preProcessedOverlays;
@@ -277,20 +286,20 @@ export function initMenuScene(config) {
     const scaleX = boundingBox.width / refWidth;
     const scaleY = boundingBox.height / refHeight;
 
-    const bboxCenterX = preProcessed.bboxCenterX;
-    const bboxCenterY = preProcessed.bboxCenterY;
-    const halfWidth = preProcessed.contentWidth / 2;
-    const halfHeight = preProcessed.contentHeight / 2;
+    const bboxWidth = preProcessed.contentWidth - 1;
+    const bboxHeight = preProcessed.contentHeight - 1;
+    const bboxLeft = preProcessed.bboxCenterX - bboxWidth / 2;
+    const bboxTop = preProcessed.bboxCenterY - bboxHeight / 2;
 
-    const centerX = (bboxCenterX * scaleX) + offsetX;
-    const centerY = (bboxCenterY * scaleY) + offsetY;
+    const screenLeft = (bboxLeft * scaleX) + offsetX;
+    const screenTop = (bboxTop * scaleY) + offsetY;
+    const screenRight = ((bboxLeft + bboxWidth) * scaleX) + offsetX;
+    const screenBottom = ((bboxTop + bboxHeight) * scaleY) + offsetY;
 
-    const leftX = ((bboxCenterX - halfWidth) * scaleX) + offsetX;
-    const rightX = ((bboxCenterX + halfWidth) * scaleX) + offsetX;
-    const topY = ((bboxCenterY - halfHeight) * scaleY) + offsetY;
-    const bottomY = ((bboxCenterY + halfHeight) * scaleY) + offsetY;
+    const screenCenterX = (preProcessed.centerX * scaleX) + offsetX;
+    const screenCenterY = (preProcessed.centerY * scaleY) + offsetY;
 
-    return { x: centerX, y: centerY, leftX, rightX, topY, bottomY };
+    return { x: screenCenterX, y: screenCenterY, leftX: screenLeft, rightX: screenRight, topY: screenTop, bottomY: screenBottom };
   }
 
   function rectsOverlap(a, b) {
@@ -365,7 +374,251 @@ export function initMenuScene(config) {
     return forbiddenRects.some((forbidden) => rectsOverlap(rect, forbidden));
   }
 
-  function chooseLabelPosition(candidates, width, height, forbiddenRects, viewportWidth, viewportHeight) {
+  function getQuadrantForPoint(sourceX, sourceY, pointX, pointY) {
+    const dx = pointX - sourceX;
+    const dy = pointY - sourceY;
+
+    if (Math.abs(dx) < 1 && Math.abs(dy) < 1) {return 'center';}
+    if (dx > 0 && dy < 0) {return 'top-right';}
+    if (dx > 0 && dy > 0) {return 'bottom-right';}
+    if (dx < 0 && dy < 0) {return 'top-left';}
+    if (dx < 0 && dy > 0) {return 'bottom-left';}
+    if (dx > 0) {return 'right';}
+    if (dx < 0) {return 'left';}
+    if (dy < 0) {return 'top';}
+    return 'bottom';
+  }
+
+  function getQuadrantPriority(quadrant, preferredQuadrants) {
+    const idx = preferredQuadrants.indexOf(quadrant);
+    if (idx >= 0) {return idx;}
+
+    const quadrantGroups = {
+      'top-right': ['right', 'top'],
+      'bottom-right': ['right', 'bottom'],
+      'top-left': ['left', 'top'],
+      'bottom-left': ['left', 'bottom'],
+    };
+
+    const partials = quadrantGroups[quadrant] || [];
+    let bestPartialIdx = Infinity;
+    for (const partial of partials) {
+      const pIdx = preferredQuadrants.indexOf(partial);
+      if (pIdx >= 0 && pIdx < bestPartialIdx) {
+        bestPartialIdx = pIdx;
+      }
+    }
+
+    return bestPartialIdx < Infinity ? bestPartialIdx + 0.5 : preferredQuadrants.length;
+  }
+
+  function labelSideToQuadrants(labelSide) {
+    if (labelSide === 'right') {return ['right', 'top', 'bottom', 'left'];}
+    if (labelSide === 'left') {return ['left', 'top', 'bottom', 'right'];}
+    if (labelSide === 'top') {return ['top', 'right', 'left', 'bottom'];}
+    if (labelSide === 'bottom') {return ['bottom', 'right', 'left', 'top'];}
+    return null;
+  }
+
+  let debugCandidates = [];
+  let debugSourcePoint = null;
+  let debugLabelSide = null;
+  let debugOverlayRects = [];
+
+  function spiralSearchPosition(sourceX, sourceY, labelWidth, labelHeight, forbiddenRects, viewportWidth, viewportHeight, labelSide = null) {
+    const defaultQuadrants = ['right', 'top', 'bottom', 'left'];
+    const preferredQuadrants = labelSideToQuadrants(labelSide) || spiralSearch.preferredQuadrants || defaultQuadrants;
+    const {
+      minDistance: configMinDist,
+      maxDistance: configMaxDist,
+      angleStep,
+      radiusStep,
+      padding,
+    } = spiralSearch;
+
+    const effectiveMinDist = Math.min(configMinDist, Math.max(viewportWidth, viewportHeight) * 0.3);
+    const effectiveMaxDist = Math.min(configMaxDist, Math.max(viewportWidth, viewportHeight) * 0.8);
+
+    const pad = padding;
+    let bestCandidate = null;
+    let bestScore = Infinity;
+
+    debugCandidates = [];
+    debugSourcePoint = { x: sourceX, y: sourceY };
+    debugLabelSide = labelSide;
+
+    for (let radius = effectiveMinDist; radius <= effectiveMaxDist; radius += radiusStep) {
+      const circumference = 2 * Math.PI * radius;
+      const numSamples = Math.max(8, Math.ceil(circumference / (radiusStep * 1.5)));
+      const angleIncrement = 360 / numSamples;
+
+      for (let angle = 0; angle < 360; angle += Math.min(angleStep, angleIncrement)) {
+        const rad = (angle * Math.PI) / 180;
+        const candidateCenterX = sourceX + (radius * Math.cos(rad));
+        const candidateCenterY = sourceY + (radius * Math.sin(rad));
+
+        const left = candidateCenterX - (labelWidth / 2);
+        const top = candidateCenterY - (labelHeight / 2);
+
+        if (left < pad || top < pad) {continue;}
+        if (left + labelWidth > viewportWidth - pad) {continue;}
+        if (top + labelHeight > viewportHeight - pad) {continue;}
+
+        const rect = {
+          left: left,
+          top: top,
+          right: left + labelWidth,
+          bottom: top + labelHeight,
+        };
+
+        if (collidesWithForbidden(rect, forbiddenRects)) {continue;}
+
+        const quadrant = getQuadrantForPoint(sourceX, sourceY, candidateCenterX, candidateCenterY);
+        const quadrantPriority = getQuadrantPriority(quadrant, preferredQuadrants);
+
+        const idealDistance = (effectiveMinDist + effectiveMaxDist) / 2;
+        const distanceRange = (effectiveMaxDist - effectiveMinDist) / 2;
+        const distanceFromIdeal = Math.abs(radius - idealDistance);
+        const normalizedDistance = distanceRange > 0 ? (distanceFromIdeal / distanceRange) : 0;
+
+        const score = (quadrantPriority * 1000) + (normalizedDistance * 100);
+
+        debugCandidates.push({
+          x: candidateCenterX,
+          y: candidateCenterY,
+          left: left,
+          top: top,
+          width: labelWidth,
+          height: labelHeight,
+          score: score,
+          quadrant: quadrant,
+          radius: radius,
+          isBest: false,
+        });
+
+        if (score < bestScore) {
+          bestScore = score;
+          bestCandidate = {
+            left: left,
+            top: top,
+            score: score,
+            quadrant: quadrant,
+            distance: radius,
+          };
+        }
+      }
+
+      if (bestCandidate && bestCandidate.distance <= radius) {
+        const bestEntry = debugCandidates.find(c => c.left === bestCandidate.left && c.top === bestCandidate.top);
+        if (bestEntry) {bestEntry.isBest = true;}
+        return { left: bestCandidate.left, top: bestCandidate.top };
+      }
+    }
+
+    if (bestCandidate) {
+      const bestEntry = debugCandidates.find(c => c.left === bestCandidate.left && c.top === bestCandidate.top);
+      if (bestEntry) {bestEntry.isBest = true;}
+      return { left: bestCandidate.left, top: bestCandidate.top };
+    }
+
+    const fallbackLeft = clamp(sourceX - (labelWidth / 2), pad, viewportWidth - labelWidth - pad);
+    const fallbackTop = clamp(sourceY - (labelHeight / 2), pad, viewportHeight - labelHeight - pad);
+    return { left: fallbackLeft, top: fallbackTop };
+  }
+
+  function renderDebugCandidates() {
+    let container = document.getElementById('debugCandidatesContainer');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'debugCandidatesContainer';
+      container.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
+      document.body.appendChild(container);
+    }
+    container.innerHTML = '';
+
+    debugOverlayRects = [];
+    preProcessedOverlays.forEach((preProcessed, index) => {
+      if (!preProcessed) {return;}
+      const coords = getScreenCoordinates(preProcessed);
+      debugOverlayRects.push({
+        name: overlayImages[index]?.nomeImagem || `#${index}`,
+        left: coords.leftX,
+        top: coords.topY,
+        width: coords.rightX - coords.leftX,
+        height: coords.bottomY - coords.topY,
+        centerX: coords.x,
+        centerY: coords.y,
+        labelSide: overlayImages[index]?.labelSide,
+      });
+    });
+
+    debugOverlayRects.forEach((r) => {
+      const rect = document.createElement('div');
+      rect.style.cssText = `position:absolute;left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;border:1px dashed rgba(0,255,0,0.6);pointer-events:none;`;
+      container.appendChild(rect);
+
+      const centerDot = document.createElement('div');
+      centerDot.style.cssText = `position:absolute;left:${r.centerX - 4}px;top:${r.centerY - 4}px;width:8px;height:8px;background:rgba(0,255,0,0.8);border-radius:50%;`;
+      container.appendChild(centerDot);
+
+      const nameLabel = document.createElement('div');
+      nameLabel.style.cssText = `position:absolute;left:${r.left}px;top:${r.top - 12}px;color:rgba(0,255,0,0.9);font:bold 9px monospace;text-shadow:1px 1px 2px #000;white-space:nowrap;`;
+      nameLabel.textContent = `${r.name} [${r.labelSide || 'no-side'}]`;
+      container.appendChild(nameLabel);
+    });
+
+    if (!debugSourcePoint || debugCandidates.length === 0) {return;}
+
+    const sourceDot = document.createElement('div');
+    sourceDot.style.cssText = `position:absolute;left:${debugSourcePoint.x - 6}px;top:${debugSourcePoint.y - 6}px;width:12px;height:12px;background:#ff0000;border-radius:50%;border:2px solid #fff;`;
+    sourceDot.title = `Source (${debugSourcePoint.x.toFixed(0)}, ${debugSourcePoint.y.toFixed(0)}) labelSide: ${debugLabelSide || 'none'}`;
+    container.appendChild(sourceDot);
+
+    const label = document.createElement('div');
+    label.style.cssText = `position:absolute;left:${debugSourcePoint.x + 10}px;top:${debugSourcePoint.y - 8}px;color:#ff0000;font:bold 11px monospace;text-shadow:1px 1px 2px #000;white-space:nowrap;`;
+    label.textContent = `SRC ${debugLabelSide || ''}`;
+    container.appendChild(label);
+
+    const minScore = Math.min(...debugCandidates.map(c => c.score));
+    const maxScore = Math.max(...debugCandidates.map(c => c.score));
+    const scoreRange = maxScore - minScore || 1;
+
+    debugCandidates.forEach((c) => {
+      const normalized = (c.score - minScore) / scoreRange;
+
+      let color;
+      if (c.isBest) {
+        color = '#00ff00';
+      } else if (c.quadrant === debugLabelSide) {
+        color = `hsl(200, 80%, ${50 + normalized * 30}%)`;
+      } else {
+        const hue = normalized < 0.5 ? 0 : 40;
+        color = `hsl(${hue}, 70%, ${40 + normalized * 40}%)`;
+      }
+
+      const dot = document.createElement('div');
+      dot.style.cssText = `position:absolute;left:${c.x - 3}px;top:${c.y - 3}px;width:6px;height:6px;background:${color};border-radius:50%;opacity:${c.isBest ? 1 : 0.5};`;
+      dot.title = `score:${c.score.toFixed(0)} q:${c.quadrant} r:${c.radius.toFixed(0)}${c.isBest ? ' ★ BEST' : ''}`;
+      container.appendChild(dot);
+
+      if (c.isBest) {
+        const rect = document.createElement('div');
+        rect.style.cssText = `position:absolute;left:${c.left}px;top:${c.top}px;width:${c.width}px;height:${c.height}px;border:2px solid #00ff00;background:rgba(0,255,0,0.1);pointer-events:none;`;
+        container.appendChild(rect);
+
+        const info = document.createElement('div');
+        info.style.cssText = `position:absolute;left:${c.left}px;top:${c.top - 16}px;color:#00ff00;font:bold 10px monospace;text-shadow:1px 1px 2px #000;white-space:nowrap;`;
+        info.textContent = `★ ${c.quadrant} score:${c.score.toFixed(0)} dist:${c.radius.toFixed(0)}`;
+        container.appendChild(info);
+      }
+    });
+  }
+
+  function chooseLabelPosition(candidates, width, height, forbiddenRects, viewportWidth, viewportHeight, sourceX, sourceY, labelSide = null) {
+    if (spiralSearch.enabled) {
+      return spiralSearchPosition(sourceX, sourceY, width, height, forbiddenRects, viewportWidth, viewportHeight, labelSide);
+    }
+
     for (const candidate of candidates) {
       const left = clamp(candidate.left, 8, Math.max(8, viewportWidth - width - 8));
       const top = clamp(candidate.top, 8, Math.max(8, viewportHeight - height - 8));
@@ -376,7 +629,6 @@ export function initMenuScene(config) {
       }
     }
 
-    // Fallback: try opposite side of first candidate
     const first = candidates[0] || { left: 8, top: 8 };
     const oppositeLeft = first.left < viewportWidth / 2
       ? (viewportWidth - 8 - width)
@@ -398,14 +650,25 @@ export function initMenuScene(config) {
       }
     }
 
-    // Last resort
     return {
       left: clamp(first.left, 8, Math.max(8, viewportWidth - width - 8)),
       top: clamp(first.top, 8, Math.max(8, viewportHeight - height - 8)),
     };
   }
 
-  function chooseLabelPositionWithRules(candidates, width, height, forbiddenRects, viewportWidth, viewportHeight, sourceX, sourceY) {
+  function chooseLabelPositionWithRules(candidates, width, height, forbiddenRects, viewportWidth, viewportHeight, sourceX, sourceY, labelSide = null) {
+    if (spiralSearch.enabled) {
+      const spiralResult = spiralSearchPosition(
+        sourceX, sourceY, width, height, forbiddenRects, viewportWidth, viewportHeight, labelSide
+      );
+      if (labelSide) {
+        return spiralResult;
+      }
+      return enforceLabelMaxDistance(
+        spiralResult, width, height, sourceX, sourceY, viewportWidth, viewportHeight
+      );
+    }
+
     for (const candidate of candidates) {
       const clamped = {
         left: clamp(candidate.left, 8, Math.max(8, viewportWidth - width - 8)),
@@ -434,7 +697,7 @@ export function initMenuScene(config) {
       }
     }
 
-    const fallback = chooseLabelPosition(candidates, width, height, forbiddenRects, viewportWidth, viewportHeight);
+    const fallback = chooseLabelPosition(candidates, width, height, forbiddenRects, viewportWidth, viewportHeight, sourceX, sourceY, labelSide);
     return enforceLabelMaxDistance(fallback, width, height, sourceX, sourceY, viewportWidth, viewportHeight);
   }
 
@@ -534,6 +797,8 @@ export function initMenuScene(config) {
     const overlay = overlayImages[overlayIndex];
     const preProcessed = preProcessedOverlays[overlayIndex];
 
+    if (!preProcessed) {return;}
+
     const coords = getScreenCoordinates(preProcessed);
     const nameContainer = document.getElementById('objectDescription');
     const labelRect = nameContainer.getBoundingClientRect();
@@ -616,6 +881,9 @@ export function initMenuScene(config) {
     if (!labelText || !isActive) {
       nameContainer.style.display = 'none';
       if (arrowPath) {arrowPath.setAttribute('d', '');}
+      debugCandidates = [];
+      debugSourcePoint = null;
+      renderDebugCandidates();
       return;
     }
 
@@ -638,6 +906,7 @@ export function initMenuScene(config) {
       const baseTop = onTop ? margin : viewportHeight - nameContainer.offsetHeight - margin;
 
       const forbiddenRects = getForbiddenRectsForLabel(lastClosestImageIndex);
+      const currentOverlay = overlayImages[lastClosestImageIndex] || {};
       const candidates = [
         { left: baseLeft, top: baseTop },
         { left: baseLeft - 140, top: baseTop },
@@ -654,7 +923,8 @@ export function initMenuScene(config) {
         viewportWidth,
         viewportHeight,
         targetX,
-        targetY
+        targetY,
+        currentOverlay.labelSide
       );
       const left = chosen.left;
       const top = chosen.top;
@@ -717,13 +987,21 @@ export function initMenuScene(config) {
     if (overlay && overlay.labelSide === 'right') {onRightSide = true;}
     if (overlay && overlay.labelSide === 'left') {onRightSide = false;}
 
-    const desiredTop = clamp(baseTop, minTop, maxTop);
-    let desiredLeft;
-    if (overlay && overlay.labelSide === 'right') {
+    let desiredTop, desiredLeft;
+    if (overlay && overlay.labelSide === 'top') {
+      desiredTop = marginSide;
+      desiredLeft = targetX - (nameContainer.offsetWidth / 2);
+    } else if (overlay && overlay.labelSide === 'bottom') {
+      desiredTop = window.innerHeight - nameContainer.offsetHeight - marginSide;
+      desiredLeft = targetX - (nameContainer.offsetWidth / 2);
+    } else if (overlay && overlay.labelSide === 'right') {
+      desiredTop = clamp(baseTop, minTop, maxTop);
       desiredLeft = Math.min(targetX + 200, viewportWidth - marginSide - nameContainer.offsetWidth);
     } else if (overlay && overlay.labelSide === 'left') {
+      desiredTop = clamp(baseTop, minTop, maxTop);
       desiredLeft = Math.max(targetX - nameContainer.offsetWidth - 200, marginSide);
     } else {
+      desiredTop = clamp(baseTop, minTop, maxTop);
       desiredLeft = onRightSide
         ? (viewportWidth - marginSide - nameContainer.offsetWidth)
         : marginSide;
@@ -774,17 +1052,24 @@ export function initMenuScene(config) {
       viewportWidth,
       window.innerHeight,
       targetX,
-      targetY
+      targetY,
+      overlay ? overlay.labelSide : null
     );
 
     nameContainer.style.left = chosen.left + 'px';
     nameContainer.style.right = 'auto';
     nameContainer.style.top = chosen.top + 'px';
-    nameContainer.style.textAlign = onRightSide ? 'right' : 'left';
+    if (overlay && (overlay.labelSide === 'top' || overlay.labelSide === 'bottom')) {
+      nameContainer.style.textAlign = 'center';
+    } else {
+      nameContainer.style.textAlign = onRightSide ? 'right' : 'left';
+    }
 
     if (showArrow) {
       drawArrow(lastClosestImageIndex);
     }
+
+    renderDebugCandidates();
   }
 
   function checkAllLoaded() {

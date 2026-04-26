@@ -13,44 +13,44 @@
   "showArrow": true,
   "precomputedCentersByUrl": {
     "/sobre-mim/imagens/EU_BASE.png": {
-      "centerX": 714.9709252517001,
-      "centerY": 962.3506419300173,
-      "bboxCenterX": 722,
+      "centerX": 715.1328695623215,
+      "centerY": 963.812034986429,
+      "bboxCenterX": 721.5,
       "bboxCenterY": 907,
       "width": 1414,
       "height": 2000,
-      "contentWidth": 1293,
-      "contentHeight": 1557
+      "contentWidth": 1290,
+      "contentHeight": 1553
     },
     "sobre-mim/imagens/EU_BASE.png": {
-      "centerX": 714.9709252517001,
-      "centerY": 962.3506419300173,
-      "bboxCenterX": 722,
+      "centerX": 715.1328695623215,
+      "centerY": 963.812034986429,
+      "bboxCenterX": 721.5,
       "bboxCenterY": 907,
       "width": 1414,
       "height": 2000,
-      "contentWidth": 1293,
-      "contentHeight": 1557
+      "contentWidth": 1290,
+      "contentHeight": 1553
     },
     "/sobre-mim/imagens/EU.png": {
-      "centerX": 714.784446963383,
-      "centerY": 964.7780929368281,
-      "bboxCenterX": 722,
+      "centerX": 714.984612463874,
+      "centerY": 966.3702606971135,
+      "bboxCenterX": 721.5,
       "bboxCenterY": 910,
       "width": 1414,
       "height": 2000,
-      "contentWidth": 1293,
-      "contentHeight": 1557
+      "contentWidth": 1290,
+      "contentHeight": 1553
     },
     "sobre-mim/imagens/EU.png": {
-      "centerX": 714.784446963383,
-      "centerY": 964.7780929368281,
-      "bboxCenterX": 722,
+      "centerX": 714.984612463874,
+      "centerY": 966.3702606971135,
+      "bboxCenterX": 721.5,
       "bboxCenterY": 910,
       "width": 1414,
       "height": 2000,
-      "contentWidth": 1293,
-      "contentHeight": 1557
+      "contentWidth": 1290,
+      "contentHeight": 1553
     }
   },
   "overlayImages": [

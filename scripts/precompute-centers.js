@@ -114,49 +114,94 @@ async function computeCenter(buffer) {
     .toBuffer({ resolveWithObject: true });
 
   const { width, height, channels } = info;
-  let totalX = 0;
-  let totalY = 0;
-  let count = 0;
-  let minX = width;
-  let maxX = 0;
-  let minY = height;
-  let maxY = 0;
 
+  // Build binary grid of non-transparent pixels
+  const grid = new Uint8Array(width * height);
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      const index = (y * width + x) * channels;
-      const alpha = data[index + 3];
-      if (alpha > 0) {
-        totalX += x;
-        totalY += y;
-        count += 1;
-        if (x < minX) {minX = x;}
-        if (x > maxX) {maxX = x;}
-        if (y < minY) {minY = y;}
-        if (y > maxY) {maxY = y;}
+      const alpha = data[(y * width + x) * channels + 3];
+      if (alpha > 50) {
+        grid[y * width + x] = 1;
       }
     }
   }
 
-  if (count === 0) {
-    minX = 0;
-    maxX = width;
-    minY = 0;
-    maxY = height;
+  // Flood-fill to find connected components
+  const visited = new Uint8Array(width * height);
+  const components = [];
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = y * width + x;
+      if (grid[idx] === 1 && !visited[idx]) {
+        // BFS flood fill
+        const queue = [idx];
+        visited[idx] = 1;
+        const pixels = [];
+        let minX = x, maxX = x, minY = y, maxY = y;
+        let totalX = 0, totalY = 0, count = 0;
+
+        while (queue.length > 0) {
+          const cur = queue.shift();
+          const cx = cur % width;
+          const cy = (cur - cx) / width;
+          pixels.push(cur);
+          totalX += cx;
+          totalY += cy;
+          count++;
+          if (cx < minX) {minX = cx;}
+          if (cx > maxX) {maxX = cx;}
+          if (cy < minY) {minY = cy;}
+          if (cy > maxY) {maxY = cy;}
+
+          // 4-connected neighbors
+          if (cx > 0 && grid[cur - 1] === 1 && !visited[cur - 1]) {
+            visited[cur - 1] = 1;
+            queue.push(cur - 1);
+          }
+          if (cx < width - 1 && grid[cur + 1] === 1 && !visited[cur + 1]) {
+            visited[cur + 1] = 1;
+            queue.push(cur + 1);
+          }
+          if (cy > 0 && grid[cur - width] === 1 && !visited[cur - width]) {
+            visited[cur - width] = 1;
+            queue.push(cur - width);
+          }
+          if (cy < height - 1 && grid[cur + width] === 1 && !visited[cur + width]) {
+            visited[cur + width] = 1;
+            queue.push(cur + width);
+          }
+        }
+
+        components.push({ count, minX, maxX, minY, maxY, totalX, totalY });
+      }
+    }
   }
 
-  const centerX = count > 0 ? totalX / count : width / 2;
-  const centerY = count > 0 ? totalY / count : height / 2;
+  if (components.length === 0) {
+    return {
+      centerX: width / 2, centerY: height / 2,
+      bboxCenterX: width / 2, bboxCenterY: height / 2,
+      width, height, contentWidth: 0, contentHeight: 0
+    };
+  }
+
+  // Find largest component by pixel count
+  components.sort((a, b) => b.count - a.count);
+  const main = components[0];
+
+  const centerX = main.totalX / main.count;
+  const centerY = main.totalY / main.count;
 
   return {
     centerX,
     centerY,
-    bboxCenterX: minX + (maxX - minX) / 2,
-    bboxCenterY: minY + (maxY - minY) / 2,
+    bboxCenterX: main.minX + (main.maxX - main.minX) / 2,
+    bboxCenterY: main.minY + (main.maxY - main.minY) / 2,
     width,
     height,
-    contentWidth: (maxX - minX) + 1,
-    contentHeight: (maxY - minY) + 1
+    contentWidth: (main.maxX - main.minX) + 1,
+    contentHeight: (main.maxY - main.minY) + 1
   };
 }
 

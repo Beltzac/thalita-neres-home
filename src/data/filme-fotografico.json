@@ -16,48 +16,48 @@
   "showArrow": true,
   "precomputedCentersByUrl": {
     "/filme-fotografico/imagens/BASE.png": {
-      "centerX": 995.3617707974449,
-      "centerY": 1520.2025748557535,
-      "bboxCenterX": 1031,
-      "bboxCenterY": 1482.5,
+      "centerX": 1009.9221901398624,
+      "centerY": 1520.0849285660615,
+      "bboxCenterX": 1030.5,
+      "bboxCenterY": 1482,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 1777,
-      "contentHeight": 872
+      "contentWidth": 1776,
+      "contentHeight": 871
     },
     "filme-fotografico/imagens/BASE.png": {
-      "centerX": 995.3617707974449,
-      "centerY": 1520.2025748557535,
-      "bboxCenterX": 1031,
-      "bboxCenterY": 1482.5,
+      "centerX": 1009.9221901398624,
+      "centerY": 1520.0849285660615,
+      "bboxCenterX": 1030.5,
+      "bboxCenterY": 1482,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 1777,
-      "contentHeight": 872
+      "contentWidth": 1776,
+      "contentHeight": 871
     },
     "/filme-fotografico/imagens/FANTASIA.png": {
-      "centerX": 1138.806439891223,
-      "centerY": 1527.8946455363841,
-      "bboxCenterX": 1131,
-      "bboxCenterY": 1529.5,
+      "centerX": 1143.213441498483,
+      "centerY": 1538.9679857538583,
+      "bboxCenterX": 1130.5,
+      "bboxCenterY": 1533.5,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 387,
-      "contentHeight": 400
+      "contentWidth": 386,
+      "contentHeight": 392
     },
     "filme-fotografico/imagens/FANTASIA.png": {
-      "centerX": 1138.806439891223,
-      "centerY": 1527.8946455363841,
-      "bboxCenterX": 1131,
-      "bboxCenterY": 1529.5,
+      "centerX": 1143.213441498483,
+      "centerY": 1538.9679857538583,
+      "bboxCenterX": 1130.5,
+      "bboxCenterY": 1533.5,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 387,
-      "contentHeight": 400
+      "contentWidth": 386,
+      "contentHeight": 392
     },
     "/filme-fotografico/imagens/CIDADE.png": {
-      "centerX": 1505.372410243212,
-      "centerY": 1587.8735040535323,
+      "centerX": 1508.944940792739,
+      "centerY": 1588.7399489470326,
       "bboxCenterX": 1487.5,
       "bboxCenterY": 1569,
       "width": 3000,
@@ -66,8 +66,8 @@
       "contentHeight": 315
     },
     "filme-fotografico/imagens/CIDADE.png": {
-      "centerX": 1505.372410243212,
-      "centerY": 1587.8735040535323,
+      "centerX": 1508.944940792739,
+      "centerY": 1588.7399489470326,
       "bboxCenterX": 1487.5,
       "bboxCenterY": 1569,
       "width": 3000,
@@ -76,24 +76,24 @@
       "contentHeight": 315
     },
     "/filme-fotografico/imagens/ROTINEIRO.png": {
-      "centerX": 757.4519180241724,
-      "centerY": 1513.6781397792959,
-      "bboxCenterX": 757.5,
-      "bboxCenterY": 1527,
+      "centerX": 787.4767792954709,
+      "centerY": 1475.7583992331656,
+      "bboxCenterX": 753.5,
+      "bboxCenterY": 1525.5,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 354,
-      "contentHeight": 385
+      "contentWidth": 342,
+      "contentHeight": 382
     },
     "filme-fotografico/imagens/ROTINEIRO.png": {
-      "centerX": 757.4519180241724,
-      "centerY": 1513.6781397792959,
-      "bboxCenterX": 757.5,
-      "bboxCenterY": 1527,
+      "centerX": 787.4767792954709,
+      "centerY": 1475.7583992331656,
+      "bboxCenterX": 753.5,
+      "bboxCenterY": 1525.5,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 354,
-      "contentHeight": 385
+      "contentWidth": 342,
+      "contentHeight": 382
     }
   },
   "overlayImages": [

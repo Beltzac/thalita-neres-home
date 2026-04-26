@@ -14,8 +14,8 @@
   "showArrow": true,
   "precomputedCentersByUrl": {
     "/maquina-escrever/imagens/MAQUINA DE ESCREVER.png": {
-      "centerX": 1523.0589520567355,
-      "centerY": 2159.5342019543973,
+      "centerX": 1513.428456479987,
+      "centerY": 1721.4093462778212,
       "bboxCenterX": 1503.5,
       "bboxCenterY": 1805,
       "width": 3000,
@@ -24,8 +24,8 @@
       "contentHeight": 2221
     },
     "maquina-escrever/imagens/MAQUINA DE ESCREVER.png": {
-      "centerX": 1523.0589520567355,
-      "centerY": 2159.5342019543973,
+      "centerX": 1513.428456479987,
+      "centerY": 1721.4093462778212,
       "bboxCenterX": 1503.5,
       "bboxCenterY": 1805,
       "width": 3000,
@@ -34,104 +34,104 @@
       "contentHeight": 2221
     },
     "/maquina-escrever/imagens/BLOG.png": {
-      "centerX": 1519.2749818585394,
-      "centerY": 2710.0554488410808,
-      "bboxCenterX": 1528,
+      "centerX": 1392.5573431734317,
+      "centerY": 2711.111291512915,
+      "bboxCenterX": 1392,
       "bboxCenterY": 2710,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 367,
+      "contentWidth": 95,
       "contentHeight": 95
     },
     "maquina-escrever/imagens/BLOG.png": {
-      "centerX": 1519.2749818585394,
-      "centerY": 2710.0554488410808,
-      "bboxCenterX": 1528,
+      "centerX": 1392.5573431734317,
+      "centerY": 2711.111291512915,
+      "bboxCenterX": 1392,
       "bboxCenterY": 2710,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 367,
+      "contentWidth": 95,
       "contentHeight": 95
     },
     "/maquina-escrever/imagens/SUBSTACK.png": {
-      "centerX": 1517.4711049146044,
-      "centerY": 2158.995712791914,
-      "bboxCenterX": 1520.5,
+      "centerX": 1517.3496963023479,
+      "centerY": 2158.985010478457,
+      "bboxCenterX": 1521,
       "bboxCenterY": 2155,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 482,
+      "contentWidth": 481,
       "contentHeight": 91
     },
     "maquina-escrever/imagens/SUBSTACK.png": {
-      "centerX": 1517.4711049146044,
-      "centerY": 2158.995712791914,
-      "bboxCenterX": 1520.5,
+      "centerX": 1517.3496963023479,
+      "centerY": 2158.985010478457,
+      "bboxCenterX": 1521,
       "bboxCenterY": 2155,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 482,
+      "contentWidth": 481,
       "contentHeight": 91
     },
     "/maquina-escrever/imagens/ELA N VAI QUEBRAR.png": {
-      "centerX": 1548.0743820878163,
-      "centerY": 1375.6786856644374,
-      "bboxCenterX": 1553,
-      "bboxCenterY": 1376,
+      "centerX": 1174.3828232069438,
+      "centerY": 1374.8136135221562,
+      "bboxCenterX": 1178.5,
+      "bboxCenterY": 1374,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 893,
-      "contentHeight": 57
+      "contentWidth": 144,
+      "contentHeight": 35
     },
     "maquina-escrever/imagens/ELA N VAI QUEBRAR.png": {
-      "centerX": 1548.0743820878163,
-      "centerY": 1375.6786856644374,
-      "bboxCenterX": 1553,
-      "bboxCenterY": 1376,
+      "centerX": 1174.3828232069438,
+      "centerY": 1374.8136135221562,
+      "bboxCenterX": 1178.5,
+      "bboxCenterY": 1374,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 893,
-      "contentHeight": 57
+      "contentWidth": 144,
+      "contentHeight": 35
     },
     "/maquina-escrever/imagens/MORAMOS NAS CHEGADAS.png": {
-      "centerX": 1545.5891446336386,
-      "centerY": 1172.7757907646674,
-      "bboxCenterX": 1519,
-      "bboxCenterY": 1172,
+      "centerX": 1081.3828232069438,
+      "centerY": 1131.8136135221562,
+      "bboxCenterX": 1085.5,
+      "bboxCenterY": 1131,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 1011,
-      "contentHeight": 131
+      "contentWidth": 144,
+      "contentHeight": 35
     },
     "maquina-escrever/imagens/MORAMOS NAS CHEGADAS.png": {
-      "centerX": 1545.5891446336386,
-      "centerY": 1172.7757907646674,
-      "bboxCenterX": 1519,
-      "bboxCenterY": 1172,
+      "centerX": 1081.3828232069438,
+      "centerY": 1131.8136135221562,
+      "bboxCenterX": 1085.5,
+      "bboxCenterY": 1131,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 1011,
-      "contentHeight": 131
+      "contentWidth": 144,
+      "contentHeight": 35
     },
     "/maquina-escrever/imagens/OPUSCULO.png": {
-      "centerX": 1544.3053662282807,
-      "centerY": 977.4596332917347,
-      "bboxCenterX": 1552,
-      "bboxCenterY": 975,
+      "centerX": 1335.3828232069438,
+      "centerY": 978.8136135221563,
+      "bboxCenterX": 1339.5,
+      "bboxCenterY": 978,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 569,
-      "contentHeight": 61
+      "contentWidth": 144,
+      "contentHeight": 35
     },
     "maquina-escrever/imagens/OPUSCULO.png": {
-      "centerX": 1544.3053662282807,
-      "centerY": 977.4596332917347,
-      "bboxCenterX": 1552,
-      "bboxCenterY": 975,
+      "centerX": 1335.3828232069438,
+      "centerY": 978.8136135221563,
+      "bboxCenterX": 1339.5,
+      "bboxCenterY": 978,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 569,
-      "contentHeight": 61
+      "contentWidth": 144,
+      "contentHeight": 35
     }
   },
   "overlayImages": [

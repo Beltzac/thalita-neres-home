@@ -18,7 +18,7 @@ export const overlayImageSchema = z.object({
   description: z.string().optional(),
   arrowStartOffset: z.number().optional(),
   arrowEndOffset: z.number().optional(),
-  labelSide: z.enum(['left', 'right']).optional(),
+  labelSide: z.enum(['left', 'right', 'top', 'bottom']).optional(),
 });
 
 export const sceneConfigSchema = z.object({
@@ -37,6 +37,15 @@ export const sceneConfigSchema = z.object({
   labelMaxDistanceFromSource: z.number().nullable().optional(),
   instructionText: z.string().nullable().optional(),
   showArrow: z.boolean().default(false),
+  spiralSearch: z.object({
+    enabled: z.boolean().default(false),
+    preferredQuadrants: z.array(z.string()).optional(),
+    minDistance: z.number().default(60),
+    maxDistance: z.number().default(500),
+    angleStep: z.number().default(20),
+    radiusStep: z.number().default(14),
+    padding: z.number().default(14),
+  }).optional(),
   precomputedCentersByUrl: z.record(z.string(), centerDataSchema).default({}),
   overlayImages: z.array(overlayImageSchema).default([]),
 });

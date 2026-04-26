@@ -11,186 +11,194 @@
   "labelMaxDistanceFromSource": 520,
   "instructionText": "Site inspirado em jogos indies dos anos 2010.\nAqui se navega com o mouse, não com pressa.\nMelhor visto no computador.\nPasse por cima. Veja o que acontece.",
   "showArrow": true,
+  "spiralSearch": {
+    "enabled": true,
+    "minDistance": 400,
+    "maxDistance": 500,
+    "angleStep": 15,
+    "radiusStep": 10,
+    "padding": 20
+  },
   "precomputedCentersByUrl": {
     "/home/imagens/base.png": {
-      "centerX": 1491.8787593220952,
-      "centerY": 1958.447764654168,
-      "bboxCenterX": 1521,
-      "bboxCenterY": 1810.5,
+      "centerX": 1695.3182158026184,
+      "centerY": 1768.0407314318438,
+      "bboxCenterX": 1595.5,
+      "bboxCenterY": 1643,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 2813,
-      "contentHeight": 1898
+      "contentWidth": 1396,
+      "contentHeight": 1563
     },
     "home/imagens/base.png": {
-      "centerX": 1491.8787593220952,
-      "centerY": 1958.447764654168,
-      "bboxCenterX": 1521,
-      "bboxCenterY": 1810.5,
+      "centerX": 1695.3182158026184,
+      "centerY": 1768.0407314318438,
+      "bboxCenterX": 1595.5,
+      "bboxCenterY": 1643,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 2813,
-      "contentHeight": 1898
+      "contentWidth": 1396,
+      "contentHeight": 1563
     },
     "/home/imagens/arquitetura.png": {
-      "centerX": 1485.1601967049653,
-      "centerY": 1936.1135661461992,
+      "centerX": 1487.4851347166305,
+      "centerY": 1970.832694094385,
       "bboxCenterX": 1443,
-      "bboxCenterY": 1894,
+      "bboxCenterY": 1893.5,
       "width": 3000,
       "height": 3000,
       "contentWidth": 1091,
-      "contentHeight": 1063
+      "contentHeight": 1062
     },
     "home/imagens/arquitetura.png": {
-      "centerX": 1485.1601967049653,
-      "centerY": 1936.1135661461992,
+      "centerX": 1487.4851347166305,
+      "centerY": 1970.832694094385,
       "bboxCenterX": 1443,
-      "bboxCenterY": 1894,
+      "bboxCenterY": 1893.5,
       "width": 3000,
       "height": 3000,
       "contentWidth": 1091,
-      "contentHeight": 1063
+      "contentHeight": 1062
     },
     "/home/imagens/camera.png": {
-      "centerX": 528.3096606786427,
-      "centerY": 1695.7314171656687,
+      "centerX": 521.6467069312625,
+      "centerY": 1687.0995110727638,
       "bboxCenterX": 524,
-      "bboxCenterY": 1699.5,
+      "bboxCenterY": 1699,
       "width": 3000,
       "height": 3000,
       "contentWidth": 331,
-      "contentHeight": 236
+      "contentHeight": 235
     },
     "home/imagens/camera.png": {
-      "centerX": 528.3096606786427,
-      "centerY": 1695.7314171656687,
+      "centerX": 521.6467069312625,
+      "centerY": 1687.0995110727638,
       "bboxCenterX": 524,
-      "bboxCenterY": 1699.5,
+      "bboxCenterY": 1699,
       "width": 3000,
       "height": 3000,
       "contentWidth": 331,
-      "contentHeight": 236
+      "contentHeight": 235
     },
     "/home/imagens/desenho.png": {
-      "centerX": 2471.880391652334,
-      "centerY": 2506.325158109993,
-      "bboxCenterX": 1725.5,
-      "bboxCenterY": 2390.5,
+      "centerX": 2395.5253171924105,
+      "centerY": 2513.1969037364684,
+      "bboxCenterX": 2412.5,
+      "bboxCenterY": 2492.5,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 2404,
-      "contentHeight": 738
+      "contentWidth": 1030,
+      "contentHeight": 534
     },
     "home/imagens/desenho.png": {
-      "centerX": 2471.880391652334,
-      "centerY": 2506.325158109993,
-      "bboxCenterX": 1725.5,
-      "bboxCenterY": 2390.5,
+      "centerX": 2395.5253171924105,
+      "centerY": 2513.1969037364684,
+      "bboxCenterX": 2412.5,
+      "bboxCenterY": 2492.5,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 2404,
-      "contentHeight": 738
+      "contentWidth": 1030,
+      "contentHeight": 534
     },
     "/home/imagens/expo.png": {
-      "centerX": 1156.9078077314343,
-      "centerY": 1428.7547049847406,
-      "bboxCenterX": 1159.5,
-      "bboxCenterY": 1430,
+      "centerX": 1156.7490656350403,
+      "centerY": 1428.498393547964,
+      "bboxCenterX": 1159,
+      "bboxCenterY": 1429.5,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 172,
-      "contentHeight": 135
+      "contentWidth": 171,
+      "contentHeight": 134
     },
     "home/imagens/expo.png": {
-      "centerX": 1156.9078077314343,
-      "centerY": 1428.7547049847406,
-      "bboxCenterX": 1159.5,
-      "bboxCenterY": 1430,
+      "centerX": 1156.7490656350403,
+      "centerY": 1428.498393547964,
+      "bboxCenterX": 1159,
+      "bboxCenterY": 1429.5,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 172,
-      "contentHeight": 135
+      "contentWidth": 171,
+      "contentHeight": 134
     },
     "/home/imagens/fone.png": {
-      "centerX": 2063.289977046672,
-      "centerY": 1376.321364388534,
+      "centerX": 2066.0314008611317,
+      "centerY": 1379.0998129865611,
       "bboxCenterX": 1978,
-      "bboxCenterY": 1412.5,
+      "bboxCenterY": 1412,
       "width": 3000,
       "height": 3000,
       "contentWidth": 631,
-      "contentHeight": 1102
+      "contentHeight": 1101
     },
     "home/imagens/fone.png": {
-      "centerX": 2063.289977046672,
-      "centerY": 1376.321364388534,
+      "centerX": 2066.0314008611317,
+      "centerY": 1379.0998129865611,
       "bboxCenterX": 1978,
-      "bboxCenterY": 1412.5,
+      "bboxCenterY": 1412,
       "width": 3000,
       "height": 3000,
       "contentWidth": 631,
-      "contentHeight": 1102
+      "contentHeight": 1101
     },
     "/home/imagens/livros.png": {
-      "centerX": 511.2009772916124,
-      "centerY": 1974.7309223499647,
-      "bboxCenterX": 532,
-      "bboxCenterY": 1956.5,
+      "centerX": 554.3269767076476,
+      "centerY": 1940.414077536431,
+      "bboxCenterX": 544,
+      "bboxCenterY": 1927,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 835,
-      "contentHeight": 532
+      "contentWidth": 811,
+      "contentHeight": 471
     },
     "home/imagens/livros.png": {
-      "centerX": 511.2009772916124,
-      "centerY": 1974.7309223499647,
-      "bboxCenterX": 532,
-      "bboxCenterY": 1956.5,
+      "centerX": 554.3269767076476,
+      "centerY": 1940.414077536431,
+      "bboxCenterX": 544,
+      "bboxCenterY": 1927,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 835,
-      "contentHeight": 532
+      "contentWidth": 811,
+      "contentHeight": 471
     },
     "/home/imagens/sobre.png": {
-      "centerX": 1847.4779774088393,
-      "centerY": 1823.971344098249,
-      "bboxCenterX": 1842,
-      "bboxCenterY": 1822.5,
+      "centerX": 1847.5238774055595,
+      "centerY": 1823.973182466144,
+      "bboxCenterX": 1843.5,
+      "bboxCenterY": 1824,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 161,
-      "contentHeight": 138
+      "contentWidth": 146,
+      "contentHeight": 105
     },
     "home/imagens/sobre.png": {
-      "centerX": 1847.4779774088393,
-      "centerY": 1823.971344098249,
-      "bboxCenterX": 1842,
-      "bboxCenterY": 1822.5,
+      "centerX": 1847.5238774055595,
+      "centerY": 1823.973182466144,
+      "bboxCenterX": 1843.5,
+      "bboxCenterY": 1824,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 161,
-      "contentHeight": 138
+      "contentWidth": 146,
+      "contentHeight": 105
     },
     "/home/imagens/video.png": {
-      "centerX": 1858.8244060171517,
-      "centerY": 1615.5856178827498,
-      "bboxCenterX": 1862.5,
-      "bboxCenterY": 1608.5,
+      "centerX": 1859.0644219206322,
+      "centerY": 1616.3740766191377,
+      "bboxCenterX": 1859,
+      "bboxCenterY": 1616.5,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 164,
-      "contentHeight": 152
+      "contentWidth": 127,
+      "contentHeight": 112
     },
     "home/imagens/video.png": {
-      "centerX": 1858.8244060171517,
-      "centerY": 1615.5856178827498,
-      "bboxCenterX": 1862.5,
-      "bboxCenterY": 1608.5,
+      "centerX": 1859.0644219206322,
+      "centerY": 1616.3740766191377,
+      "bboxCenterX": 1859,
+      "bboxCenterY": 1616.5,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 164,
-      "contentHeight": 152
+      "contentWidth": 127,
+      "contentHeight": 112
     }
   },
   "overlayImages": [
@@ -199,21 +207,24 @@
       "arquivo": "/home/imagens/arquitetura.png",
       "urlLink": "/portfolio-arquitetura",
       "arrowStartOffset": 36,
-      "arrowEndOffset": 44
+      "arrowEndOffset": 44,
+      "labelSide": "top"
     },
     {
       "nomeImagem": "Fotografias",
       "arquivo": "/home/imagens/camera.png",
       "urlLink": "/fotografia",
       "arrowStartOffset": 28,
-      "arrowEndOffset": 40
+      "arrowEndOffset": 40,
+      "labelSide": "top"
     },
     {
       "nomeImagem": "Ilustrações",
       "arquivo": "/home/imagens/desenho.png",
       "urlLink": "/ilustracao",
       "arrowStartOffset": 42,
-      "arrowEndOffset": 48
+      "arrowEndOffset": 48,
+      "labelSide": "top"
     },
     {
       "nomeImagem": "Exposições",
@@ -221,21 +232,23 @@
       "urlLink": "/nenhuma-linha-e-inocente",
       "arrowStartOffset": 26,
       "arrowEndOffset": 36,
-      "labelSide": "left"
+      "labelSide": "top"
     },
     {
       "nomeImagem": "Podcast",
       "arquivo": "/home/imagens/fone.png",
       "urlLink": "/espera",
       "arrowStartOffset": 34,
-      "arrowEndOffset": 44
+      "arrowEndOffset": 44,
+      "labelSide": "right"
     },
     {
       "nomeImagem": "Meus Livros",
       "arquivo": "/home/imagens/livros.png",
       "urlLink": "/meuslivros",
       "arrowStartOffset": 30,
-      "arrowEndOffset": 42
+      "arrowEndOffset": 42,
+      "labelSide": "left"
     },
     {
       "nomeImagem": "Sobre",
