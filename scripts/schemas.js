@@ -18,7 +18,7 @@ export const overlayImageSchema = z.object({
   description: z.string().optional(),
   arrowStartOffset: z.number().optional(),
   arrowEndOffset: z.number().optional(),
-  labelSide: z.enum(['left', 'right', 'top', 'bottom']).optional(),
+  labelSide: z.enum(['left', 'right', 'top', 'bottom', 'top-left', 'top-right', 'bottom-left', 'bottom-right']).optional(),
 });
 
 export const sceneConfigSchema = z.object({

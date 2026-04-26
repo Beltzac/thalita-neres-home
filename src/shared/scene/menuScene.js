@@ -417,6 +417,10 @@ export function initMenuScene(config) {
     if (labelSide === 'left') {return ['left', 'top', 'bottom', 'right'];}
     if (labelSide === 'top') {return ['top', 'right', 'left', 'bottom'];}
     if (labelSide === 'bottom') {return ['bottom', 'right', 'left', 'top'];}
+    if (labelSide === 'top-right') {return ['top-right', 'right', 'top', 'left', 'bottom'];}
+    if (labelSide === 'top-left') {return ['top-left', 'left', 'top', 'right', 'bottom'];}
+    if (labelSide === 'bottom-right') {return ['bottom-right', 'right', 'bottom', 'left', 'top'];}
+    if (labelSide === 'bottom-left') {return ['bottom-left', 'left', 'bottom', 'right', 'top'];}
     return null;
   }
 
