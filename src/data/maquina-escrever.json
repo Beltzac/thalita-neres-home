@@ -7,7 +7,7 @@
   "ACTIVE_RADIUS": 500,
   "labelStyle": "side",
   "labelMaxDistanceFromSource": 520,
-  "labelFontSize": "6vh",
+  "labelFontSize": "5vh",
   "showArrow": true,
   "precomputedCentersByUrl": {
     "/maquina-escrever/imagens/MAQUINA DE ESCREVER.png": {
