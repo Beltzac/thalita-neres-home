@@ -48,7 +48,30 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 1091,
-      "contentHeight": 1062
+      "contentHeight": 1062,
+      "hitCenterX": 1485.5768306904147,
+      "hitCenterY": 1927.7657653168014,
+      "hitBboxCenterX": 1443,
+      "hitBboxCenterY": 1893.5,
+      "hitContentWidth": 1091,
+      "hitContentHeight": 1062,
+      "hitAnchors": [
+        {
+          "x": 1487.4851347166305,
+          "y": 1970.832694094385,
+          "count": 83954
+        },
+        {
+          "x": 1452.2027710355987,
+          "y": 1719.5413632686084,
+          "count": 9888
+        },
+        {
+          "x": 1511.7431037139775,
+          "y": 1687.8646940977037,
+          "count": 6489
+        }
+      ]
     },
     "home/imagens/arquitetura.png": {
       "centerX": 1487.4851347166305,
@@ -58,7 +81,30 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 1091,
-      "contentHeight": 1062
+      "contentHeight": 1062,
+      "hitCenterX": 1485.5768306904147,
+      "hitCenterY": 1927.7657653168014,
+      "hitBboxCenterX": 1443,
+      "hitBboxCenterY": 1893.5,
+      "hitContentWidth": 1091,
+      "hitContentHeight": 1062,
+      "hitAnchors": [
+        {
+          "x": 1487.4851347166305,
+          "y": 1970.832694094385,
+          "count": 83954
+        },
+        {
+          "x": 1452.2027710355987,
+          "y": 1719.5413632686084,
+          "count": 9888
+        },
+        {
+          "x": 1511.7431037139775,
+          "y": 1687.8646940977037,
+          "count": 6489
+        }
+      ]
     },
     "/home/imagens/camera.png": {
       "centerX": 521.6467069312625,
@@ -68,7 +114,25 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 331,
-      "contentHeight": 235
+      "contentHeight": 235,
+      "hitCenterX": 530.800680408245,
+      "hitCenterY": 1694.7260356213728,
+      "hitBboxCenterX": 524,
+      "hitBboxCenterY": 1699,
+      "hitContentWidth": 331,
+      "hitContentHeight": 235,
+      "hitAnchors": [
+        {
+          "x": 521.6467069312625,
+          "y": 1687.0995110727638,
+          "count": 17385
+        },
+        {
+          "x": 591.9385324625432,
+          "y": 1745.6623127160967,
+          "count": 2603
+        }
+      ]
     },
     "home/imagens/camera.png": {
       "centerX": 521.6467069312625,
@@ -78,7 +142,25 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 331,
-      "contentHeight": 235
+      "contentHeight": 235,
+      "hitCenterX": 530.800680408245,
+      "hitCenterY": 1694.7260356213728,
+      "hitBboxCenterX": 524,
+      "hitBboxCenterY": 1699,
+      "hitContentWidth": 331,
+      "hitContentHeight": 235,
+      "hitAnchors": [
+        {
+          "x": 521.6467069312625,
+          "y": 1687.0995110727638,
+          "count": 17385
+        },
+        {
+          "x": 591.9385324625432,
+          "y": 1745.6623127160967,
+          "count": 2603
+        }
+      ]
     },
     "/home/imagens/desenho.png": {
       "centerX": 2395.5253171924105,
@@ -88,7 +170,30 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 1030,
-      "contentHeight": 534
+      "contentHeight": 534,
+      "hitCenterX": 2467.98746653687,
+      "hitCenterY": 2509.313597329903,
+      "hitBboxCenterX": 2412.5,
+      "hitBboxCenterY": 2492.5,
+      "hitContentWidth": 1030,
+      "hitContentHeight": 534,
+      "hitAnchors": [
+        {
+          "x": 2395.5253171924105,
+          "y": 2513.1969037364684,
+          "count": 42955
+        },
+        {
+          "x": 2676.6827176781003,
+          "y": 2515.4448383905014,
+          "count": 12128
+        },
+        {
+          "x": 2706.0372492836677,
+          "y": 2410.595988538682,
+          "count": 2443
+        }
+      ]
     },
     "home/imagens/desenho.png": {
       "centerX": 2395.5253171924105,
@@ -98,7 +203,30 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 1030,
-      "contentHeight": 534
+      "contentHeight": 534,
+      "hitCenterX": 2467.98746653687,
+      "hitCenterY": 2509.313597329903,
+      "hitBboxCenterX": 2412.5,
+      "hitBboxCenterY": 2492.5,
+      "hitContentWidth": 1030,
+      "hitContentHeight": 534,
+      "hitAnchors": [
+        {
+          "x": 2395.5253171924105,
+          "y": 2513.1969037364684,
+          "count": 42955
+        },
+        {
+          "x": 2676.6827176781003,
+          "y": 2515.4448383905014,
+          "count": 12128
+        },
+        {
+          "x": 2706.0372492836677,
+          "y": 2410.595988538682,
+          "count": 2443
+        }
+      ]
     },
     "/home/imagens/expo.png": {
       "centerX": 1156.7490656350403,
@@ -108,7 +236,20 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 171,
-      "contentHeight": 134
+      "contentHeight": 134,
+      "hitCenterX": 1156.7490656350403,
+      "hitCenterY": 1428.498393547964,
+      "hitBboxCenterX": 1159,
+      "hitBboxCenterY": 1429.5,
+      "hitContentWidth": 171,
+      "hitContentHeight": 134,
+      "hitAnchors": [
+        {
+          "x": 1156.7490656350403,
+          "y": 1428.498393547964,
+          "count": 15251
+        }
+      ]
     },
     "home/imagens/expo.png": {
       "centerX": 1156.7490656350403,
@@ -118,7 +259,20 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 171,
-      "contentHeight": 134
+      "contentHeight": 134,
+      "hitCenterX": 1156.7490656350403,
+      "hitCenterY": 1428.498393547964,
+      "hitBboxCenterX": 1159,
+      "hitBboxCenterY": 1429.5,
+      "hitContentWidth": 171,
+      "hitContentHeight": 134,
+      "hitAnchors": [
+        {
+          "x": 1156.7490656350403,
+          "y": 1428.498393547964,
+          "count": 15251
+        }
+      ]
     },
     "/home/imagens/fone.png": {
       "centerX": 2066.0314008611317,
@@ -128,7 +282,20 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 631,
-      "contentHeight": 1101
+      "contentHeight": 1101,
+      "hitCenterX": 2066.0314008611317,
+      "hitCenterY": 1379.0998129865611,
+      "hitBboxCenterX": 1978,
+      "hitBboxCenterY": 1412,
+      "hitContentWidth": 631,
+      "hitContentHeight": 1101,
+      "hitAnchors": [
+        {
+          "x": 2066.0314008611317,
+          "y": 1379.0998129865611,
+          "count": 45986
+        }
+      ]
     },
     "home/imagens/fone.png": {
       "centerX": 2066.0314008611317,
@@ -138,7 +305,20 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 631,
-      "contentHeight": 1101
+      "contentHeight": 1101,
+      "hitCenterX": 2066.0314008611317,
+      "hitCenterY": 1379.0998129865611,
+      "hitBboxCenterX": 1978,
+      "hitBboxCenterY": 1412,
+      "hitContentWidth": 631,
+      "hitContentHeight": 1101,
+      "hitAnchors": [
+        {
+          "x": 2066.0314008611317,
+          "y": 1379.0998129865611,
+          "count": 45986
+        }
+      ]
     },
     "/home/imagens/livros.png": {
       "centerX": 554.3269767076476,
@@ -148,7 +328,25 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 811,
-      "contentHeight": 471
+      "contentHeight": 471,
+      "hitCenterX": 530.4904106325408,
+      "hitCenterY": 1965.1567142589724,
+      "hitBboxCenterX": 533,
+      "hitBboxCenterY": 1957,
+      "hitContentWidth": 833,
+      "hitContentHeight": 531,
+      "hitAnchors": [
+        {
+          "x": 554.3269767076476,
+          "y": 1940.414077536431,
+          "count": 50918
+        },
+        {
+          "x": 375.77909496494584,
+          "y": 2125.748884639898,
+          "count": 7845
+        }
+      ]
     },
     "home/imagens/livros.png": {
       "centerX": 554.3269767076476,
@@ -158,7 +356,25 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 811,
-      "contentHeight": 471
+      "contentHeight": 471,
+      "hitCenterX": 530.4904106325408,
+      "hitCenterY": 1965.1567142589724,
+      "hitBboxCenterX": 533,
+      "hitBboxCenterY": 1957,
+      "hitContentWidth": 833,
+      "hitContentHeight": 531,
+      "hitAnchors": [
+        {
+          "x": 554.3269767076476,
+          "y": 1940.414077536431,
+          "count": 50918
+        },
+        {
+          "x": 375.77909496494584,
+          "y": 2125.748884639898,
+          "count": 7845
+        }
+      ]
     },
     "/home/imagens/sobre.png": {
       "centerX": 1847.5238774055595,
@@ -168,7 +384,25 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 146,
-      "contentHeight": 105
+      "contentHeight": 105,
+      "hitCenterX": 1847.565777153558,
+      "hitCenterY": 1823.9757334581773,
+      "hitBboxCenterX": 1842,
+      "hitBboxCenterY": 1822.5,
+      "hitContentWidth": 161,
+      "hitContentHeight": 138,
+      "hitAnchors": [
+        {
+          "x": 1847.5238774055595,
+          "y": 1823.973182466144,
+          "count": 11224
+        },
+        {
+          "x": 1847.8611809045226,
+          "y": 1823.9937185929648,
+          "count": 1592
+        }
+      ]
     },
     "home/imagens/sobre.png": {
       "centerX": 1847.5238774055595,
@@ -178,7 +412,25 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 146,
-      "contentHeight": 105
+      "contentHeight": 105,
+      "hitCenterX": 1847.565777153558,
+      "hitCenterY": 1823.9757334581773,
+      "hitBboxCenterX": 1842,
+      "hitBboxCenterY": 1822.5,
+      "hitContentWidth": 161,
+      "hitContentHeight": 138,
+      "hitAnchors": [
+        {
+          "x": 1847.5238774055595,
+          "y": 1823.973182466144,
+          "count": 11224
+        },
+        {
+          "x": 1847.8611809045226,
+          "y": 1823.9937185929648,
+          "count": 1592
+        }
+      ]
     },
     "/home/imagens/video.png": {
       "centerX": 1859.0644219206322,
@@ -188,7 +440,25 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 127,
-      "contentHeight": 112
+      "contentHeight": 112,
+      "hitCenterX": 1858.8547156227503,
+      "hitCenterY": 1615.7591792656588,
+      "hitBboxCenterX": 1862.5,
+      "hitBboxCenterY": 1608,
+      "hitContentWidth": 164,
+      "hitContentHeight": 151,
+      "hitAnchors": [
+        {
+          "x": 1859.0644219206322,
+          "y": 1616.3740766191377,
+          "count": 11642
+        },
+        {
+          "x": 1857.7686832740214,
+          "y": 1612.5747330960853,
+          "count": 2248
+        }
+      ]
     },
     "home/imagens/video.png": {
       "centerX": 1859.0644219206322,
@@ -198,7 +468,25 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 127,
-      "contentHeight": 112
+      "contentHeight": 112,
+      "hitCenterX": 1858.8547156227503,
+      "hitCenterY": 1615.7591792656588,
+      "hitBboxCenterX": 1862.5,
+      "hitBboxCenterY": 1608,
+      "hitContentWidth": 164,
+      "hitContentHeight": 151,
+      "hitAnchors": [
+        {
+          "x": 1859.0644219206322,
+          "y": 1616.3740766191377,
+          "count": 11642
+        },
+        {
+          "x": 1857.7686832740214,
+          "y": 1612.5747330960853,
+          "count": 2248
+        }
+      ]
     }
   },
   "overlayImages": [

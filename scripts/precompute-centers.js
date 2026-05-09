@@ -107,7 +107,47 @@ async function loadImageBuffer(imageKey, pageDir) {
   throw new Error(`Unable to resolve local image path for key: ${imageKey}`);
 }
 
-async function computeCenter(buffer) {
+function summarizeComponents(components, width, height) {
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
+  let totalX = 0;
+  let totalY = 0;
+  let count = 0;
+
+  for (const component of components) {
+    if (component.minX < minX) {minX = component.minX;}
+    if (component.maxX > maxX) {maxX = component.maxX;}
+    if (component.minY < minY) {minY = component.minY;}
+    if (component.maxY > maxY) {maxY = component.maxY;}
+    totalX += component.totalX;
+    totalY += component.totalY;
+    count += component.count;
+  }
+
+  if (!count) {
+    return {
+      centerX: width / 2,
+      centerY: height / 2,
+      bboxCenterX: width / 2,
+      bboxCenterY: height / 2,
+      contentWidth: 0,
+      contentHeight: 0,
+    };
+  }
+
+  return {
+    centerX: totalX / count,
+    centerY: totalY / count,
+    bboxCenterX: minX + ((maxX - minX) / 2),
+    bboxCenterY: minY + ((maxY - minY) / 2),
+    contentWidth: (maxX - minX) + 1,
+    contentHeight: (maxY - minY) + 1,
+  };
+}
+
+async function computeCenter(buffer, { multiAnchor = false } = {}) {
   const { data, info } = await sharp(buffer)
     .ensureAlpha()
     .raw()
@@ -115,7 +155,6 @@ async function computeCenter(buffer) {
 
   const { width, height, channels } = info;
 
-  // Build binary grid of non-transparent pixels
   const grid = new Uint8Array(width * height);
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
@@ -126,7 +165,6 @@ async function computeCenter(buffer) {
     }
   }
 
-  // Flood-fill to find connected components
   const visited = new Uint8Array(width * height);
   const components = [];
 
@@ -134,18 +172,22 @@ async function computeCenter(buffer) {
     for (let x = 0; x < width; x++) {
       const idx = y * width + x;
       if (grid[idx] === 1 && !visited[idx]) {
-        // BFS flood fill
         const queue = [idx];
+        let queueIndex = 0;
         visited[idx] = 1;
-        const pixels = [];
-        let minX = x, maxX = x, minY = y, maxY = y;
-        let totalX = 0, totalY = 0, count = 0;
 
-        while (queue.length > 0) {
-          const cur = queue.shift();
+        let minX = x;
+        let maxX = x;
+        let minY = y;
+        let maxY = y;
+        let totalX = 0;
+        let totalY = 0;
+        let count = 0;
+
+        while (queueIndex < queue.length) {
+          const cur = queue[queueIndex++];
           const cx = cur % width;
           const cy = (cur - cx) / width;
-          pixels.push(cur);
           totalX += cx;
           totalY += cy;
           count++;
@@ -154,7 +196,6 @@ async function computeCenter(buffer) {
           if (cy < minY) {minY = cy;}
           if (cy > maxY) {maxY = cy;}
 
-          // 4-connected neighbors
           if (cx > 0 && grid[cur - 1] === 1 && !visited[cur - 1]) {
             visited[cur - 1] = 1;
             queue.push(cur - 1);
@@ -180,28 +221,62 @@ async function computeCenter(buffer) {
 
   if (components.length === 0) {
     return {
-      centerX: width / 2, centerY: height / 2,
-      bboxCenterX: width / 2, bboxCenterY: height / 2,
-      width, height, contentWidth: 0, contentHeight: 0
+      centerX: width / 2,
+      centerY: height / 2,
+      bboxCenterX: width / 2,
+      bboxCenterY: height / 2,
+      width,
+      height,
+      contentWidth: 0,
+      contentHeight: 0,
+      ...(multiAnchor ? {
+        hitCenterX: width / 2,
+        hitCenterY: height / 2,
+        hitBboxCenterX: width / 2,
+        hitBboxCenterY: height / 2,
+        hitContentWidth: 0,
+        hitContentHeight: 0,
+        hitAnchors: [{ x: width / 2, y: height / 2, count: 0 }],
+      } : {}),
     };
   }
 
-  // Find largest component by pixel count
   components.sort((a, b) => b.count - a.count);
   const main = components[0];
+  const mainSummary = summarizeComponents([main], width, height);
 
-  const centerX = main.totalX / main.count;
-  const centerY = main.totalY / main.count;
-
-  return {
-    centerX,
-    centerY,
-    bboxCenterX: main.minX + (main.maxX - main.minX) / 2,
-    bboxCenterY: main.minY + (main.maxY - main.minY) / 2,
+  const result = {
+    centerX: mainSummary.centerX,
+    centerY: mainSummary.centerY,
+    bboxCenterX: mainSummary.bboxCenterX,
+    bboxCenterY: mainSummary.bboxCenterY,
     width,
     height,
-    contentWidth: (main.maxX - main.minX) + 1,
-    contentHeight: (main.maxY - main.minY) + 1
+    contentWidth: mainSummary.contentWidth,
+    contentHeight: mainSummary.contentHeight,
+  };
+
+  if (!multiAnchor) {
+    return result;
+  }
+
+  const minClusterSize = main.count * 0.05;
+  const hitComponents = components.filter((component) => component.count >= minClusterSize);
+  const hitSummary = summarizeComponents(hitComponents, width, height);
+
+  return {
+    ...result,
+    hitCenterX: hitSummary.centerX,
+    hitCenterY: hitSummary.centerY,
+    hitBboxCenterX: hitSummary.bboxCenterX,
+    hitBboxCenterY: hitSummary.bboxCenterY,
+    hitContentWidth: hitSummary.contentWidth,
+    hitContentHeight: hitSummary.contentHeight,
+    hitAnchors: hitComponents.map((component) => ({
+      x: component.totalX / component.count,
+      y: component.totalY / component.count,
+      count: component.count,
+    })),
   };
 }
 
@@ -225,25 +300,31 @@ async function precomputeForConfig(fileName) {
   const imageKeys = [];
 
   if (config.baseImageFilename) {
-    imageKeys.push(resolveImageKey(baseUrl, config.baseImageFilename));
+    imageKeys.push({
+      imageKey: resolveImageKey(baseUrl, config.baseImageFilename),
+      multiAnchor: false,
+    });
   }
 
   if (Array.isArray(config.overlayImages)) {
     config.overlayImages.forEach((overlay) => {
       if (overlay?.arquivo) {
-        imageKeys.push(resolveImageKey(baseUrl, overlay.arquivo));
+        imageKeys.push({
+          imageKey: resolveImageKey(baseUrl, overlay.arquivo),
+          multiAnchor: true,
+        });
       }
     });
   }
 
   const precomputed = {};
 
-  for (const imageKey of imageKeys) {
+  for (const { imageKey, multiAnchor } of imageKeys) {
     if (!imageKey) {continue;}
     if (precomputed[imageKey]) {continue;}
 
     const buffer = await loadImageBuffer(imageKey, pageDir);
-    const centerData = await computeCenter(buffer);
+    const centerData = await computeCenter(buffer, { multiAnchor });
     precomputed[imageKey] = centerData;
 
     const normalized = normalizeKey(imageKey);

@@ -1,5 +1,11 @@
 import { z } from 'zod';
 
+const hitAnchorSchema = z.object({
+  x: z.number(),
+  y: z.number(),
+  count: z.number(),
+});
+
 export const centerDataSchema = z.object({
   centerX: z.number(),
   centerY: z.number(),
@@ -9,6 +15,13 @@ export const centerDataSchema = z.object({
   height: z.number(),
   contentWidth: z.number(),
   contentHeight: z.number(),
+  hitCenterX: z.number().optional(),
+  hitCenterY: z.number().optional(),
+  hitBboxCenterX: z.number().optional(),
+  hitBboxCenterY: z.number().optional(),
+  hitContentWidth: z.number().optional(),
+  hitContentHeight: z.number().optional(),
+  hitAnchors: z.array(hitAnchorSchema).optional(),
 });
 
 export const overlayImageSchema = z.object({

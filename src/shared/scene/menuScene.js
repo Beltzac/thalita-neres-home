@@ -19,7 +19,7 @@ export function initMenuScene(config) {
     labelMaxDistanceFromSource = null,
     instructionText = null,
     showArrow = false,
-    debug = false,
+    debug = true,
     spiralSearch = {
       enabled: false,
       preferredQuadrants: ['right', 'top', 'bottom', 'left'],
@@ -126,6 +126,38 @@ export function initMenuScene(config) {
     return null;
   }
 
+  function getHitCenterX(preProcessed) {
+    return preProcessed.hitCenterX ?? preProcessed.centerX;
+  }
+
+  function getHitCenterY(preProcessed) {
+    return preProcessed.hitCenterY ?? preProcessed.centerY;
+  }
+
+  function getHitBboxCenterX(preProcessed) {
+    return preProcessed.hitBboxCenterX ?? preProcessed.bboxCenterX;
+  }
+
+  function getHitBboxCenterY(preProcessed) {
+    return preProcessed.hitBboxCenterY ?? preProcessed.bboxCenterY;
+  }
+
+  function getHitContentWidth(preProcessed) {
+    return preProcessed.hitContentWidth ?? preProcessed.contentWidth;
+  }
+
+  function getHitContentHeight(preProcessed) {
+    return preProcessed.hitContentHeight ?? preProcessed.contentHeight;
+  }
+
+  function getHitAnchors(preProcessed) {
+    if (Array.isArray(preProcessed.hitAnchors) && preProcessed.hitAnchors.length > 0) {
+      return preProcessed.hitAnchors;
+    }
+
+    return [{ x: getHitCenterX(preProcessed), y: getHitCenterY(preProcessed), count: 1 }];
+  }
+
   function preProcessOverlays(overlay) {
     const key = overlay.src || overlay.currentSrc || '';
     const precomputed = resolvePrecomputedCenter(key);
@@ -194,9 +226,17 @@ export function initMenuScene(config) {
 
     for (let i = 0; i < overlayElements.length; i++) {
       const preProcessed = preProcessedOverlays[i];
-      const dx = scaledX - preProcessed.centerX;
-      const dy = scaledY - preProcessed.centerY;
-      const distance = Math.hypot(dx, dy);
+      const anchors = getHitAnchors(preProcessed);
+      let distance = Infinity;
+
+      for (const anchor of anchors) {
+        const dx = scaledX - anchor.x;
+        const dy = scaledY - anchor.y;
+        const anchorDistance = Math.hypot(dx, dy);
+        if (anchorDistance < distance) {
+          distance = anchorDistance;
+        }
+      }
 
       if (distance < minDistance) {
         minDistance = distance;
@@ -287,18 +327,18 @@ export function initMenuScene(config) {
     const scaleX = boundingBox.width / refWidth;
     const scaleY = boundingBox.height / refHeight;
 
-    const bboxWidth = preProcessed.contentWidth - 1;
-    const bboxHeight = preProcessed.contentHeight - 1;
-    const bboxLeft = preProcessed.bboxCenterX - bboxWidth / 2;
-    const bboxTop = preProcessed.bboxCenterY - bboxHeight / 2;
+    const bboxWidth = getHitContentWidth(preProcessed) - 1;
+    const bboxHeight = getHitContentHeight(preProcessed) - 1;
+    const bboxLeft = getHitBboxCenterX(preProcessed) - bboxWidth / 2;
+    const bboxTop = getHitBboxCenterY(preProcessed) - bboxHeight / 2;
 
     const screenLeft = (bboxLeft * scaleX) + offsetX;
     const screenTop = (bboxTop * scaleY) + offsetY;
     const screenRight = ((bboxLeft + bboxWidth) * scaleX) + offsetX;
     const screenBottom = ((bboxTop + bboxHeight) * scaleY) + offsetY;
 
-    const screenCenterX = (preProcessed.centerX * scaleX) + offsetX;
-    const screenCenterY = (preProcessed.centerY * scaleY) + offsetY;
+    const screenCenterX = (getHitCenterX(preProcessed) * scaleX) + offsetX;
+    const screenCenterY = (getHitCenterY(preProcessed) * scaleY) + offsetY;
 
     return { x: screenCenterX, y: screenCenterY, leftX: screenLeft, rightX: screenRight, topY: screenTop, bottomY: screenBottom };
   }
@@ -533,11 +573,22 @@ export function initMenuScene(config) {
     }
     container.innerHTML = '';
 
+    const style = window.getComputedStyle(contentWrapper);
+    const matrix = new WebKitCSSMatrix(style.transform);
+    const offsetX = matrix.m41;
+    const offsetY = matrix.m42;
+    const boundingBox = baseImage.getBoundingClientRect();
+    const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
+    const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
+    const scaleX = boundingBox.width / refWidth;
+    const scaleY = boundingBox.height / refHeight;
+
     debugOverlayRects = [];
     preProcessedOverlays.forEach((preProcessed, index) => {
       if (!preProcessed) {return;}
       const coords = getScreenCoordinates(preProcessed);
       debugOverlayRects.push({
+        index,
         name: overlayImages[index]?.nomeImagem || `#${index}`,
         left: coords.leftX,
         top: coords.topY,
@@ -557,6 +608,15 @@ export function initMenuScene(config) {
       const centerDot = document.createElement('div');
       centerDot.style.cssText = `position:absolute;left:${r.centerX - 4}px;top:${r.centerY - 4}px;width:8px;height:8px;background:rgba(0,255,0,0.8);border-radius:50%;`;
       container.appendChild(centerDot);
+
+      const anchors = getHitAnchors(preProcessedOverlays[r.index]);
+      anchors.forEach((anchor) => {
+        const anchorDot = document.createElement('div');
+        const anchorX = (anchor.x * scaleX) + offsetX;
+        const anchorY = (anchor.y * scaleY) + offsetY;
+        anchorDot.style.cssText = `position:absolute;left:${anchorX - 2}px;top:${anchorY - 2}px;width:4px;height:4px;background:rgba(0,180,255,0.9);border-radius:50%;`;
+        container.appendChild(anchorDot);
+      });
 
       const nameLabel = document.createElement('div');
       nameLabel.style.cssText = `position:absolute;left:${r.left}px;top:${r.top - 12}px;color:rgba(0,255,0,0.9);font:bold 9px monospace;text-shadow:1px 1px 2px #000;white-space:nowrap;`;
@@ -1146,8 +1206,8 @@ export function initMenuScene(config) {
         const scaleX = boundingBox.width / refWidth;
         const scaleY = boundingBox.height / refHeight;
 
-        const centerX = (preProcessed.centerX * scaleX) + offsetX;
-        const centerY = (preProcessed.centerY * scaleY) + offsetY;
+        const centerX = (getHitCenterX(preProcessed) * scaleX) + offsetX;
+        const centerY = (getHitCenterY(preProcessed) * scaleY) + offsetY;
 
         preProcessed.screenCenter = { centerX, centerY };
       }

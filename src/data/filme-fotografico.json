@@ -43,7 +43,25 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 386,
-      "contentHeight": 392
+      "contentHeight": 392,
+      "hitCenterX": 1139.4518577906947,
+      "hitCenterY": 1529.4162929371382,
+      "hitBboxCenterX": 1130.5,
+      "hitBboxCenterY": 1530,
+      "hitContentWidth": 386,
+      "hitContentHeight": 399,
+      "hitAnchors": [
+        {
+          "x": 1143.213441498483,
+          "y": 1538.9679857538583,
+          "count": 75810
+        },
+        {
+          "x": 1068.4444721115538,
+          "y": 1349.10906374502,
+          "count": 4016
+        }
+      ]
     },
     "filme-fotografico/imagens/FANTASIA.png": {
       "centerX": 1143.213441498483,
@@ -53,7 +71,25 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 386,
-      "contentHeight": 392
+      "contentHeight": 392,
+      "hitCenterX": 1139.4518577906947,
+      "hitCenterY": 1529.4162929371382,
+      "hitBboxCenterX": 1130.5,
+      "hitBboxCenterY": 1530,
+      "hitContentWidth": 386,
+      "hitContentHeight": 399,
+      "hitAnchors": [
+        {
+          "x": 1143.213441498483,
+          "y": 1538.9679857538583,
+          "count": 75810
+        },
+        {
+          "x": 1068.4444721115538,
+          "y": 1349.10906374502,
+          "count": 4016
+        }
+      ]
     },
     "/filme-fotografico/imagens/CIDADE.png": {
       "centerX": 1508.944940792739,
@@ -63,7 +99,20 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 320,
-      "contentHeight": 315
+      "contentHeight": 315,
+      "hitCenterX": 1508.944940792739,
+      "hitCenterY": 1588.7399489470326,
+      "hitBboxCenterX": 1487.5,
+      "hitBboxCenterY": 1569,
+      "hitContentWidth": 320,
+      "hitContentHeight": 315,
+      "hitAnchors": [
+        {
+          "x": 1508.944940792739,
+          "y": 1588.7399489470326,
+          "count": 28206
+        }
+      ]
     },
     "filme-fotografico/imagens/CIDADE.png": {
       "centerX": 1508.944940792739,
@@ -73,7 +122,20 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 320,
-      "contentHeight": 315
+      "contentHeight": 315,
+      "hitCenterX": 1508.944940792739,
+      "hitCenterY": 1588.7399489470326,
+      "hitBboxCenterX": 1487.5,
+      "hitBboxCenterY": 1569,
+      "hitContentWidth": 320,
+      "hitContentHeight": 315,
+      "hitAnchors": [
+        {
+          "x": 1508.944940792739,
+          "y": 1588.7399489470326,
+          "count": 28206
+        }
+      ]
     },
     "/filme-fotografico/imagens/ROTINEIRO.png": {
       "centerX": 787.4767792954709,
@@ -83,7 +145,35 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 342,
-      "contentHeight": 382
+      "contentHeight": 382,
+      "hitCenterX": 777.3973037272007,
+      "hitCenterY": 1508.530841637072,
+      "hitBboxCenterX": 757.5,
+      "hitBboxCenterY": 1526,
+      "hitContentWidth": 354,
+      "hitContentHeight": 383,
+      "hitAnchors": [
+        {
+          "x": 787.4767792954709,
+          "y": 1475.7583992331656,
+          "count": 20865
+        },
+        {
+          "x": 890.1343519494204,
+          "y": 1618.1625395152791,
+          "count": 3796
+        },
+        {
+          "x": 630.4786760025462,
+          "y": 1548.0108211330362,
+          "count": 3142
+        },
+        {
+          "x": 630.1975,
+          "y": 1628.1883333333333,
+          "count": 1200
+        }
+      ]
     },
     "filme-fotografico/imagens/ROTINEIRO.png": {
       "centerX": 787.4767792954709,
@@ -93,7 +183,35 @@
       "width": 3000,
       "height": 3000,
       "contentWidth": 342,
-      "contentHeight": 382
+      "contentHeight": 382,
+      "hitCenterX": 777.3973037272007,
+      "hitCenterY": 1508.530841637072,
+      "hitBboxCenterX": 757.5,
+      "hitBboxCenterY": 1526,
+      "hitContentWidth": 354,
+      "hitContentHeight": 383,
+      "hitAnchors": [
+        {
+          "x": 787.4767792954709,
+          "y": 1475.7583992331656,
+          "count": 20865
+        },
+        {
+          "x": 890.1343519494204,
+          "y": 1618.1625395152791,
+          "count": 3796
+        },
+        {
+          "x": 630.4786760025462,
+          "y": 1548.0108211330362,
+          "count": 3142
+        },
+        {
+          "x": 630.1975,
+          "y": 1628.1883333333333,
+          "count": 1200
+        }
+      ]
     }
   },
   "overlayImages": [
