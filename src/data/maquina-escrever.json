@@ -138,28 +138,28 @@
     {
       "nomeImagem": "Blog de arquitetura",
       "arquivo": "/maquina-escrever/imagens/BLOG.png",
-      "urlLink": "/blog-arquitetura",
+      "urlLink": "https://www.thalitaneres.com.br/blog",
       "description": "Arquitetos, movimentos, direção.\nHistória e crítica da arquitetura em reflexão.",
       "arrowStartOffset": 28
     },
     {
       "nomeImagem": "Substack",
       "arquivo": "/maquina-escrever/imagens/SUBSTACK.png",
-      "urlLink": "/substack",
+      "urlLink": "https://substack.com/@thalitaneres",
       "description": "Textos livres, temas diversos.\nPensar curto, pensar disperso.",
       "arrowStartOffset": 26
     },
     {
       "nomeImagem": "Ela Não Vai Quebrar (2020)",
       "arquivo": "/maquina-escrever/imagens/ELA N VAI QUEBRAR.png",
-      "urlLink": "/ela-nao-vai-quebrar",
+      "urlLink": "https://www.amazon.com.br/Ela-N%C3%A3o-Quebrar-Thalita-Neres/dp/8593077382",
       "description": "Livro de poesia, corpo sensível.\nFragilidade como força visível.",
       "arrowStartOffset": 50
     },
     {
       "nomeImagem": "Moramos nas Chegadas e Também nas Partidas (2024)",
       "arquivo": "/maquina-escrever/imagens/MORAMOS NAS CHEGADAS.png",
-      "urlLink": "/moramos-nas-chegadas",
+      "urlLink": "https://www.amazon.com.br/Moramos-Nas-Chegadas-Tamb%C3%A9m-Partidas/dp/658596506X",
       "description": "Prosa em cartas, tempo suspenso.\nFicar e ir no mesmo gesto denso.",
       "arrowStartOffset": 50
     },

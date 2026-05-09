@@ -245,7 +245,7 @@
     {
       "nomeImagem": "Meus Livros",
       "arquivo": "/home/imagens/livros.png",
-      "urlLink": "/meuslivros",
+      "urlLink": "/meus-livros",
       "arrowStartOffset": 30,
       "arrowEndOffset": 42,
       "labelSide": "left"
@@ -261,7 +261,7 @@
     {
       "nomeImagem": "Vídeo",
       "arquivo": "/home/imagens/video.png",
-      "urlLink": "/espera",
+      "urlLink": "https://www.tiktok.com/@thneres1x",
       "arrowStartOffset": 28,
       "arrowEndOffset": 20,
       "labelSide": "right"
