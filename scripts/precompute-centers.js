@@ -147,7 +147,7 @@ function summarizeComponents(components, width, height) {
   };
 }
 
-async function computeCenter(buffer, { multiAnchor = false } = {}) {
+async function computeCenter(buffer, { multiAnchor = false, useAllComponents = false } = {}) {
   const { data, info } = await sharp(buffer)
     .ensureAlpha()
     .raw()
@@ -243,7 +243,7 @@ async function computeCenter(buffer, { multiAnchor = false } = {}) {
 
   components.sort((a, b) => b.count - a.count);
   const main = components[0];
-  const mainSummary = summarizeComponents([main], width, height);
+  const mainSummary = summarizeComponents(useAllComponents ? components : [main], width, height);
 
   const result = {
     centerX: mainSummary.centerX,
@@ -303,6 +303,7 @@ async function precomputeForConfig(fileName) {
     imageKeys.push({
       imageKey: resolveImageKey(baseUrl, config.baseImageFilename),
       multiAnchor: false,
+      useAllComponents: true,
     });
   }
 
@@ -319,12 +320,12 @@ async function precomputeForConfig(fileName) {
 
   const precomputed = {};
 
-  for (const { imageKey, multiAnchor } of imageKeys) {
+  for (const { imageKey, multiAnchor, useAllComponents = false } of imageKeys) {
     if (!imageKey) {continue;}
     if (precomputed[imageKey]) {continue;}
 
     const buffer = await loadImageBuffer(imageKey, pageDir);
-    const centerData = await computeCenter(buffer, { multiAnchor });
+    const centerData = await computeCenter(buffer, { multiAnchor, useAllComponents });
     precomputed[imageKey] = centerData;
 
     const normalized = normalizeKey(imageKey);

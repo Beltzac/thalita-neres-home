@@ -16,8 +16,8 @@
   "showArrow": true,
   "precomputedCentersByUrl": {
     "/filme-fotografico/imagens/BASE.png": {
-      "centerX": 1009.9221901398624,
-      "centerY": 1520.0849285660615,
+      "centerX": 997.0226351365284,
+      "centerY": 1519.8810155189976,
       "bboxCenterX": 1030.5,
       "bboxCenterY": 1482,
       "width": 3000,
@@ -26,8 +26,8 @@
       "contentHeight": 871
     },
     "filme-fotografico/imagens/BASE.png": {
-      "centerX": 1009.9221901398624,
-      "centerY": 1520.0849285660615,
+      "centerX": 997.0226351365284,
+      "centerY": 1519.8810155189976,
       "bboxCenterX": 1030.5,
       "bboxCenterY": 1482,
       "width": 3000,

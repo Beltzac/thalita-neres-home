@@ -14,8 +14,8 @@
   "showArrow": true,
   "precomputedCentersByUrl": {
     "/maquina-escrever/imagens/MAQUINA DE ESCREVER.png": {
-      "centerX": 1513.428456479987,
-      "centerY": 1721.4093462778212,
+      "centerX": 1523.307921000029,
+      "centerY": 2165.922839595585,
       "bboxCenterX": 1503.5,
       "bboxCenterY": 1805,
       "width": 3000,
@@ -24,8 +24,8 @@
       "contentHeight": 2221
     },
     "maquina-escrever/imagens/MAQUINA DE ESCREVER.png": {
-      "centerX": 1513.428456479987,
-      "centerY": 1721.4093462778212,
+      "centerX": 1523.307921000029,
+      "centerY": 2165.922839595585,
       "bboxCenterX": 1503.5,
       "bboxCenterY": 1805,
       "width": 3000,

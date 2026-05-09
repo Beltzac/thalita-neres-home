@@ -21,24 +21,24 @@
   },
   "precomputedCentersByUrl": {
     "/home/imagens/base.png": {
-      "centerX": 1695.3182158026184,
-      "centerY": 1768.0407314318438,
-      "bboxCenterX": 1595.5,
-      "bboxCenterY": 1643,
+      "centerX": 1501.4792555253975,
+      "centerY": 1958.784954011786,
+      "bboxCenterX": 1522,
+      "bboxCenterY": 1810.5,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 1396,
-      "contentHeight": 1563
+      "contentWidth": 2811,
+      "contentHeight": 1898
     },
     "home/imagens/base.png": {
-      "centerX": 1695.3182158026184,
-      "centerY": 1768.0407314318438,
-      "bboxCenterX": 1595.5,
-      "bboxCenterY": 1643,
+      "centerX": 1501.4792555253975,
+      "centerY": 1958.784954011786,
+      "bboxCenterX": 1522,
+      "bboxCenterY": 1810.5,
       "width": 3000,
       "height": 3000,
-      "contentWidth": 1396,
-      "contentHeight": 1563
+      "contentWidth": 2811,
+      "contentHeight": 1898
     },
     "/home/imagens/arquitetura.png": {
       "centerX": 1487.4851347166305,
