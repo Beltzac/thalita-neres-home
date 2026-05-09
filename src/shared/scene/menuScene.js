@@ -19,7 +19,7 @@ export function initMenuScene(config) {
     labelMaxDistanceFromSource = null,
     instructionText = null,
     showArrow = false,
-    debug = true,
+    debug = false,
     spiralSearch = {
       enabled: false,
       preferredQuadrants: ['right', 'top', 'bottom', 'left'],
