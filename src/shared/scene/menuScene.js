@@ -1,4 +1,5 @@
 import { confettiExplosion } from '../utils/confetti.js';
+import { createInstructionTextPlacer } from './instructionPlacement.js';
 
 export function initMenuScene(config) {
   const {
@@ -18,6 +19,7 @@ export function initMenuScene(config) {
     labelMaxWidth = null,
     labelMaxDistanceFromSource = null,
     instructionText = null,
+    instructionTextAvoidDrawing = null,
     showArrow = false,
     debug = false,
     spiralSearch = {
@@ -32,6 +34,7 @@ export function initMenuScene(config) {
   } = config;
 
   let imageContainer, contentWrapper, baseImage, overlayElements, preProcessedOverlays;
+  let instructionTextPlacer = null;
   let lastClosestImageIndex = -1;
   let lastMinDistance = Infinity;
   let globalBaseCenter = null;
@@ -1236,6 +1239,15 @@ export function initMenuScene(config) {
       } else {
         instructionEl.style.display = 'none';
       }
+
+      if (instructionTextAvoidDrawing?.enabled) {
+        instructionTextPlacer = createInstructionTextPlacer({
+          instructionEl,
+          getBaseImage: () => baseImage,
+          getBaseCenter: () => globalBaseCenter,
+          options: instructionTextAvoidDrawing,
+        });
+      }
     }
 
     imageContainer = container;
@@ -1263,6 +1275,7 @@ export function initMenuScene(config) {
     baseImage.onload = () => {
       globalBaseCenter = preProcessOverlays(baseImage);
       centerMenu(globalBaseCenter);
+      instructionTextPlacer?.schedule();
       loadedImages++;
       checkAllLoaded();
     };
@@ -1272,7 +1285,10 @@ export function initMenuScene(config) {
     };
 
     window.addEventListener('resize', () => {
-      if (globalBaseCenter) {centerMenu(globalBaseCenter);}
+      if (globalBaseCenter) {
+        centerMenu(globalBaseCenter);
+        instructionTextPlacer?.schedule();
+      }
     });
 
     overlayElements.forEach((img, index) => {

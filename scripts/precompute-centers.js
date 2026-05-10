@@ -147,6 +147,55 @@ function summarizeComponents(components, width, height) {
   };
 }
 
+function encodeRuns(values) {
+  const runs = [];
+  let currentValue = 0;
+  let runLength = 0;
+
+  for (let i = 0; i < values.length; i++) {
+    const value = values[i];
+    if (value === currentValue) {
+      runLength++;
+      continue;
+    }
+
+    runs.push(runLength.toString(36));
+    currentValue = value;
+    runLength = 1;
+  }
+
+  runs.push(runLength.toString(36));
+  return runs.join('.');
+}
+
+async function computeInstructionMask(buffer, { maxSize = 320, threshold = 50 } = {}) {
+  const { data, info } = await sharp(buffer)
+    .ensureAlpha()
+    .resize({
+      width: maxSize,
+      height: maxSize,
+      fit: 'fill',
+    })
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  const { width, height, channels } = info;
+  const values = new Uint8Array(width * height);
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const alpha = data[(y * width + x) * channels + 3];
+      values[(y * width) + x] = alpha > threshold ? 1 : 0;
+    }
+  }
+
+  return {
+    width,
+    height,
+    runs: encodeRuns(values),
+  };
+}
+
 async function computeCenter(buffer, { multiAnchor = false, useAllComponents = false } = {}) {
   const { data, info } = await sharp(buffer)
     .ensureAlpha()
@@ -304,6 +353,7 @@ async function precomputeForConfig(fileName) {
       imageKey: resolveImageKey(baseUrl, config.baseImageFilename),
       multiAnchor: false,
       useAllComponents: true,
+      includeInstructionMask: Boolean(config.instructionTextAvoidDrawing?.enabled),
     });
   }
 
@@ -320,12 +370,15 @@ async function precomputeForConfig(fileName) {
 
   const precomputed = {};
 
-  for (const { imageKey, multiAnchor, useAllComponents = false } of imageKeys) {
+  for (const { imageKey, multiAnchor, useAllComponents = false, includeInstructionMask = false } of imageKeys) {
     if (!imageKey) {continue;}
     if (precomputed[imageKey]) {continue;}
 
     const buffer = await loadImageBuffer(imageKey, pageDir);
     const centerData = await computeCenter(buffer, { multiAnchor, useAllComponents });
+    if (includeInstructionMask) {
+      centerData.instructionMask = await computeInstructionMask(buffer);
+    }
     precomputed[imageKey] = centerData;
 
     const normalized = normalizeKey(imageKey);
