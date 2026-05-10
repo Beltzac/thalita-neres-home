@@ -531,7 +531,7 @@
       "labelSide": "right"
     },
     {
-      "nomeImagem": "Meus Livros",
+      "nomeImagem": "Meus Escritos",
       "arquivo": "/home/imagens/livros.png",
       "urlLink": "/meus-livros",
       "arrowStartOffset": 30,
