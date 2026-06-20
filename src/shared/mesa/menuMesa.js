@@ -62,6 +62,9 @@ export function initMenuMesa(config) {
     wrapper.style.height = '100%';
     wrapper.style.transition = 'none';
     wrapper.classList.remove('mesa-hovered');
+    // remove tilt during zoom
+    const inner = wrapper.querySelector('.mesa-item-inner');
+    if (inner) inner.style.transform = '';
     wrap.appendChild(wrapper);
 
     // label
@@ -245,6 +248,12 @@ export function initMenuMesa(config) {
       wrapper.style.width = savedWidth;
       wrapper.style.height = savedHeight;
       wrapper.style.transition = '';
+      // restore tilt
+      const renderedEntry = renderedItems[index];
+      const tiltInner = wrapper.querySelector('.mesa-item-inner');
+      if (tiltInner && renderedEntry && renderedEntry.tilt != null) {
+        tiltInner.style.transform = `rotate(${renderedEntry.tilt}deg)`;
+      }
 
       backdrop.remove();
       popped = null;
@@ -383,8 +392,11 @@ export function initMenuMesa(config) {
       entry.wrapper.dataset.x = entry.wrapper.offsetLeft;
       entry.wrapper.dataset.y = entry.wrapper.offsetTop;
     } else {
-      // click → pop item up in-place
-      popIn(dragState.index);
+      // click → pop item up in-place (only if zoomable)
+      const itemConfig = items[dragState.index];
+      if (itemConfig.zoomable !== false) {
+        popIn(dragState.index);
+      }
     }
 
     mesaContainer.style.cursor = CURSOR_NORMAL;
@@ -431,6 +443,14 @@ export function initMenuMesa(config) {
         wrapper.style.width = '0px';
         wrapper.style.height = '0px';
 
+        const tilt = (Math.random() - 0.5) * 30; // ±15deg
+
+        const inner = document.createElement('div');
+        inner.classList.add('mesa-item-inner');
+        inner.style.width = '100%';
+        inner.style.height = '100%';
+        inner.style.transform = `rotate(${tilt}deg)`;
+
         const imgEl = document.createElement('img');
         imgEl.src = item.src;
         imgEl.draggable = false;
@@ -439,15 +459,17 @@ export function initMenuMesa(config) {
         imgEl.style.objectFit = 'contain';
         imgEl.style.pointerEvents = 'none';
 
-        wrapper.appendChild(imgEl);
-
+        inner.appendChild(imgEl);
+        wrapper.appendChild(inner);
         mesaContainer.appendChild(wrapper);
 
         renderedItems.push({
           item,
           wrapper,
+          inner,
           naturalW: img.naturalWidth,
           naturalH: img.naturalHeight,
+          tilt,
         });
       } catch (err) {
         console.error('Failed to load mesa item:', item.src, err);
