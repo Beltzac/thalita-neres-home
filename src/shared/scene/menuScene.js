@@ -3,7 +3,7 @@ import { createInstructionTextPlacer } from './instructionPlacement.js';
 
 export function initMenuScene(config) {
   const {
-    baseUrl = "",
+    baseUrl = '',
     baseImageFilename,
     margin = 60,
     CURSOR_NORMAL = 'url("/assets/cursors/cursor-normal.ico") 32 0, auto',
@@ -38,13 +38,14 @@ export function initMenuScene(config) {
   let lastClosestImageIndex = -1;
   let lastMinDistance = Infinity;
   let globalBaseCenter = null;
-  let centersLogged = false;
   let loadedImages = 0;
   let totalImages = 0;
 
   function ensureGlobalArrowLayer() {
     let arrowLayer = document.getElementById('arrowLayer');
-    if (arrowLayer) {return arrowLayer;}
+    if (arrowLayer) {
+      return arrowLayer;
+    }
 
     const svgNS = 'http://www.w3.org/2000/svg';
     arrowLayer = document.createElementNS(svgNS, 'svg');
@@ -80,7 +81,7 @@ export function initMenuScene(config) {
 
   function createAndAppendImage(src, zIndex, visible) {
     const img = document.createElement('img');
-    img.crossOrigin = "anonymous";
+    img.crossOrigin = 'anonymous';
     img.src = src;
     img.classList.add('imageLayer');
     img.style.zIndex = zIndex;
@@ -90,7 +91,9 @@ export function initMenuScene(config) {
   }
 
   function normalizePrecomputeKey(value) {
-    if (!value) {return '';}
+    if (!value) {
+      return '';
+    }
     const clean = value.split('#')[0].split('?')[0];
 
     // Handle absolute URLs (e.g. https://domain.com/home/imagens/base.png)
@@ -104,7 +107,9 @@ export function initMenuScene(config) {
   }
 
   function resolvePrecomputedCenter(key) {
-    if (!key) {return null;}
+    if (!key) {
+      return null;
+    }
 
     if (precomputedCentersByUrl[key]) {
       return precomputedCentersByUrl[key];
@@ -166,7 +171,6 @@ export function initMenuScene(config) {
     const precomputed = resolvePrecomputedCenter(key);
 
     if (precomputed) {
-      console.log('Using precomputed center data for image:', key, precomputed);
       return precomputed;
     }
 
@@ -181,26 +185,26 @@ export function initMenuScene(config) {
     const viewportHeight = window.innerHeight;
 
     const availableWidth = viewportWidth;
-    const availableHeight = viewportHeight - (2 * margin);
+    const availableHeight = viewportHeight - 2 * margin;
 
     const scaleX = availableWidth / baseCenter.contentWidth;
     const scaleY = availableHeight / baseCenter.contentHeight;
     const scale = Math.min(scaleX, scaleY);
 
     const targetHeight = baseCenter.height * scale;
-    baseImage.style.height = targetHeight + "px";
-    baseImage.style.width = "auto";
+    baseImage.style.height = targetHeight + 'px';
+    baseImage.style.width = 'auto';
 
-    overlayElements.forEach(img => {
-      img.style.height = targetHeight + "px";
-      img.style.width = "auto";
+    overlayElements.forEach((img) => {
+      img.style.height = targetHeight + 'px';
+      img.style.width = 'auto';
     });
 
     const scaledCenterX = baseCenter.bboxCenterX * scale;
     const scaledCenterY = baseCenter.bboxCenterY * scale;
 
-    const offsetX = (viewportWidth / 2) - scaledCenterX;
-    const offsetY = (viewportHeight / 2) - scaledCenterY;
+    const offsetX = viewportWidth / 2 - scaledCenterX;
+    const offsetY = viewportHeight / 2 - scaledCenterY;
 
     contentWrapper.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
   }
@@ -251,7 +255,7 @@ export function initMenuScene(config) {
 
     lastMinDistance = minDistance;
 
-    const isActive = (lastClosestImageIndex >= 0) && (minDistance <= ACTIVE_RADIUS);
+    const isActive = lastClosestImageIndex >= 0 && minDistance <= ACTIVE_RADIUS;
 
     if (isActive) {
       overlayElements[lastClosestImageIndex].style.display = '';
@@ -272,8 +276,12 @@ export function initMenuScene(config) {
     nameContainer.classList.remove('label-side', 'label-horizontal');
     nameContainer.classList.add('label-tooltip');
 
-    if (labelFontSize) {nameContainer.style.fontSize = labelFontSize;}
-    if (labelMaxWidth) {nameContainer.style.maxWidth = labelMaxWidth;}
+    if (labelFontSize) {
+      nameContainer.style.fontSize = labelFontSize;
+    }
+    if (labelMaxWidth) {
+      nameContainer.style.maxWidth = labelMaxWidth;
+    }
 
     if (!name) {
       nameContainer.style.display = 'none';
@@ -290,12 +298,12 @@ export function initMenuScene(config) {
     const adjustedX = x;
     const adjustedY = y;
 
-    nameContainer.style.left = (adjustedX - halfDescriptionWidth) + 'px';
+    nameContainer.style.left = adjustedX - halfDescriptionWidth + 'px';
 
     if (adjustedY - verticalOffset - halfDescriptionHeight - borderOffset < 0) {
-      nameContainer.style.top = (adjustedY - halfDescriptionHeight + verticalOffset) + 'px';
+      nameContainer.style.top = adjustedY - halfDescriptionHeight + verticalOffset + 'px';
     } else {
-      nameContainer.style.top = (adjustedY - halfDescriptionHeight - verticalOffset) + 'px';
+      nameContainer.style.top = adjustedY - halfDescriptionHeight - verticalOffset + 'px';
     }
 
     nameContainer.style.display = 'block';
@@ -335,15 +343,22 @@ export function initMenuScene(config) {
     const bboxLeft = getHitBboxCenterX(preProcessed) - bboxWidth / 2;
     const bboxTop = getHitBboxCenterY(preProcessed) - bboxHeight / 2;
 
-    const screenLeft = (bboxLeft * scaleX) + offsetX;
-    const screenTop = (bboxTop * scaleY) + offsetY;
-    const screenRight = ((bboxLeft + bboxWidth) * scaleX) + offsetX;
-    const screenBottom = ((bboxTop + bboxHeight) * scaleY) + offsetY;
+    const screenLeft = bboxLeft * scaleX + offsetX;
+    const screenTop = bboxTop * scaleY + offsetY;
+    const screenRight = (bboxLeft + bboxWidth) * scaleX + offsetX;
+    const screenBottom = (bboxTop + bboxHeight) * scaleY + offsetY;
 
-    const screenCenterX = (getHitCenterX(preProcessed) * scaleX) + offsetX;
-    const screenCenterY = (getHitCenterY(preProcessed) * scaleY) + offsetY;
+    const screenCenterX = getHitCenterX(preProcessed) * scaleX + offsetX;
+    const screenCenterY = getHitCenterY(preProcessed) * scaleY + offsetY;
 
-    return { x: screenCenterX, y: screenCenterY, leftX: screenLeft, rightX: screenRight, topY: screenTop, bottomY: screenBottom };
+    return {
+      x: screenCenterX,
+      y: screenCenterY,
+      leftX: screenLeft,
+      rightX: screenRight,
+      topY: screenTop,
+      bottomY: screenBottom,
+    };
   }
 
   function rectsOverlap(a, b) {
@@ -355,27 +370,45 @@ export function initMenuScene(config) {
   }
 
   function lineIntersectsLine(a, b, c, d) {
-    const denominator = ((d.y - c.y) * (b.x - a.x)) - ((d.x - c.x) * (b.y - a.y));
-    if (denominator === 0) {return false;}
+    const denominator = (d.y - c.y) * (b.x - a.x) - (d.x - c.x) * (b.y - a.y);
+    if (denominator === 0) {
+      return false;
+    }
 
-    const ua = (((d.x - c.x) * (a.y - c.y)) - ((d.y - c.y) * (a.x - c.x))) / denominator;
-    const ub = (((b.x - a.x) * (a.y - c.y)) - ((b.y - a.y) * (a.x - c.x))) / denominator;
+    const ua = ((d.x - c.x) * (a.y - c.y) - (d.y - c.y) * (a.x - c.x)) / denominator;
+    const ub = ((b.x - a.x) * (a.y - c.y) - (b.y - a.y) * (a.x - c.x)) / denominator;
 
     return ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1;
   }
 
   function segmentIntersectsRect(p1, p2, rect) {
-    if (!rect) {return false;}
+    if (!rect) {
+      return false;
+    }
 
     const insideP1 = p1.x >= rect.left && p1.x <= rect.right && p1.y >= rect.top && p1.y <= rect.bottom;
     const insideP2 = p2.x >= rect.left && p2.x <= rect.right && p2.y >= rect.top && p2.y <= rect.bottom;
-    if (insideP1 || insideP2) {return true;}
+    if (insideP1 || insideP2) {
+      return true;
+    }
 
     const edges = [
-      [{ x: rect.left, y: rect.top }, { x: rect.right, y: rect.top }],
-      [{ x: rect.right, y: rect.top }, { x: rect.right, y: rect.bottom }],
-      [{ x: rect.right, y: rect.bottom }, { x: rect.left, y: rect.bottom }],
-      [{ x: rect.left, y: rect.bottom }, { x: rect.left, y: rect.top }],
+      [
+        { x: rect.left, y: rect.top },
+        { x: rect.right, y: rect.top },
+      ],
+      [
+        { x: rect.right, y: rect.top },
+        { x: rect.right, y: rect.bottom },
+      ],
+      [
+        { x: rect.right, y: rect.bottom },
+        { x: rect.left, y: rect.bottom },
+      ],
+      [
+        { x: rect.left, y: rect.bottom },
+        { x: rect.left, y: rect.top },
+      ],
     ];
 
     return edges.some(([e1, e2]) => lineIntersectsLine(p1, p2, e1, e2));
@@ -383,18 +416,26 @@ export function initMenuScene(config) {
 
   function getInstructionRect() {
     const instructionEl = document.getElementById('instructionText');
-    if (!instructionEl) {return null;}
+    if (!instructionEl) {
+      return null;
+    }
 
     const style = window.getComputedStyle(instructionEl);
-    if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {return null;}
+    if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+      return null;
+    }
 
     const rect = instructionEl.getBoundingClientRect();
-    if (rect.width <= 0 || rect.height <= 0) {return null;}
+    if (rect.width <= 0 || rect.height <= 0) {
+      return null;
+    }
     return rect;
   }
 
   function getOverlayBoundingRectByIndex(index) {
-    if (index < 0 || !preProcessedOverlays[index]) {return null;}
+    if (index < 0 || !preProcessedOverlays[index]) {
+      return null;
+    }
     const c = getScreenCoordinates(preProcessedOverlays[index]);
     return { left: c.leftX, right: c.rightX, top: c.topY, bottom: c.bottomY };
   }
@@ -402,12 +443,18 @@ export function initMenuScene(config) {
   function getForbiddenRectsForLabel(excludeOverlayIndex = -1) {
     const forbidden = [];
     const instructionRect = getInstructionRect();
-    if (instructionRect) {forbidden.push(instructionRect);}
+    if (instructionRect) {
+      forbidden.push(instructionRect);
+    }
 
     for (let i = 0; i < preProcessedOverlays.length; i++) {
-      if (i === excludeOverlayIndex) {continue;}
+      if (i === excludeOverlayIndex) {
+        continue;
+      }
       const rect = getOverlayBoundingRectByIndex(i);
-      if (!rect) {continue;}
+      if (!rect) {
+        continue;
+      }
       forbidden.push(rect);
     }
 
@@ -422,34 +469,70 @@ export function initMenuScene(config) {
     const dx = pointX - sourceX;
     const dy = pointY - sourceY;
 
-    if (Math.abs(dx) < 1 && Math.abs(dy) < 1) {return 'center';}
-    if (dx > 0 && dy < 0) {return 'top-right';}
-    if (dx > 0 && dy > 0) {return 'bottom-right';}
-    if (dx < 0 && dy < 0) {return 'top-left';}
-    if (dx < 0 && dy > 0) {return 'bottom-left';}
-    if (dx > 0) {return 'right';}
-    if (dx < 0) {return 'left';}
-    if (dy < 0) {return 'top';}
+    if (Math.abs(dx) < 1 && Math.abs(dy) < 1) {
+      return 'center';
+    }
+    if (dx > 0 && dy < 0) {
+      return 'top-right';
+    }
+    if (dx > 0 && dy > 0) {
+      return 'bottom-right';
+    }
+    if (dx < 0 && dy < 0) {
+      return 'top-left';
+    }
+    if (dx < 0 && dy > 0) {
+      return 'bottom-left';
+    }
+    if (dx > 0) {
+      return 'right';
+    }
+    if (dx < 0) {
+      return 'left';
+    }
+    if (dy < 0) {
+      return 'top';
+    }
     return 'bottom';
   }
 
   function getQuadrantPriority(quadrant, labelSide) {
-    if (!labelSide) {return 0;}
+    if (!labelSide) {
+      return 0;
+    }
 
     // Direct match
-    if (quadrant === labelSide) {return 0;}
+    if (quadrant === labelSide) {
+      return 0;
+    }
 
     // Partial match for cardinal directions
-    if (labelSide === 'right' && (quadrant === 'top-right' || quadrant === 'bottom-right')) {return 1;}
-    if (labelSide === 'left' && (quadrant === 'top-left' || quadrant === 'bottom-left')) {return 1;}
-    if (labelSide === 'top' && (quadrant === 'top-left' || quadrant === 'top-right')) {return 1;}
-    if (labelSide === 'bottom' && (quadrant === 'bottom-left' || quadrant === 'bottom-right')) {return 1;}
+    if (labelSide === 'right' && (quadrant === 'top-right' || quadrant === 'bottom-right')) {
+      return 1;
+    }
+    if (labelSide === 'left' && (quadrant === 'top-left' || quadrant === 'bottom-left')) {
+      return 1;
+    }
+    if (labelSide === 'top' && (quadrant === 'top-left' || quadrant === 'top-right')) {
+      return 1;
+    }
+    if (labelSide === 'bottom' && (quadrant === 'bottom-left' || quadrant === 'bottom-right')) {
+      return 1;
+    }
 
     // Partial match for diagonal directions
-    if (labelSide === 'top-right' && (quadrant === 'top' || quadrant === 'right')) {return 1;}
-    if (labelSide === 'top-left' && (quadrant === 'top' || quadrant === 'left')) {return 1;}
-    if (labelSide === 'bottom-right' && (quadrant === 'bottom' || quadrant === 'right')) {return 1;}
-    if (labelSide === 'bottom-left' && (quadrant === 'bottom' || quadrant === 'left')) {return 1;}
+    if (labelSide === 'top-right' && (quadrant === 'top' || quadrant === 'right')) {
+      return 1;
+    }
+    if (labelSide === 'top-left' && (quadrant === 'top' || quadrant === 'left')) {
+      return 1;
+    }
+    if (labelSide === 'bottom-right' && (quadrant === 'bottom' || quadrant === 'right')) {
+      return 1;
+    }
+    if (labelSide === 'bottom-left' && (quadrant === 'bottom' || quadrant === 'left')) {
+      return 1;
+    }
 
     // Opposite
     return 2;
@@ -460,15 +543,18 @@ export function initMenuScene(config) {
   let debugLabelSide = null;
   let debugOverlayRects = [];
 
-  function spiralSearchPosition(sourceX, sourceY, labelWidth, labelHeight, forbiddenRects, viewportWidth, viewportHeight, labelSide = null) {
+  function spiralSearchPosition(
+    sourceX,
+    sourceY,
+    labelWidth,
+    labelHeight,
+    forbiddenRects,
+    viewportWidth,
+    viewportHeight,
+    labelSide = null
+  ) {
     const preferredSide = labelSide || (spiralSearch.preferredQuadrants ? spiralSearch.preferredQuadrants[0] : null);
-    const {
-      minDistance: configMinDist,
-      maxDistance: configMaxDist,
-      angleStep,
-      radiusStep,
-      padding,
-    } = spiralSearch;
+    const { minDistance: configMinDist, maxDistance: configMaxDist, angleStep, radiusStep, padding } = spiralSearch;
 
     const effectiveMinDist = Math.min(configMinDist, Math.max(viewportWidth, viewportHeight) * 0.3);
     const effectiveMaxDist = Math.min(configMaxDist, Math.max(viewportWidth, viewportHeight) * 0.8);
@@ -488,15 +574,21 @@ export function initMenuScene(config) {
 
       for (let angle = 0; angle < 360; angle += Math.min(angleStep, angleIncrement)) {
         const rad = (angle * Math.PI) / 180;
-        const candidateCenterX = sourceX + (radius * Math.cos(rad));
-        const candidateCenterY = sourceY + (radius * Math.sin(rad));
+        const candidateCenterX = sourceX + radius * Math.cos(rad);
+        const candidateCenterY = sourceY + radius * Math.sin(rad);
 
-        const left = candidateCenterX - (labelWidth / 2);
-        const top = candidateCenterY - (labelHeight / 2);
+        const left = candidateCenterX - labelWidth / 2;
+        const top = candidateCenterY - labelHeight / 2;
 
-        if (left < pad || top < pad) {continue;}
-        if (left + labelWidth > viewportWidth - pad) {continue;}
-        if (top + labelHeight > viewportHeight - pad) {continue;}
+        if (left < pad || top < pad) {
+          continue;
+        }
+        if (left + labelWidth > viewportWidth - pad) {
+          continue;
+        }
+        if (top + labelHeight > viewportHeight - pad) {
+          continue;
+        }
 
         const rect = {
           left: left,
@@ -505,7 +597,9 @@ export function initMenuScene(config) {
           bottom: top + labelHeight,
         };
 
-        if (collidesWithForbidden(rect, forbiddenRects)) {continue;}
+        if (collidesWithForbidden(rect, forbiddenRects)) {
+          continue;
+        }
 
         const quadrant = getQuadrantForPoint(sourceX, sourceY, candidateCenterX, candidateCenterY);
         const quadrantPriority = getQuadrantPriority(quadrant, preferredSide);
@@ -513,9 +607,9 @@ export function initMenuScene(config) {
         const idealDistance = (effectiveMinDist + effectiveMaxDist) / 2;
         const distanceRange = (effectiveMaxDist - effectiveMinDist) / 2;
         const distanceFromIdeal = Math.abs(radius - idealDistance);
-        const normalizedDistance = distanceRange > 0 ? (distanceFromIdeal / distanceRange) : 0;
+        const normalizedDistance = distanceRange > 0 ? distanceFromIdeal / distanceRange : 0;
 
-        const score = (quadrantPriority * 1000) + (normalizedDistance * 100);
+        const score = quadrantPriority * 1000 + normalizedDistance * 100;
 
         debugCandidates.push({
           x: candidateCenterX,
@@ -543,27 +637,33 @@ export function initMenuScene(config) {
       }
 
       if (bestCandidate && bestCandidate.distance <= radius) {
-        const bestEntry = debugCandidates.find(c => c.left === bestCandidate.left && c.top === bestCandidate.top);
-        if (bestEntry) {bestEntry.isBest = true;}
+        const bestEntry = debugCandidates.find((c) => c.left === bestCandidate.left && c.top === bestCandidate.top);
+        if (bestEntry) {
+          bestEntry.isBest = true;
+        }
         return { left: bestCandidate.left, top: bestCandidate.top };
       }
     }
 
     if (bestCandidate) {
-      const bestEntry = debugCandidates.find(c => c.left === bestCandidate.left && c.top === bestCandidate.top);
-      if (bestEntry) {bestEntry.isBest = true;}
+      const bestEntry = debugCandidates.find((c) => c.left === bestCandidate.left && c.top === bestCandidate.top);
+      if (bestEntry) {
+        bestEntry.isBest = true;
+      }
       return { left: bestCandidate.left, top: bestCandidate.top };
     }
 
-    const fallbackLeft = clamp(sourceX - (labelWidth / 2), pad, viewportWidth - labelWidth - pad);
-    const fallbackTop = clamp(sourceY - (labelHeight / 2), pad, viewportHeight - labelHeight - pad);
+    const fallbackLeft = clamp(sourceX - labelWidth / 2, pad, viewportWidth - labelWidth - pad);
+    const fallbackTop = clamp(sourceY - labelHeight / 2, pad, viewportHeight - labelHeight - pad);
     return { left: fallbackLeft, top: fallbackTop };
   }
 
   function renderDebugCandidates() {
     if (!debug) {
       const existing = document.getElementById('debugCandidatesContainer');
-      if (existing) {existing.remove();}
+      if (existing) {
+        existing.remove();
+      }
       return;
     }
 
@@ -588,7 +688,9 @@ export function initMenuScene(config) {
 
     debugOverlayRects = [];
     preProcessedOverlays.forEach((preProcessed, index) => {
-      if (!preProcessed) {return;}
+      if (!preProcessed) {
+        return;
+      }
       const coords = getScreenCoordinates(preProcessed);
       debugOverlayRects.push({
         index,
@@ -615,8 +717,8 @@ export function initMenuScene(config) {
       const anchors = getHitAnchors(preProcessedOverlays[r.index]);
       anchors.forEach((anchor) => {
         const anchorDot = document.createElement('div');
-        const anchorX = (anchor.x * scaleX) + offsetX;
-        const anchorY = (anchor.y * scaleY) + offsetY;
+        const anchorX = anchor.x * scaleX + offsetX;
+        const anchorY = anchor.y * scaleY + offsetY;
         anchorDot.style.cssText = `position:absolute;left:${anchorX - 2}px;top:${anchorY - 2}px;width:4px;height:4px;background:rgba(0,180,255,0.9);border-radius:50%;`;
         container.appendChild(anchorDot);
       });
@@ -627,7 +729,9 @@ export function initMenuScene(config) {
       container.appendChild(nameLabel);
     });
 
-    if (!debugSourcePoint || debugCandidates.length === 0) {return;}
+    if (!debugSourcePoint || debugCandidates.length === 0) {
+      return;
+    }
 
     const sourceDot = document.createElement('div');
     sourceDot.style.cssText = `position:absolute;left:${debugSourcePoint.x - 6}px;top:${debugSourcePoint.y - 6}px;width:12px;height:12px;background:#ff0000;border-radius:50%;border:2px solid #fff;`;
@@ -639,8 +743,8 @@ export function initMenuScene(config) {
     label.textContent = `SRC ${debugLabelSide || ''}`;
     container.appendChild(label);
 
-    const minScore = Math.min(...debugCandidates.map(c => c.score));
-    const maxScore = Math.max(...debugCandidates.map(c => c.score));
+    const minScore = Math.min(...debugCandidates.map((c) => c.score));
+    const maxScore = Math.max(...debugCandidates.map((c) => c.score));
     const scoreRange = maxScore - minScore || 1;
 
     debugCandidates.forEach((c) => {
@@ -674,9 +778,28 @@ export function initMenuScene(config) {
     });
   }
 
-  function chooseLabelPosition(candidates, width, height, forbiddenRects, viewportWidth, viewportHeight, sourceX, sourceY, labelSide = null) {
+  function chooseLabelPosition(
+    candidates,
+    width,
+    height,
+    forbiddenRects,
+    viewportWidth,
+    viewportHeight,
+    sourceX,
+    sourceY,
+    labelSide = null
+  ) {
     if (spiralSearch.enabled) {
-      return spiralSearchPosition(sourceX, sourceY, width, height, forbiddenRects, viewportWidth, viewportHeight, labelSide);
+      return spiralSearchPosition(
+        sourceX,
+        sourceY,
+        width,
+        height,
+        forbiddenRects,
+        viewportWidth,
+        viewportHeight,
+        labelSide
+      );
     }
 
     for (const candidate of candidates) {
@@ -690,9 +813,7 @@ export function initMenuScene(config) {
     }
 
     const first = candidates[0] || { left: 8, top: 8 };
-    const oppositeLeft = first.left < viewportWidth / 2
-      ? (viewportWidth - 8 - width)
-      : 8;
+    const oppositeLeft = first.left < viewportWidth / 2 ? viewportWidth - 8 - width : 8;
     const fallbackCandidates = [
       { left: oppositeLeft, top: first.top },
       { left: oppositeLeft, top: first.top - 100 },
@@ -716,17 +837,32 @@ export function initMenuScene(config) {
     };
   }
 
-  function chooseLabelPositionWithRules(candidates, width, height, forbiddenRects, viewportWidth, viewportHeight, sourceX, sourceY, labelSide = null) {
+  function chooseLabelPositionWithRules(
+    candidates,
+    width,
+    height,
+    forbiddenRects,
+    viewportWidth,
+    viewportHeight,
+    sourceX,
+    sourceY,
+    labelSide = null
+  ) {
     if (spiralSearch.enabled) {
       const spiralResult = spiralSearchPosition(
-        sourceX, sourceY, width, height, forbiddenRects, viewportWidth, viewportHeight, labelSide
+        sourceX,
+        sourceY,
+        width,
+        height,
+        forbiddenRects,
+        viewportWidth,
+        viewportHeight,
+        labelSide
       );
       if (labelSide) {
         return spiralResult;
       }
-      return enforceLabelMaxDistance(
-        spiralResult, width, height, sourceX, sourceY, viewportWidth, viewportHeight
-      );
+      return enforceLabelMaxDistance(spiralResult, width, height, sourceX, sourceY, viewportWidth, viewportHeight);
     }
 
     for (const candidate of candidates) {
@@ -735,15 +871,7 @@ export function initMenuScene(config) {
         top: clamp(candidate.top, 8, Math.max(8, viewportHeight - height - 8)),
       };
 
-      const limited = enforceLabelMaxDistance(
-        clamped,
-        width,
-        height,
-        sourceX,
-        sourceY,
-        viewportWidth,
-        viewportHeight
-      );
+      const limited = enforceLabelMaxDistance(clamped, width, height, sourceX, sourceY, viewportWidth, viewportHeight);
 
       const rect = {
         left: limited.left,
@@ -757,7 +885,17 @@ export function initMenuScene(config) {
       }
     }
 
-    const fallback = chooseLabelPosition(candidates, width, height, forbiddenRects, viewportWidth, viewportHeight, sourceX, sourceY, labelSide);
+    const fallback = chooseLabelPosition(
+      candidates,
+      width,
+      height,
+      forbiddenRects,
+      viewportWidth,
+      viewportHeight,
+      sourceX,
+      sourceY,
+      labelSide
+    );
     return enforceLabelMaxDistance(fallback, width, height, sourceX, sourceY, viewportWidth, viewportHeight);
   }
 
@@ -766,8 +904,8 @@ export function initMenuScene(config) {
       return chosen;
     }
 
-    const centerX = chosen.left + (width / 2);
-    const centerY = chosen.top + (height / 2);
+    const centerX = chosen.left + width / 2;
+    const centerY = chosen.top + height / 2;
     const dx = centerX - sourceX;
     const dy = centerY - sourceY;
     const distance = Math.hypot(dx, dy);
@@ -777,19 +915,25 @@ export function initMenuScene(config) {
     }
 
     const ratio = labelMaxDistanceFromSource / distance;
-    const limitedCenterX = sourceX + (dx * ratio);
-    const limitedCenterY = sourceY + (dy * ratio);
+    const limitedCenterX = sourceX + dx * ratio;
+    const limitedCenterY = sourceY + dy * ratio;
 
     return {
-      left: clamp(limitedCenterX - (width / 2), 8, Math.max(8, viewportWidth - width - 8)),
-      top: clamp(limitedCenterY - (height / 2), 8, Math.max(8, viewportHeight - height - 8)),
+      left: clamp(limitedCenterX - width / 2, 8, Math.max(8, viewportWidth - width - 8)),
+      top: clamp(limitedCenterY - height / 2, 8, Math.max(8, viewportHeight - height - 8)),
     };
   }
 
   function getSideVector(side) {
-    if (side === 'left') {return { x: -1, y: 0 };}
-    if (side === 'right') {return { x: 1, y: 0 };}
-    if (side === 'top') {return { x: 0, y: -1 };}
+    if (side === 'left') {
+      return { x: -1, y: 0 };
+    }
+    if (side === 'right') {
+      return { x: 1, y: 0 };
+    }
+    if (side === 'top') {
+      return { x: 0, y: -1 };
+    }
     return { x: 0, y: 1 };
   }
 
@@ -802,10 +946,10 @@ export function initMenuScene(config) {
     const startVec = getSideVector(startSide);
     const endVec = getSideVector(endSide);
 
-    const cp1X = startX + (startVec.x * handle);
-    const cp1Y = startY + (startVec.y * handle);
-    const cp2X = endX + (endVec.x * handle);
-    const cp2Y = endY + (endVec.y * handle);
+    const cp1X = startX + startVec.x * handle;
+    const cp1Y = startY + startVec.y * handle;
+    const cp2X = endX + endVec.x * handle;
+    const cp2Y = endY + endVec.y * handle;
 
     if (!instructionRect || !segmentIntersectsRect(start, end, instructionRect)) {
       return `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
@@ -815,10 +959,11 @@ export function initMenuScene(config) {
     const routePadding = 30;
     const routeAbove = Math.max(8, instructionRect.top - routePadding);
     const routeBelow = Math.min(viewportHeight - 8, instructionRect.bottom + routePadding);
-    const routeY = (Math.abs(startY - routeAbove) + Math.abs(endY - routeAbove))
-      <= (Math.abs(startY - routeBelow) + Math.abs(endY - routeBelow))
-      ? routeAbove
-      : routeBelow;
+    const routeY =
+      Math.abs(startY - routeAbove) + Math.abs(endY - routeAbove) <=
+      Math.abs(startY - routeBelow) + Math.abs(endY - routeBelow)
+        ? routeAbove
+        : routeBelow;
 
     const midX = (startX + endX) / 2;
     const midY = routeY;
@@ -834,30 +979,48 @@ export function initMenuScene(config) {
   }
 
   function getRectAnchorPoint(rect, side) {
-    if (side === 'left') {return { x: rect.left, y: rect.top + (rect.height / 2) };}
-    if (side === 'right') {return { x: rect.right, y: rect.top + (rect.height / 2) };}
-    if (side === 'top') {return { x: rect.left + (rect.width / 2), y: rect.top };}
-    return { x: rect.left + (rect.width / 2), y: rect.bottom };
+    if (side === 'left') {
+      return { x: rect.left, y: rect.top + rect.height / 2 };
+    }
+    if (side === 'right') {
+      return { x: rect.right, y: rect.top + rect.height / 2 };
+    }
+    if (side === 'top') {
+      return { x: rect.left + rect.width / 2, y: rect.top };
+    }
+    return { x: rect.left + rect.width / 2, y: rect.bottom };
   }
 
   function offsetPointBySide(point, side, amount, outward = true) {
     const sign = outward ? 1 : -1;
-    if (side === 'left') {return { x: point.x - (amount * sign), y: point.y };}
-    if (side === 'right') {return { x: point.x + (amount * sign), y: point.y };}
-    if (side === 'top') {return { x: point.x, y: point.y - (amount * sign) };}
-    return { x: point.x, y: point.y + (amount * sign) };
+    if (side === 'left') {
+      return { x: point.x - amount * sign, y: point.y };
+    }
+    if (side === 'right') {
+      return { x: point.x + amount * sign, y: point.y };
+    }
+    if (side === 'top') {
+      return { x: point.x, y: point.y - amount * sign };
+    }
+    return { x: point.x, y: point.y + amount * sign };
   }
 
   function drawArrow(overlayIndex) {
-    if (!showArrow) {return;}
+    if (!showArrow) {
+      return;
+    }
 
     const arrowPath = document.getElementById('dynamicArrow');
-    if (!arrowPath) {return;}
+    if (!arrowPath) {
+      return;
+    }
 
     const overlay = overlayImages[overlayIndex];
     const preProcessed = preProcessedOverlays[overlayIndex];
 
-    if (!preProcessed) {return;}
+    if (!preProcessed) {
+      return;
+    }
 
     const coords = getScreenCoordinates(preProcessed);
     const nameContainer = document.getElementById('objectDescription');
@@ -872,28 +1035,44 @@ export function initMenuScene(config) {
     };
 
     const boundingBox = baseImage.getBoundingClientRect();
-    const currentScale = baseImage.naturalWidth ? (boundingBox.width / baseImage.naturalWidth) : 1;
+    const currentScale = baseImage.naturalWidth ? boundingBox.width / baseImage.naturalWidth : 1;
 
     const baseTextOffset = overlay.arrowEndOffset ?? arrowEndOffset;
     const gapText = baseTextOffset * currentScale;
     const baseMenuOffset = overlay.arrowStartOffset ?? arrowStartOffset;
     const gapMenu = baseMenuOffset * currentScale;
 
-    const objectCenterX = objectRect.left + (objectRect.width / 2);
-    const objectCenterY = objectRect.top + (objectRect.height / 2);
-    const labelCenterX = labelRect.left + (labelRect.width / 2);
-    const labelCenterY = labelRect.top + (labelRect.height / 2);
+    const objectCenterX = objectRect.left + objectRect.width / 2;
+    const objectCenterY = objectRect.top + objectRect.height / 2;
+    const labelCenterX = labelRect.left + labelRect.width / 2;
+    const labelCenterY = labelRect.top + labelRect.height / 2;
     const dxCenter = labelCenterX - objectCenterX;
     const dyCenter = labelCenterY - objectCenterY;
 
     const primaryHorizontal = Math.abs(dxCenter) >= Math.abs(dyCenter);
     const sidePairs = primaryHorizontal
-      ? (dxCenter >= 0
-        ? [['right', 'left'], ['top', 'bottom'], ['bottom', 'top']]
-        : [['left', 'right'], ['top', 'bottom'], ['bottom', 'top']])
-      : (dyCenter >= 0
-        ? [['bottom', 'top'], ['right', 'left'], ['left', 'right']]
-        : [['top', 'bottom'], ['right', 'left'], ['left', 'right']]);
+      ? dxCenter >= 0
+        ? [
+            ['right', 'left'],
+            ['top', 'bottom'],
+            ['bottom', 'top'],
+          ]
+        : [
+            ['left', 'right'],
+            ['top', 'bottom'],
+            ['bottom', 'top'],
+          ]
+      : dyCenter >= 0
+        ? [
+            ['bottom', 'top'],
+            ['right', 'left'],
+            ['left', 'right'],
+          ]
+        : [
+            ['top', 'bottom'],
+            ['right', 'left'],
+            ['left', 'right'],
+          ];
 
     let best = null;
     for (const [objSide, labelSide] of sidePairs) {
@@ -903,14 +1082,16 @@ export function initMenuScene(config) {
       const end = offsetPointBySide(labelAnchor, labelSide, gapText, true);
       const dx = end.x - start.x;
       const dy = end.y - start.y;
-      const score = (dx * dx) + (dy * dy);
+      const score = dx * dx + dy * dy;
 
       if (!best || score < best.score) {
         best = { start, end, score, objSide, labelSide };
       }
     }
 
-    if (!best) {return;}
+    if (!best) {
+      return;
+    }
 
     const pathData = buildArrowPathAvoidingInstruction(
       best.start.x,
@@ -935,12 +1116,18 @@ export function initMenuScene(config) {
       nameContainer.classList.add('label-side');
     }
 
-    if (labelFontSize) {nameContainer.style.fontSize = labelFontSize;}
-    if (labelMaxWidth) {nameContainer.style.maxWidth = labelMaxWidth;}
+    if (labelFontSize) {
+      nameContainer.style.fontSize = labelFontSize;
+    }
+    if (labelMaxWidth) {
+      nameContainer.style.maxWidth = labelMaxWidth;
+    }
 
     if (!labelText || !isActive) {
       nameContainer.style.display = 'none';
-      if (arrowPath) {arrowPath.setAttribute('d', '');}
+      if (arrowPath) {
+        arrowPath.setAttribute('d', '');
+      }
       debugCandidates = [];
       debugSourcePoint = null;
       renderDebugCandidates();
@@ -956,13 +1143,13 @@ export function initMenuScene(config) {
       const margin = 20;
 
       const seed = name ? name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 0;
-      const onTop = (seed % 2 === 0);
+      const onTop = seed % 2 === 0;
 
-      const rotation = (Math.sin(seed) * 10);
+      const rotation = Math.sin(seed) * 10;
       nameContainer.style.transform = `rotate(${rotation}deg)`;
 
       const randomOffsetX = Math.sin(seed) * (viewportWidth * 0.2);
-      const baseLeft = (targetX - (nameContainer.offsetWidth / 2)) + randomOffsetX;
+      const baseLeft = targetX - nameContainer.offsetWidth / 2 + randomOffsetX;
       const baseTop = onTop ? margin : viewportHeight - nameContainer.offsetHeight - margin;
 
       const forbiddenRects = getForbiddenRectsForLabel(lastClosestImageIndex);
@@ -973,7 +1160,7 @@ export function initMenuScene(config) {
         { left: baseLeft + 140, top: baseTop },
         { left: baseLeft - 260, top: baseTop },
         { left: baseLeft + 260, top: baseTop },
-        { left: baseLeft, top: onTop ? (baseTop + 120) : (baseTop - 120) },
+        { left: baseLeft, top: onTop ? baseTop + 120 : baseTop - 120 },
       ];
       const chosen = chooseLabelPositionWithRules(
         candidates,
@@ -997,10 +1184,12 @@ export function initMenuScene(config) {
       if (showArrow && arrowPath) {
         const overlayData = overlayImages[lastClosestImageIndex];
         const preProcessed = preProcessedOverlays[lastClosestImageIndex];
-        const coords = preProcessed ? getScreenCoordinates(preProcessed) : { x: targetX, y: targetY, topY: targetY, bottomY: targetY };
+        const coords = preProcessed
+          ? getScreenCoordinates(preProcessed)
+          : { x: targetX, y: targetY, topY: targetY, bottomY: targetY };
 
         const boundingBox = baseImage.getBoundingClientRect();
-        const currentScale = baseImage.naturalWidth ? (boundingBox.width / baseImage.naturalWidth) : 1;
+        const currentScale = baseImage.naturalWidth ? boundingBox.width / baseImage.naturalWidth : 1;
 
         const overlay = overlayData || {};
         const baseTextOffset = overlay.arrowEndOffset ?? arrowEndOffset;
@@ -1008,13 +1197,11 @@ export function initMenuScene(config) {
         const baseMenuOffset = overlay.arrowStartOffset ?? arrowStartOffset;
         const gapMenu = baseMenuOffset * currentScale;
 
-        const textAnchorX = left + (nameContainer.offsetWidth / 2);
-        const textAnchorY = onTop
-          ? (top + nameContainer.offsetHeight + gapText)
-          : (top - gapText);
+        const textAnchorX = left + nameContainer.offsetWidth / 2;
+        const textAnchorY = onTop ? top + nameContainer.offsetHeight + gapText : top - gapText;
 
         const baseStartY = onTop ? coords.topY : coords.bottomY;
-        const adjustedStartY = onTop ? (baseStartY - gapMenu) : (baseStartY + gapMenu);
+        const adjustedStartY = onTop ? baseStartY - gapMenu : baseStartY + gapMenu;
         const adjustedStartX = coords.x;
 
         const pathData = buildArrowPathAvoidingInstruction(
@@ -1034,7 +1221,7 @@ export function initMenuScene(config) {
     const viewportWidth = window.innerWidth;
     const marginSide = 20;
     const seed = name ? name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 0;
-    const rotation = (Math.sin(seed) * 10);
+    const rotation = Math.sin(seed) * 10;
     nameContainer.style.transform = `rotate(${rotation}deg)`;
 
     const randomOffset = Math.sin(seed) * (window.innerHeight * 0.2);
@@ -1043,17 +1230,21 @@ export function initMenuScene(config) {
     const maxTop = window.innerHeight * 0.8;
 
     const overlay = overlayImages[lastClosestImageIndex];
-    let onRightSide = (seed % 2 === 0);
-    if (overlay && overlay.labelSide === 'right') {onRightSide = true;}
-    if (overlay && overlay.labelSide === 'left') {onRightSide = false;}
+    let onRightSide = seed % 2 === 0;
+    if (overlay && overlay.labelSide === 'right') {
+      onRightSide = true;
+    }
+    if (overlay && overlay.labelSide === 'left') {
+      onRightSide = false;
+    }
 
     let desiredTop, desiredLeft;
     if (overlay && overlay.labelSide === 'top') {
       desiredTop = marginSide;
-      desiredLeft = targetX - (nameContainer.offsetWidth / 2);
+      desiredLeft = targetX - nameContainer.offsetWidth / 2;
     } else if (overlay && overlay.labelSide === 'bottom') {
       desiredTop = window.innerHeight - nameContainer.offsetHeight - marginSide;
-      desiredLeft = targetX - (nameContainer.offsetWidth / 2);
+      desiredLeft = targetX - nameContainer.offsetWidth / 2;
     } else if (overlay && overlay.labelSide === 'right') {
       desiredTop = clamp(baseTop, minTop, maxTop);
       desiredLeft = Math.min(targetX + 200, viewportWidth - marginSide - nameContainer.offsetWidth);
@@ -1062,9 +1253,7 @@ export function initMenuScene(config) {
       desiredLeft = Math.max(targetX - nameContainer.offsetWidth - 200, marginSide);
     } else {
       desiredTop = clamp(baseTop, minTop, maxTop);
-      desiredLeft = onRightSide
-        ? (viewportWidth - marginSide - nameContainer.offsetWidth)
-        : marginSide;
+      desiredLeft = onRightSide ? viewportWidth - marginSide - nameContainer.offsetWidth : marginSide;
     }
 
     const forbiddenRects = getForbiddenRectsForLabel(lastClosestImageIndex);
@@ -1077,30 +1266,32 @@ export function initMenuScene(config) {
     ];
 
     if (overlay && overlay.labelSide) {
-      const closerLeft = overlay.labelSide === 'right'
-        ? Math.min(targetX + 150, viewportWidth - marginSide - nameContainer.offsetWidth)
-        : Math.max(targetX - nameContainer.offsetWidth - 150, marginSide);
+      const closerLeft =
+        overlay.labelSide === 'right'
+          ? Math.min(targetX + 150, viewportWidth - marginSide - nameContainer.offsetWidth)
+          : Math.max(targetX - nameContainer.offsetWidth - 150, marginSide);
       candidates.push({ left: closerLeft, top: desiredTop });
       candidates.push({ left: closerLeft, top: desiredTop - 120 });
       candidates.push({ left: closerLeft, top: desiredTop + 120 });
       // Opposite-side escape hatch if forced side blocked
-      const oppositeLeft = overlay.labelSide === 'right'
-        ? Math.max(targetX - nameContainer.offsetWidth - 150, marginSide)
-        : Math.min(targetX + 150, viewportWidth - marginSide - nameContainer.offsetWidth);
+      const oppositeLeft =
+        overlay.labelSide === 'right'
+          ? Math.max(targetX - nameContainer.offsetWidth - 150, marginSide)
+          : Math.min(targetX + 150, viewportWidth - marginSide - nameContainer.offsetWidth);
       candidates.push({ left: oppositeLeft, top: desiredTop });
       candidates.push({ left: oppositeLeft, top: desiredTop - 120 });
       candidates.push({ left: oppositeLeft, top: desiredTop + 120 });
     } else {
       candidates.push({
-        left: onRightSide ? marginSide : (viewportWidth - marginSide - nameContainer.offsetWidth),
+        left: onRightSide ? marginSide : viewportWidth - marginSide - nameContainer.offsetWidth,
         top: desiredTop,
       });
       candidates.push({
-        left: onRightSide ? marginSide : (viewportWidth - marginSide - nameContainer.offsetWidth),
+        left: onRightSide ? marginSide : viewportWidth - marginSide - nameContainer.offsetWidth,
         top: desiredTop - 120,
       });
       candidates.push({
-        left: onRightSide ? marginSide : (viewportWidth - marginSide - nameContainer.offsetWidth),
+        left: onRightSide ? marginSide : viewportWidth - marginSide - nameContainer.offsetWidth,
         top: desiredTop + 120,
       });
     }
@@ -1136,25 +1327,6 @@ export function initMenuScene(config) {
     if (loadedImages === totalImages) {
       setupImagesEvents();
       document.querySelector('.lds-facebook').style.display = 'none';
-
-      if (!centersLogged) {
-        centersLogged = true;
-        const exportMap = {};
-
-        if (globalBaseCenter && baseImage && baseImage.src) {
-          exportMap[baseImage.src] = globalBaseCenter;
-        }
-
-        overlayImages.forEach((overlay, index) => {
-          const data = preProcessedOverlays[index];
-          if (data) {
-            const key = baseUrl + overlay.arquivo;
-            exportMap[key] = data;
-          }
-        });
-
-        console.log('precomputedCentersByUrl JSON:', JSON.stringify(exportMap));
-      }
     }
   }
 
@@ -1177,7 +1349,9 @@ export function initMenuScene(config) {
           showNameWithArrow(imageName, imageDesc, e.clientX, e.clientY, targetX, targetY, isActive);
         } else {
           showName(labelText, e.clientX, e.clientY);
-          if (arrowPath) {arrowPath.setAttribute('d', '');}
+          if (arrowPath) {
+            arrowPath.setAttribute('d', '');
+          }
         }
       } else {
         changeCursor(isActive);
@@ -1185,13 +1359,17 @@ export function initMenuScene(config) {
           showNameWithArrow(null, null, e.clientX, e.clientY, 0, 0, false);
         } else {
           showName(null, e.clientX, e.clientY);
-          if (arrowPath) {arrowPath.setAttribute('d', '');}
+          if (arrowPath) {
+            arrowPath.setAttribute('d', '');
+          }
         }
       }
     });
 
     imageContainer.addEventListener('click', function () {
-      if (lastClosestImageIndex < 0 || lastMinDistance > ACTIVE_RADIUS) {return;}
+      if (lastClosestImageIndex < 0 || lastMinDistance > ACTIVE_RADIUS) {
+        return;
+      }
 
       const overlay = overlayImages[lastClosestImageIndex];
       const preProcessed = preProcessedOverlays[lastClosestImageIndex];
@@ -1209,8 +1387,8 @@ export function initMenuScene(config) {
         const scaleX = boundingBox.width / refWidth;
         const scaleY = boundingBox.height / refHeight;
 
-        const centerX = (getHitCenterX(preProcessed) * scaleX) + offsetX;
-        const centerY = (getHitCenterY(preProcessed) * scaleY) + offsetY;
+        const centerX = getHitCenterX(preProcessed) * scaleX + offsetX;
+        const centerY = getHitCenterY(preProcessed) * scaleY + offsetY;
 
         preProcessed.screenCenter = { centerX, centerY };
       }
@@ -1221,8 +1399,7 @@ export function initMenuScene(config) {
       confettiExplosion(centerX, centerY);
 
       setTimeout(() => {
-        window.parent.postMessage(overlay.urlLink, "*");
-        console.log('Url enviada:' + overlay.urlLink);
+        window.parent.postMessage(overlay.urlLink, '*');
       }, 500);
     });
   }
@@ -1281,7 +1458,7 @@ export function initMenuScene(config) {
     };
 
     baseImage.onerror = () => {
-      console.error("Failed to load base image", baseImage.src);
+      console.error('Failed to load base image', baseImage.src);
     };
 
     window.addEventListener('resize', () => {
@@ -1298,7 +1475,7 @@ export function initMenuScene(config) {
         checkAllLoaded();
       };
       img.onerror = () => {
-        console.error("Failed to load overlay image", img.src);
+        console.error('Failed to load overlay image', img.src);
       };
     });
   }

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mesa Arquitetura</title>
+  <link rel="stylesheet" href="/src/shared/styles/global.css">
+  <style>
+    #mesaContainer {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      cursor: url("/assets/cursors/cursor-normal.ico") 32 0, auto;
+    }
+
+    .mesa-item {
+      user-select: none;
+      touch-action: none;
+      transition: filter 0.18s ease, transform 0.18s ease;
+      will-change: left, top;
+    }
+
+    .mesa-item img {
+      display: block;
+      pointer-events: none;
+    }
+
+    .mesa-item.mesa-hovered {
+      filter: brightness(1.12) drop-shadow(0 4px 12px rgba(0,0,0,0.18));
+      transform: scale(1.04);
+    }
+
+    .mesa-item.mesa-dragging {
+      filter: brightness(1.08) drop-shadow(0 8px 24px rgba(0,0,0,0.28));
+      transform: scale(1.06);
+      z-index: 1000;
+    }
+
+    .mesa-label {
+      font-family: 'Thata', sans-serif;
+      font-size: 0.9rem;
+      color: #333;
+      text-align: center;
+      margin-top: 4px;
+      pointer-events: none;
+    }
+
+    .lds-facebook {
+      z-index: 100000;
+    }
+  </style>
+</head>
+<body>
+  <div class="lds-facebook">
+    <div></div><div></div><div></div>
+  </div>
+  <div id="objectDescription"></div>
+  <div id="mesaContainer"></div>
+
+  <script type="module">
+    import { initMenuMesa } from '/src/shared/mesa/menuMesa.js';
+    import config from '/src/data/mesa-arquitetura.json';
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById('mesaContainer');
+      const { init } = initMenuMesa(config);
+      init(container);
+    });
+  </script>
+</body>
+</html>

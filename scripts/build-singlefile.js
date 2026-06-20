@@ -6,6 +6,7 @@ const pages = [
   'maquina-escrever',
   'filme-fotografico',
   'pastas',
+  'mesa-arquitetura',
   'index'
 ];
 

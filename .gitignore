@@ -18,3 +18,7 @@ Thumbs.db
 # Env files
 .env
 .env.*
+
+# Local scratch files
+clipboard_capture.png
+tmp-*.png

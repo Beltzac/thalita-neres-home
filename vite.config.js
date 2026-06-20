@@ -8,6 +8,7 @@ const pageInputs = {
   'maquina-escrever': resolve(__dirname, 'src/pages/maquina-escrever/index.html'),
   'filme-fotografico': resolve(__dirname, 'src/pages/filme-fotografico/index.html'),
   pastas: resolve(__dirname, 'src/pages/pastas/index.html'),
+  'mesa-arquitetura': resolve(__dirname, 'src/pages/mesa-arquitetura/index.html'),
   index: resolve(__dirname, 'src/pages/index.html'),
 };
 
@@ -18,6 +19,9 @@ export default defineConfig(() => {
   return {
     base: './',
     plugins: singleInput ? [viteSingleFile()] : [],
+    server: {
+      open: '/index.html',
+    },
     build: {
       outDir: 'dist',
       emptyOutDir: !singleInput,

@@ -1,0 +1,22 @@
+{
+  "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
+  "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
+  "CURSOR_GRAB": "grabbing",
+  "DRAG_THRESHOLD": 4,
+  "globalScale": 0.50,
+  "items": [
+    { "id": "1", "label": "", "src": "/mesa-arquitetura/1.png", "urlLink": "/item-1", "x": 360, "y": 50, "scale": 1 },
+    { "id": "2", "label": "", "src": "/mesa-arquitetura/2.png", "urlLink": "/item-2", "x": 820, "y": 30, "scale": 1 },
+    { "id": "3", "label": "", "src": "/mesa-arquitetura/3.png", "urlLink": "/item-3", "x": 30, "y": 80, "scale": 1 },
+    { "id": "4", "label": "", "src": "/mesa-arquitetura/4.png", "urlLink": "/item-4", "x": 620, "y": 180, "scale": 1 },
+    { "id": "5", "label": "", "src": "/mesa-arquitetura/5.png", "urlLink": "/item-5", "x": 200, "y": 180, "scale": 1 },
+    { "id": "6", "label": "", "src": "/mesa-arquitetura/6.png", "urlLink": "/item-6", "x": 1100, "y": 100, "scale": 1 },
+    { "id": "7", "label": "", "src": "/mesa-arquitetura/7.png", "urlLink": "/item-7", "x": 30, "y": 350, "scale": 1 },
+    { "id": "8", "label": "", "src": "/mesa-arquitetura/8.png", "urlLink": "/item-8", "x": 450, "y": 360, "scale": 1 },
+    { "id": "9", "label": "", "src": "/mesa-arquitetura/9.png", "urlLink": "/item-9", "x": 900, "y": 320, "scale": 1 },
+    { "id": "10", "label": "", "src": "/mesa-arquitetura/10.png", "urlLink": "/item-10", "x": 90, "y": 520, "scale": 1 },
+    { "id": "11", "label": "", "src": "/mesa-arquitetura/11.png", "urlLink": "/item-11", "x": 550, "y": 500, "scale": 1 },
+    { "id": "12", "label": "", "src": "/mesa-arquitetura/12.png", "urlLink": "/item-12", "x": 1050, "y": 460, "scale": 1 },
+    { "id": "13", "label": "", "src": "/mesa-arquitetura/13.png", "urlLink": "/item-13", "x": 300, "y": 620, "scale": 1 }
+  ]
+}

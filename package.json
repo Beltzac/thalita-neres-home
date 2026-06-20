@@ -8,8 +8,8 @@
     "optimize:images": "node scripts/optimize-images.js",
     "build": "npm run precompute:centers && node scripts/build-singlefile.js && npm run optimize:images",
     "preview": "vite preview",
-    "lint": "eslint src scripts",
-    "lint:fix": "eslint src scripts --fix",
+    "lint": "eslint src scripts eslint.config.js vite.config.js wixPage.js",
+    "lint:fix": "eslint src scripts eslint.config.js vite.config.js wixPage.js --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

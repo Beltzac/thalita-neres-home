@@ -8,10 +8,14 @@ export function initMenuDesktop(config) {
     desktopItems = [],
   } = config;
 
-  let desktopContainer, renderedItems, lastActiveIndex = -1;
+  let desktopContainer,
+    renderedItems,
+    lastActiveIndex = -1;
 
   function setActiveIndex(nextIndex) {
-    if (nextIndex === lastActiveIndex) {return;}
+    if (nextIndex === lastActiveIndex) {
+      return;
+    }
 
     renderedItems.forEach((entry, i) => {
       const isActive = i === nextIndex;
@@ -46,7 +50,6 @@ export function initMenuDesktop(config) {
 
     setActiveIndex(closestIndex);
   }
-
 
   function init(container) {
     desktopContainer = container;
@@ -93,7 +96,7 @@ export function initMenuDesktop(config) {
         itemDiv,
         iconWrapper,
         imgBase,
-        imgActive
+        imgActive,
       });
     });
 
@@ -106,13 +109,17 @@ export function initMenuDesktop(config) {
     });
 
     desktopContainer.addEventListener('mousedown', () => {
-      if (lastActiveIndex < 0) {return;}
-      document.querySelectorAll('.desktop-item').forEach(el => el.classList.remove('selected'));
+      if (lastActiveIndex < 0) {
+        return;
+      }
+      document.querySelectorAll('.desktop-item').forEach((el) => el.classList.remove('selected'));
       renderedItems[lastActiveIndex].itemDiv.classList.add('selected');
     });
 
     desktopContainer.addEventListener('click', () => {
-      if (lastActiveIndex < 0) {return;}
+      if (lastActiveIndex < 0) {
+        return;
+      }
 
       const entry = renderedItems[lastActiveIndex];
       const rect = entry.iconWrapper.getBoundingClientRect();
@@ -122,8 +129,7 @@ export function initMenuDesktop(config) {
       confettiExplosion(centerX, centerY);
 
       setTimeout(() => {
-        window.parent.postMessage(entry.item.urlLink, "*");
-        console.log('Url enviada:' + entry.item.urlLink);
+        window.parent.postMessage(entry.item.urlLink, '*');
       }, 500);
     });
   }
