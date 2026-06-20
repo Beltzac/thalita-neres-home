@@ -26,27 +26,49 @@
     }
 
     .mesa-item.mesa-hovered {
-      filter: brightness(1.12) drop-shadow(0 4px 12px rgba(0,0,0,0.18));
+      filter: brightness(1.12);
       transform: scale(1.04);
+      z-index: 10;
     }
 
     .mesa-item.mesa-dragging {
-      filter: brightness(1.08) drop-shadow(0 8px 24px rgba(0,0,0,0.28));
+      filter: brightness(1.08);
       transform: scale(1.06);
       z-index: 1000;
     }
 
-    .mesa-label {
-      font-family: 'Thata', sans-serif;
-      font-size: 0.9rem;
-      color: #333;
-      text-align: center;
-      margin-top: 4px;
-      pointer-events: none;
-    }
-
     .lds-facebook {
       z-index: 100000;
+    }
+
+    /* lightbox */
+    .mesa-lightbox-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0,0,0,0);
+      transition: background 0.3s ease;
+      pointer-events: none;
+    }
+    .mesa-lightbox-backdrop.mesa-lightbox-open {
+      background: rgba(0,0,0,0.75);
+      pointer-events: auto;
+    }
+
+    .mesa-lightbox-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: left 0.25s ease-in-out,
+                  top 0.25s ease-in-out,
+                  width 0.25s ease-in-out,
+                  height 0.25s ease-in-out;
+    }
+
+    .mesa-lightbox-wrap .mesa-item {
+      transition: none !important;
+      filter: none !important;
     }
   </style>
 </head>

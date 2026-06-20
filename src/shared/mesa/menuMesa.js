@@ -1,5 +1,3 @@
-import { confettiExplosion } from '../utils/confetti.js';
-
 export function initMenuMesa(config) {
   const {
     CURSOR_NORMAL = 'url("/assets/cursors/cursor-normal.ico") 32 0, auto',
@@ -15,7 +13,8 @@ export function initMenuMesa(config) {
     dragState = null,
     lastActiveIndex = -1,
     layoutBounds = { maxX: 1, maxY: 1 },
-    zCounter = 1;
+    zCounter = 1,
+    popped = null; // { index, backdrop, wrap, label, fromRect }
 
   function loadImage(src) {
     return new Promise((resolve, reject) => {
@@ -26,6 +25,242 @@ export function initMenuMesa(config) {
       img.src = src;
     });
   }
+
+  // ── popup (uses real item element) ──────────────────────
+
+  function popIn(index) {
+    if (popped) return;
+    const entry = renderedItems[index];
+    const item = items[index];
+    const wrapper = entry.wrapper;
+
+    // capture current rect + inline position
+    const fromRect = wrapper.getBoundingClientRect();
+    const savedLeft = wrapper.style.left;
+    const savedTop = wrapper.style.top;
+    const savedWidth = wrapper.style.width;
+    const savedHeight = wrapper.style.height;
+
+    // backdrop
+    const backdrop = document.createElement('div');
+    backdrop.classList.add('mesa-lightbox-backdrop');
+
+    // wrap for positioning the item + label
+    const wrap = document.createElement('div');
+    wrap.classList.add('mesa-lightbox-wrap');
+    wrap.style.position = 'fixed';
+    wrap.style.left = fromRect.left + 'px';
+    wrap.style.top = fromRect.top + 'px';
+    wrap.style.width = fromRect.width + 'px';
+    wrap.style.height = fromRect.height + 'px';
+
+    // reparent the actual wrapper into the popup
+    wrapper.style.position = 'absolute';
+    wrapper.style.left = '0';
+    wrapper.style.top = '0';
+    wrapper.style.width = '100%';
+    wrapper.style.height = '100%';
+    wrapper.style.transition = 'none';
+    wrapper.classList.remove('mesa-hovered');
+    wrap.appendChild(wrapper);
+
+    // label
+    let labelEl = null;
+    backdrop.appendChild(wrap);
+    document.body.appendChild(backdrop);
+
+    // compute target rect (centered, max 85vw x 70vh, keep aspect)
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const aspect = entry.naturalW / entry.naturalH;
+    const maxW = vw * 0.92;
+    const maxH = vh * 0.88;
+    let targetW = maxW;
+    let targetH = targetW / aspect;
+    if (targetH > maxH) {
+      targetH = maxH;
+      targetW = targetH * aspect;
+    }
+    const targetLeft = (vw - targetW) / 2;
+    const targetTop = (vh - targetH) / 2;
+
+    // ── zoom + pan (origin 0 0 for predictable math) ──
+    let zoomLevel = 1;
+    let targetZoom = 1;
+    let panX = 0, panY = 0;
+    let targetPanX = 0, targetPanY = 0;
+    let rafId = null;
+    let backdropPointer = null; // { startX, startY, startPanX, startPanY, dragging }
+
+    wrapper.style.transformOrigin = '0 0';
+
+    function applyTransform() {
+      wrapper.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+    }
+
+    function animateZoom() {
+      const dz = targetZoom - zoomLevel;
+      const dpx = targetPanX - panX;
+      const dpy = targetPanY - panY;
+      const done = Math.abs(dz) < 0.0005 && Math.abs(dpx) < 0.05 && Math.abs(dpy) < 0.05;
+      if (done) {
+        zoomLevel = targetZoom;
+        panX = targetPanX;
+        panY = targetPanY;
+        applyTransform();
+        rafId = null;
+        return;
+      }
+      zoomLevel += dz * 0.22;
+      panX += dpx * 0.22;
+      panY += dpy * 0.22;
+      applyTransform();
+      rafId = requestAnimationFrame(animateZoom);
+    }
+
+    const onWheel = (e) => {
+      e.preventDefault();
+      const wrapRect = wrap.getBoundingClientRect();
+
+      // cursor relative to wrap top-left
+      const cx = e.clientX - wrapRect.left;
+      const cy = e.clientY - wrapRect.top;
+
+      // wrapper-local coordinate under cursor
+      const lx = (cx - targetPanX) / targetZoom;
+      const ly = (cy - targetPanY) / targetZoom;
+
+      // new target zoom
+      targetZoom = Math.max(0.5, Math.min(5, targetZoom - e.deltaY * 0.003));
+
+      // adjust target pan so same wrapper-local point stays under cursor
+      targetPanX = cx - lx * targetZoom;
+      targetPanY = cy - ly * targetZoom;
+
+      if (!rafId) rafId = requestAnimationFrame(animateZoom);
+    };
+
+    // pan on drag (cancels animation, syncs targets)
+    const onBackdropPointerDown = (e) => {
+      if (e.button !== 0) return;
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      // sync targets to current animated values
+      targetPanX = panX;
+      targetPanY = panY;
+      targetZoom = zoomLevel;
+      backdropPointer = {
+        startX: e.clientX, startY: e.clientY,
+        startPanX: panX, startPanY: panY,
+        dragging: false,
+      };
+      backdrop.setPointerCapture(e.pointerId);
+      backdrop.style.cursor = CURSOR_GRAB;
+      e.preventDefault();
+    };
+
+    const onBackdropPointerMove = (e) => {
+      if (!backdropPointer) return;
+      const dx = e.clientX - backdropPointer.startX;
+      const dy = e.clientY - backdropPointer.startY;
+      if (!backdropPointer.dragging && Math.abs(dx) + Math.abs(dy) > 3) {
+        backdropPointer.dragging = true;
+      }
+      if (backdropPointer.dragging) {
+        panX = targetPanX = backdropPointer.startPanX + dx;
+        panY = targetPanY = backdropPointer.startPanY + dy;
+        applyTransform();
+      }
+    };
+
+    const onBackdropPointerUp = (e) => {
+      if (!backdropPointer) return;
+      backdrop.releasePointerCapture(e.pointerId);
+      backdrop.style.cursor = CURSOR_NORMAL;
+      const wasDrag = backdropPointer.dragging;
+      backdropPointer = null;
+      if (!wasDrag) popOut();
+    };
+
+    backdrop.addEventListener('wheel', onWheel, { passive: false });
+    backdrop.addEventListener('pointerdown', onBackdropPointerDown);
+    backdrop.addEventListener('pointermove', onBackdropPointerMove);
+    backdrop.addEventListener('pointerup', onBackdropPointerUp);
+
+    popped = { index, backdrop, wrap, wrapper, fromRect,
+               savedLeft, savedTop, savedWidth, savedHeight,
+               onWheel, onBackdropPointerDown, onBackdropPointerMove, onBackdropPointerUp,
+               getRafId: () => rafId,
+               target: { left: targetLeft, top: targetTop, width: targetW, height: targetH } };
+
+    // trigger open animation
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        wrap.style.left = targetLeft + 'px';
+        wrap.style.top = targetTop + 'px';
+        wrap.style.width = targetW + 'px';
+        wrap.style.height = targetH + 'px';
+        backdrop.classList.add('mesa-lightbox-open');
+      });
+    });
+  }
+
+  function popOut() {
+    if (!popped) return;
+    const { backdrop, wrap, wrapper, fromRect, index,
+            savedLeft, savedTop, savedWidth, savedHeight,
+            onWheel, onBackdropPointerDown, onBackdropPointerMove, onBackdropPointerUp,
+            getRafId } = popped;
+
+    // cancel smooth zoom animation
+    const rid = getRafId();
+    if (rid) cancelAnimationFrame(rid);
+
+    backdrop.removeEventListener('wheel', onWheel);
+    backdrop.removeEventListener('pointerdown', onBackdropPointerDown);
+    backdrop.removeEventListener('pointermove', onBackdropPointerMove);
+    backdrop.removeEventListener('pointerup', onBackdropPointerUp);
+
+    // reset transform + origin
+    wrapper.style.transform = '';
+    wrapper.style.transformOrigin = '';
+
+    wrap.style.left = fromRect.left + 'px';
+    wrap.style.top = fromRect.top + 'px';
+    wrap.style.width = fromRect.width + 'px';
+    wrap.style.height = fromRect.height + 'px';
+    backdrop.classList.remove('mesa-lightbox-open');
+
+    // after transition, reparent back and restore original inline position
+    const onTransitionEnd = (e) => {
+      if (e.target !== wrap) return;
+      wrap.removeEventListener('transitionend', onTransitionEnd);
+      if (!popped) return;
+
+      mesaContainer.appendChild(wrapper);
+      wrapper.style.position = 'absolute';
+      wrapper.style.transform = '';
+      wrapper.style.transformOrigin = '';
+      wrapper.style.left = savedLeft;
+      wrapper.style.top = savedTop;
+      wrapper.style.width = savedWidth;
+      wrapper.style.height = savedHeight;
+      wrapper.style.transition = '';
+
+      backdrop.remove();
+      popped = null;
+      setActiveIndex(-1);
+    };
+
+    wrap.addEventListener('transitionend', onTransitionEnd);
+  }
+
+  function onKeyDown(e) {
+    if (e.key === 'Escape' && popped) {
+      popOut();
+    }
+  }
+
+  // ── hit / layout ────────────────────────────────────────
 
   function setActiveIndex(nextIndex) {
     if (nextIndex === lastActiveIndex) return;
@@ -41,6 +276,7 @@ export function initMenuMesa(config) {
     let closestDistance = Infinity;
 
     renderedItems.forEach((entry, i) => {
+      if (popped && popped.index === i) return; // skip popped item
       const rect = entry.wrapper.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
@@ -66,6 +302,7 @@ export function initMenuMesa(config) {
 
   function layoutItem(entry, index) {
     if (dragState && dragState.index === index) return;
+    if (popped && popped.index === index) return;
 
     const item = items[index];
     const itemScale = item.scale ?? 1;
@@ -89,8 +326,11 @@ export function initMenuMesa(config) {
     renderedItems.forEach((entry, i) => layoutItem(entry, i));
   }
 
+  // ── pointer events ──────────────────────────────────────
+
   function onPointerDown(e) {
     if (e.button !== 0) return;
+    if (popped) return;
     const idx = hitTest(e.clientX, e.clientY);
     if (idx < 0) return;
 
@@ -143,13 +383,8 @@ export function initMenuMesa(config) {
       entry.wrapper.dataset.x = entry.wrapper.offsetLeft;
       entry.wrapper.dataset.y = entry.wrapper.offsetTop;
     } else {
-      const rect = entry.wrapper.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      confettiExplosion(centerX, centerY);
-      setTimeout(() => {
-        window.parent.postMessage(entry.item.urlLink, '*');
-      }, 500);
+      // click → pop item up in-place
+      popIn(dragState.index);
     }
 
     mesaContainer.style.cursor = CURSOR_NORMAL;
@@ -169,11 +404,12 @@ export function initMenuMesa(config) {
     layoutAll();
   }
 
+  // ── init / destroy ──────────────────────────────────────
+
   async function init(container) {
     mesaContainer = container;
     mesaContainer.style.cursor = CURSOR_NORMAL;
 
-    // Compute layout bounds from item positions
     const xs = items.map(i => i.x ?? 0);
     const ys = items.map(i => i.y ?? 0);
     layoutBounds.maxX = Math.max(...xs, 1);
@@ -205,22 +441,14 @@ export function initMenuMesa(config) {
 
         wrapper.appendChild(imgEl);
 
-        if (item.label) {
-          const labelEl = document.createElement('div');
-          labelEl.classList.add('mesa-label');
-          labelEl.textContent = item.label;
-          wrapper.appendChild(labelEl);
-        }
-
         mesaContainer.appendChild(wrapper);
 
-        const entry = {
+        renderedItems.push({
           item,
           wrapper,
           naturalW: img.naturalWidth,
           naturalH: img.naturalHeight,
-        };
-        renderedItems.push(entry);
+        });
       } catch (err) {
         console.error('Failed to load mesa item:', item.src, err);
       }
@@ -237,14 +465,23 @@ export function initMenuMesa(config) {
     mesaContainer.addEventListener('pointerup', onPointerUp);
     mesaContainer.addEventListener('pointerleave', onPointerLeave);
     window.addEventListener('resize', onResize);
+    window.addEventListener('keydown', onKeyDown);
   }
 
   function destroy() {
+    if (popped) {
+      const { backdrop, wrap, wrapper, index } = popped;
+      mesaContainer.appendChild(wrapper);
+      wrapper.style.cssText = '';
+      backdrop.remove();
+      popped = null;
+    }
     mesaContainer.removeEventListener('pointerdown', onPointerDown);
     mesaContainer.removeEventListener('pointermove', onPointerMove);
     mesaContainer.removeEventListener('pointerup', onPointerUp);
     mesaContainer.removeEventListener('pointerleave', onPointerLeave);
     window.removeEventListener('resize', onResize);
+    window.removeEventListener('keydown', onKeyDown);
     renderedItems = [];
     dragState = null;
   }

@@ -5,18 +5,18 @@
   "DRAG_THRESHOLD": 4,
   "globalScale": 0.50,
   "items": [
-    { "id": "1", "label": "", "src": "/mesa-arquitetura/1.png", "urlLink": "/item-1", "x": 360, "y": 50, "scale": 1 },
-    { "id": "2", "label": "", "src": "/mesa-arquitetura/2.png", "urlLink": "/item-2", "x": 820, "y": 30, "scale": 1 },
-    { "id": "3", "label": "", "src": "/mesa-arquitetura/3.png", "urlLink": "/item-3", "x": 30, "y": 80, "scale": 1 },
-    { "id": "4", "label": "", "src": "/mesa-arquitetura/4.png", "urlLink": "/item-4", "x": 620, "y": 180, "scale": 1 },
-    { "id": "5", "label": "", "src": "/mesa-arquitetura/5.png", "urlLink": "/item-5", "x": 200, "y": 180, "scale": 1 },
-    { "id": "6", "label": "", "src": "/mesa-arquitetura/6.png", "urlLink": "/item-6", "x": 1100, "y": 100, "scale": 1 },
-    { "id": "7", "label": "", "src": "/mesa-arquitetura/7.png", "urlLink": "/item-7", "x": 30, "y": 350, "scale": 1 },
-    { "id": "8", "label": "", "src": "/mesa-arquitetura/8.png", "urlLink": "/item-8", "x": 450, "y": 360, "scale": 1 },
-    { "id": "9", "label": "", "src": "/mesa-arquitetura/9.png", "urlLink": "/item-9", "x": 900, "y": 320, "scale": 1 },
-    { "id": "10", "label": "", "src": "/mesa-arquitetura/10.png", "urlLink": "/item-10", "x": 90, "y": 520, "scale": 1 },
-    { "id": "11", "label": "", "src": "/mesa-arquitetura/11.png", "urlLink": "/item-11", "x": 550, "y": 500, "scale": 1 },
-    { "id": "12", "label": "", "src": "/mesa-arquitetura/12.png", "urlLink": "/item-12", "x": 1050, "y": 460, "scale": 1 },
-    { "id": "13", "label": "", "src": "/mesa-arquitetura/13.png", "urlLink": "/item-13", "x": 300, "y": 620, "scale": 1 }
+    { "id": "1",  "label": "Projeto Residencial - Vista Frontal\nCliente: Família Costa\nAno: 2024",                                              "src": "/mesa-arquitetura/1.png",  "urlLink": "/item-1",  "x": 360,  "y": 50,  "scale": 1 },
+    { "id": "2",  "label": "Estudo de Fachada - Conceito Moderno\nMateriais: Vidro, Concreto Aparente, Madeira",                                     "src": "/mesa-arquitetura/2.png",  "urlLink": "/item-2",  "x": 820,  "y": 30,  "scale": 1 },
+    { "id": "3",  "label": "Planta Baixa - Pavimento Térreo\nÁrea: 280m² | 3 Suítes + Escritório",                                                    "src": "/mesa-arquitetura/3.png",  "urlLink": "/item-3",  "x": 30,   "y": 80,  "scale": 1 },
+    { "id": "4",  "label": "Corte Longitudinal - Escala 1:50\nPé-direito duplo na sala de estar",                                                     "src": "/mesa-arquitetura/4.png",  "urlLink": "/item-4",  "x": 620,  "y": 180, "scale": 1 },
+    { "id": "5",  "label": "Perspectiva Interna - Sala de Estar\nMobiliário sob medida, iluminação indireta",                                         "src": "/mesa-arquitetura/5.png",  "urlLink": "/item-5",  "x": 200,  "y": 180, "scale": 1 },
+    { "id": "6",  "label": "Detalhe Construtivo - Estrutura Metálica\nVigas I, pilares tubulares, cobertura tensionada",                              "src": "/mesa-arquitetura/6.png",  "urlLink": "/item-6",  "x": 1100, "y": 100, "scale": 1 },
+    { "id": "7",  "label": "Maquete Eletrônica - Conjunto Habitacional\n4 torres, 12 pavimentos cada",                                                "src": "/mesa-arquitetura/7.png",  "urlLink": "/item-7",  "x": 30,   "y": 350, "scale": 1 },
+    { "id": "8",  "label": "Layout Interno - Apartamento Tipo\n98m² úteis, 2 dormitórios, varanda gourmet",                                           "src": "/mesa-arquitetura/8.png",  "urlLink": "/item-8",  "x": 450,  "y": 360, "scale": 1 },
+    { "id": "9",  "label": "Estudo de Implantação - Terreno 800m²\nRecuos, insolação, ventilação predominante",                                       "src": "/mesa-arquitetura/9.png",  "urlLink": "/item-9",  "x": 900,  "y": 320, "scale": 1 },
+    { "id": "10", "label": "Detalhamento de Escada - Design Flutuante\nDegraus em balanço, corrimão em vidro laminado",                               "src": "/mesa-arquitetura/10.png", "urlLink": "/item-10", "x": 90,   "y": 520, "scale": 1 },
+    { "id": "11", "label": "Cobertura - Telhado Verde\nCaptação de água pluvial, jardim acessível",                                                   "src": "/mesa-arquitetura/11.png", "urlLink": "/item-11", "x": 550,  "y": 500, "scale": 1 },
+    { "id": "12", "label": "Projeto Luminotécnico - Sala de Jantar\nLuminárias pendentes, fita LED indireta, dimerizável",                            "src": "/mesa-arquitetura/12.png", "urlLink": "/item-12", "x": 1050, "y": 460, "scale": 1 },
+    { "id": "13", "label": "Paisagismo - Jardim de Inverno\nEspécies nativas, espelho d'água, deck em cumaru",                                        "src": "/mesa-arquitetura/13.png", "urlLink": "/item-13", "x": 300,  "y": 620, "scale": 0.5 }
   ]
 }

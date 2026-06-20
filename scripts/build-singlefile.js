@@ -11,7 +11,7 @@ const pages = [
 ];
 
 for (const page of pages) {
-  execSync(`vite build`, {
+  execSync(`npx vite build`, {
     stdio: 'inherit',
     env: {
       ...process.env,
