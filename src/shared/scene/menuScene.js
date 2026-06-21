@@ -222,8 +222,8 @@ export function initMenuScene(config) {
     const localY = y - offsetY;
 
     const boundingBox = baseImage.getBoundingClientRect();
-    const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
-    const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
+    const refWidth = globalBaseCenter ? globalBaseCenter.width : baseImage.naturalWidth;
+    const refHeight = globalBaseCenter ? globalBaseCenter.height : baseImage.naturalHeight;
 
     const scaleX = refWidth / boundingBox.width;
     const scaleY = refHeight / boundingBox.height;
@@ -233,6 +233,7 @@ export function initMenuScene(config) {
 
     for (let i = 0; i < overlayElements.length; i++) {
       const preProcessed = preProcessedOverlays[i];
+      if (!preProcessed) continue;
       const anchors = getHitAnchors(preProcessed);
       let distance = Infinity;
 
@@ -332,8 +333,8 @@ export function initMenuScene(config) {
     const offsetY = matrix.m42;
 
     const boundingBox = baseImage.getBoundingClientRect();
-    const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
-    const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
+    const refWidth = globalBaseCenter ? globalBaseCenter.width : baseImage.naturalWidth;
+    const refHeight = globalBaseCenter ? globalBaseCenter.height : baseImage.naturalHeight;
 
     const scaleX = boundingBox.width / refWidth;
     const scaleY = boundingBox.height / refHeight;
@@ -681,8 +682,8 @@ export function initMenuScene(config) {
     const offsetX = matrix.m41;
     const offsetY = matrix.m42;
     const boundingBox = baseImage.getBoundingClientRect();
-    const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
-    const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
+    const refWidth = globalBaseCenter ? globalBaseCenter.width : baseImage.naturalWidth;
+    const refHeight = globalBaseCenter ? globalBaseCenter.height : baseImage.naturalHeight;
     const scaleX = boundingBox.width / refWidth;
     const scaleY = boundingBox.height / refHeight;
 
@@ -1035,7 +1036,8 @@ export function initMenuScene(config) {
     };
 
     const boundingBox = baseImage.getBoundingClientRect();
-    const currentScale = baseImage.naturalWidth ? boundingBox.width / baseImage.naturalWidth : 1;
+    const refWidth = globalBaseCenter ? globalBaseCenter.width : baseImage.naturalWidth;
+    const currentScale = refWidth ? boundingBox.width / refWidth : 1;
 
     const baseTextOffset = overlay.arrowEndOffset ?? arrowEndOffset;
     const gapText = baseTextOffset * currentScale;
@@ -1189,7 +1191,8 @@ export function initMenuScene(config) {
           : { x: targetX, y: targetY, topY: targetY, bottomY: targetY };
 
         const boundingBox = baseImage.getBoundingClientRect();
-        const currentScale = baseImage.naturalWidth ? boundingBox.width / baseImage.naturalWidth : 1;
+        const refWidth = globalBaseCenter ? globalBaseCenter.width : baseImage.naturalWidth;
+        const currentScale = refWidth ? boundingBox.width / refWidth : 1;
 
         const overlay = overlayData || {};
         const baseTextOffset = overlay.arrowEndOffset ?? arrowEndOffset;
@@ -1323,15 +1326,13 @@ export function initMenuScene(config) {
     renderDebugCandidates();
   }
 
-  function checkAllLoaded() {
-    if (loadedImages === totalImages) {
-      setupImagesEvents();
-      document.querySelector('.lds-facebook').style.display = 'none';
-    }
+  function isOverlayReady(index) {
+    return index >= 0 && index < preProcessedOverlays.length && preProcessedOverlays[index] !== undefined;
   }
 
   function setupImagesEvents() {
     imageContainer.addEventListener('mousemove', function (e) {
+      if (!globalBaseCenter) return;
       const isActive = findClosestImage(overlayElements, e.clientX, e.clientY);
       const arrowPath = document.getElementById('dynamicArrow');
 
@@ -1367,7 +1368,7 @@ export function initMenuScene(config) {
     });
 
     imageContainer.addEventListener('click', function () {
-      if (lastClosestImageIndex < 0 || lastMinDistance > ACTIVE_RADIUS) {
+      if (lastClosestImageIndex < 0 || lastMinDistance > ACTIVE_RADIUS || !isOverlayReady(lastClosestImageIndex)) {
         return;
       }
 
@@ -1381,8 +1382,8 @@ export function initMenuScene(config) {
         const offsetY = matrix.m42;
 
         const boundingBox = baseImage.getBoundingClientRect();
-        const refWidth = preProcessedOverlays[0] ? preProcessedOverlays[0].width : baseImage.naturalWidth;
-        const refHeight = preProcessedOverlays[0] ? preProcessedOverlays[0].height : baseImage.naturalHeight;
+        const refWidth = globalBaseCenter ? globalBaseCenter.width : baseImage.naturalWidth;
+        const refHeight = globalBaseCenter ? globalBaseCenter.height : baseImage.naturalHeight;
 
         const scaleX = boundingBox.width / refWidth;
         const scaleY = boundingBox.height / refHeight;
@@ -1449,12 +1450,21 @@ export function initMenuScene(config) {
     loadedImages = 0;
     totalImages = overlayElements.length + 1;
 
+    let eventsSetup = false;
+
+    function maybeSetupEvents() {
+      if (eventsSetup || !globalBaseCenter) return;
+      eventsSetup = true;
+      setupImagesEvents();
+      document.querySelector('.lds-facebook').style.display = 'none';
+    }
+
     baseImage.onload = () => {
       globalBaseCenter = preProcessOverlays(baseImage);
       centerMenu(globalBaseCenter);
       instructionTextPlacer?.schedule();
       loadedImages++;
-      checkAllLoaded();
+      maybeSetupEvents();
     };
 
     baseImage.onerror = () => {
@@ -1472,7 +1482,6 @@ export function initMenuScene(config) {
       img.onload = () => {
         preProcessedOverlays[index] = preProcessOverlays(img, index);
         loadedImages++;
-        checkAllLoaded();
       };
       img.onerror = () => {
         console.error('Failed to load overlay image', img.src);
