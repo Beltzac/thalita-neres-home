@@ -69,13 +69,21 @@ export function initMenuDesktop(config) {
       const iconWrapper = document.createElement('div');
       iconWrapper.classList.add('icon-wrapper');
 
+      const iconScale = item.iconScale ?? 1;
+
       const imgBase = document.createElement('img');
       imgBase.src = item.baseImage;
       imgBase.classList.add('desktop-icon', 'icon-base');
+      if (iconScale !== 1) {
+        imgBase.style.transform = `scale(${iconScale})`;
+      }
 
       const imgActive = document.createElement('img');
       imgActive.src = item.activeImage;
       imgActive.classList.add('desktop-icon', 'icon-active');
+      if (iconScale !== 1) {
+        imgActive.style.transform = `scale(${iconScale})`;
+      }
 
       iconWrapper.appendChild(imgBase);
       iconWrapper.appendChild(imgActive);
@@ -85,6 +93,11 @@ export function initMenuDesktop(config) {
       label.textContent = item.label;
       if (labelStyle === 'none') {
         label.style.display = 'none';
+      }
+
+      const labelScale = item.labelScale ?? 1;
+      if (labelScale !== 1) {
+        label.style.fontSize = `calc(var(--icon-size) / 9 * ${labelScale})`;
       }
 
       itemDiv.appendChild(iconWrapper);

@@ -9,6 +9,7 @@ const pageInputs = {
   'filme-fotografico': resolve(__dirname, 'src/pages/filme-fotografico/index.html'),
   pastas: resolve(__dirname, 'src/pages/pastas/index.html'),
   'mesa-arquitetura': resolve(__dirname, 'src/pages/mesa-arquitetura/index.html'),
+  projetos: resolve(__dirname, 'src/pages/projetos/index.html'),
   index: resolve(__dirname, 'src/pages/index.html'),
 };
 

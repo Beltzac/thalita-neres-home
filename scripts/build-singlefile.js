@@ -7,6 +7,7 @@ const pages = [
   'filme-fotografico',
   'pastas',
   'mesa-arquitetura',
+  'projetos',
   'index'
 ];
 
