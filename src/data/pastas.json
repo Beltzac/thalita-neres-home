@@ -8,21 +8,27 @@
       "label": "Arquitetura",
       "baseImage": "/pastas/imagens/ARQUITETURA_BASE.png",
       "activeImage": "/pastas/imagens/ARQUITETURA.png",
-      "urlLink": "/portfolio-arquitetura"
+      "urlLink": "/portfolio-arquitetura",
+      "iconScale": 0.7,
+      "labelScale": 0.55
     },
     {
       "id": "interiores",
       "label": "Interiores",
       "baseImage": "/pastas/imagens/INTERIORES_BASE.png",
       "activeImage": "/pastas/imagens/INTERIORES.png",
-      "urlLink": "/interiores"
+      "urlLink": "/interiores",
+      "iconScale": 0.7,
+      "labelScale": 0.55
     },
     {
       "id": "mobiliario",
       "label": "Mobiliário",
       "baseImage": "/pastas/imagens/MOBILIARIO_BASE.png",
       "activeImage": "/pastas/imagens/MOBILIARIO.png",
-      "urlLink": "/mobiliario"
+      "urlLink": "/mobiliario",
+      "iconScale": 0.7,
+      "labelScale": 0.55
     }
   ]
 }

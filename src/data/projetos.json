@@ -5,12 +5,12 @@
   "desktopItems": [
     {
       "id": "living-apto-fp",
-      "label": "Living Apartamento FP, 2023",
+      "label": "Living Apto FP, 2023",
       "baseImage": "/pastas-2/pasta-arq.png",
       "activeImage": "/pastas-2/pasta-arq-hover.png",
       "urlLink": "/projetos-living-apto-fp",
       "iconScale": 0.55,
-      "labelScale": 0.55
+      "labelScale": 0.4
     }
   ]
 }
