@@ -274,6 +274,7 @@ export function initMenuMesa(config) {
   function setActiveIndex(nextIndex) {
     if (nextIndex === lastActiveIndex) return;
     renderedItems.forEach((entry, i) => {
+      if (!entry) return;
       entry.wrapper.classList.toggle('mesa-hovered', i === nextIndex);
     });
     mesaContainer.style.cursor = nextIndex >= 0 ? CURSOR_HOVER : CURSOR_NORMAL;
@@ -285,6 +286,7 @@ export function initMenuMesa(config) {
     let closestDistance = Infinity;
 
     renderedItems.forEach((entry, i) => {
+      if (!entry) return;
       if (popped && popped.index === i) return; // skip popped item
       const rect = entry.wrapper.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
@@ -332,7 +334,7 @@ export function initMenuMesa(config) {
   }
 
   function layoutAll() {
-    renderedItems.forEach((entry, i) => layoutItem(entry, i));
+    renderedItems.forEach((entry, i) => { if (entry) layoutItem(entry, i); });
   }
 
   // ── pointer events ──────────────────────────────────────
@@ -428,12 +430,20 @@ export function initMenuMesa(config) {
     layoutBounds.maxY = Math.max(...ys, 1);
 
     const loader = document.querySelector('.lds-facebook');
-    const loadedCount = { value: 0 };
     const total = items.length;
+    let loadedCount = 0;
 
-    renderedItems = [];
+    renderedItems = new Array(total);
 
-    for (const item of items) {
+    // Sort by y-position: above-fold items load first, rest still parallel
+    const priority = items
+      .map((item, i) => ({ item, origIndex: i }))
+      .sort((a, b) => (a.item.y ?? 0) - (b.item.y ?? 0));
+
+    const vh = window.innerHeight;
+    const isAboveFold = (y) => (y ?? 0) < vh * 1.2;
+
+    const loadOne = async ({ item, origIndex }) => {
       try {
         const img = await loadImage(item.src);
 
@@ -458,29 +468,36 @@ export function initMenuMesa(config) {
         imgEl.style.height = '100%';
         imgEl.style.objectFit = 'contain';
         imgEl.style.pointerEvents = 'none';
+        if (!isAboveFold(item.y)) imgEl.loading = 'lazy';
 
         inner.appendChild(imgEl);
         wrapper.appendChild(inner);
         mesaContainer.appendChild(wrapper);
 
-        renderedItems.push({
+        const entry = {
           item,
           wrapper,
           inner,
           naturalW: img.naturalWidth,
           naturalH: img.naturalHeight,
           tilt,
-        });
+        };
+        renderedItems[origIndex] = entry;
+
+        // Layout immediately — no waiting for others
+        layoutItem(entry, origIndex);
       } catch (err) {
         console.error('Failed to load mesa item:', item.src, err);
       }
 
-      loadedCount.value++;
-      if (loadedCount.value >= total) {
-        if (loader) loader.style.display = 'none';
-        layoutAll();
+      loadedCount++;
+      if (loadedCount >= total && loader) {
+        loader.style.display = 'none';
       }
-    }
+    };
+
+    // Fire all loads in parallel; each renders as it completes
+    await Promise.all(priority.map(loadOne));
 
     mesaContainer.addEventListener('pointerdown', onPointerDown);
     mesaContainer.addEventListener('pointermove', onPointerMove);
