@@ -6,8 +6,13 @@
     "dev": "vite",
     "precompute:centers": "node scripts/precompute-centers.js",
     "optimize:images": "node scripts/optimize-images.js",
-    "build": "npm run precompute:centers && node scripts/build-singlefile.js && npm run optimize:images",
+    "build": "npm run precompute:centers && node scripts/build-singlefile.js && npm run optimize:images && node scripts/cleanup-dist.js",
     "preview": "vite preview",
+    "perf": "npm run build && node scripts/measure-perf.mjs",
+    "perf:dev": "node scripts/measure-perf.mjs --dev",
+    "perf:save": "npm run build && node scripts/measure-perf.mjs --output perf-report.json",
+    "convert:webp": "node scripts/convert-to-webp.mjs",
+    "convert:webp:dry": "node scripts/convert-to-webp.mjs --dry-run",
     "lint": "eslint src scripts eslint.config.js vite.config.js wixPage.js",
     "lint:fix": "eslint src scripts eslint.config.js vite.config.js wixPage.js --fix",
     "format": "prettier --write .",
@@ -15,8 +20,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
+    "@playwright/test": "^1.61.0",
     "eslint": "^9.0.0",
     "globals": "^15.0.0",
+    "playwright": "^1.61.0",
     "prettier": "^3.0.0",
     "sharp": "^0.33.5",
     "vite": "^6.0.0",
@@ -24,6 +31,7 @@
     "zod": "^3.23.0"
   },
   "dependencies": {
-    "@chenglou/pretext": "^0.0.6"
+    "@chenglou/pretext": "^0.0.6",
+    "puppeteer": "^25.1.0"
   }
 }

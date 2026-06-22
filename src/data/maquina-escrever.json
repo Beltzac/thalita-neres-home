@@ -1,6 +1,6 @@
 {
   "baseUrl": "",
-  "baseImageFilename": "/maquina-escrever/imagens/MAQUINA DE ESCREVER.png",
+  "baseImageFilename": "/maquina-escrever/imagens/MAQUINA DE ESCREVER.webp",
   "margin": 60,
   "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
@@ -13,7 +13,7 @@
   "labelMaxDistanceFromSource": 520,
   "showArrow": true,
   "precomputedCentersByUrl": {
-    "/maquina-escrever/imagens/MAQUINA DE ESCREVER.png": {
+    "/maquina-escrever/imagens/MAQUINA DE ESCREVER.webp": {
       "centerX": 1523.307921000029,
       "centerY": 2165.922839595585,
       "bboxCenterX": 1503.5,
@@ -23,7 +23,7 @@
       "contentWidth": 1512,
       "contentHeight": 2221
     },
-    "maquina-escrever/imagens/MAQUINA DE ESCREVER.png": {
+    "maquina-escrever/imagens/MAQUINA DE ESCREVER.webp": {
       "centerX": 1523.307921000029,
       "centerY": 2165.922839595585,
       "bboxCenterX": 1503.5,
@@ -33,7 +33,7 @@
       "contentWidth": 1512,
       "contentHeight": 2221
     },
-    "/maquina-escrever/imagens/BLOG.png": {
+    "/maquina-escrever/imagens/BLOG.webp": {
       "centerX": 1392.5573431734317,
       "centerY": 2711.111291512915,
       "bboxCenterX": 1392,
@@ -71,7 +71,7 @@
         }
       ]
     },
-    "maquina-escrever/imagens/BLOG.png": {
+    "maquina-escrever/imagens/BLOG.webp": {
       "centerX": 1392.5573431734317,
       "centerY": 2711.111291512915,
       "bboxCenterX": 1392,
@@ -109,7 +109,7 @@
         }
       ]
     },
-    "/maquina-escrever/imagens/SUBSTACK.png": {
+    "/maquina-escrever/imagens/SUBSTACK.webp": {
       "centerX": 1517.3496963023479,
       "centerY": 2158.985010478457,
       "bboxCenterX": 1521,
@@ -132,7 +132,7 @@
         }
       ]
     },
-    "maquina-escrever/imagens/SUBSTACK.png": {
+    "maquina-escrever/imagens/SUBSTACK.webp": {
       "centerX": 1517.3496963023479,
       "centerY": 2158.985010478457,
       "bboxCenterX": 1521,
@@ -155,7 +155,7 @@
         }
       ]
     },
-    "/maquina-escrever/imagens/ELA N VAI QUEBRAR.png": {
+    "/maquina-escrever/imagens/ELA N VAI QUEBRAR.webp": {
       "centerX": 1174.3828232069438,
       "centerY": 1374.8136135221562,
       "bboxCenterX": 1178.5,
@@ -263,7 +263,7 @@
         }
       ]
     },
-    "maquina-escrever/imagens/ELA N VAI QUEBRAR.png": {
+    "maquina-escrever/imagens/ELA N VAI QUEBRAR.webp": {
       "centerX": 1174.3828232069438,
       "centerY": 1374.8136135221562,
       "bboxCenterX": 1178.5,
@@ -371,7 +371,7 @@
         }
       ]
     },
-    "/maquina-escrever/imagens/MORAMOS NAS CHEGADAS.png": {
+    "/maquina-escrever/imagens/MORAMOS NAS CHEGADAS.webp": {
       "centerX": 1081.3828232069438,
       "centerY": 1131.8136135221562,
       "bboxCenterX": 1085.5,
@@ -569,7 +569,7 @@
         }
       ]
     },
-    "maquina-escrever/imagens/MORAMOS NAS CHEGADAS.png": {
+    "maquina-escrever/imagens/MORAMOS NAS CHEGADAS.webp": {
       "centerX": 1081.3828232069438,
       "centerY": 1131.8136135221562,
       "bboxCenterX": 1085.5,
@@ -767,7 +767,7 @@
         }
       ]
     },
-    "/maquina-escrever/imagens/OPUSCULO.png": {
+    "/maquina-escrever/imagens/OPUSCULO.webp": {
       "centerX": 1335.3828232069438,
       "centerY": 978.8136135221563,
       "bboxCenterX": 1339.5,
@@ -835,7 +835,7 @@
         }
       ]
     },
-    "maquina-escrever/imagens/OPUSCULO.png": {
+    "maquina-escrever/imagens/OPUSCULO.webp": {
       "centerX": 1335.3828232069438,
       "centerY": 978.8136135221563,
       "bboxCenterX": 1339.5,
@@ -907,35 +907,35 @@
   "overlayImages": [
     {
       "nomeImagem": "Blog de arquitetura",
-      "arquivo": "/maquina-escrever/imagens/BLOG.png",
+      "arquivo": "/maquina-escrever/imagens/BLOG.webp",
       "urlLink": "https://www.thalitaneres.com.br/blog",
       "description": "Arquitetos, movimentos, direção.\nHistória e crítica da arquitetura em reflexão.",
       "arrowStartOffset": 28
     },
     {
       "nomeImagem": "Substack",
-      "arquivo": "/maquina-escrever/imagens/SUBSTACK.png",
+      "arquivo": "/maquina-escrever/imagens/SUBSTACK.webp",
       "urlLink": "https://substack.com/@thalitaneres",
       "description": "Textos livres, temas diversos.\nPensar curto, pensar disperso.",
       "arrowStartOffset": 26
     },
     {
       "nomeImagem": "Ela Não Vai Quebrar (2020)",
-      "arquivo": "/maquina-escrever/imagens/ELA N VAI QUEBRAR.png",
+      "arquivo": "/maquina-escrever/imagens/ELA N VAI QUEBRAR.webp",
       "urlLink": "https://www.amazon.com.br/Ela-N%C3%A3o-Quebrar-Thalita-Neres/dp/8593077382",
       "description": "Livro de poesia, corpo sensível.\nFragilidade como força visível.",
       "arrowStartOffset": 50
     },
     {
       "nomeImagem": "Moramos nas Chegadas e Também nas Partidas (2024)",
-      "arquivo": "/maquina-escrever/imagens/MORAMOS NAS CHEGADAS.png",
+      "arquivo": "/maquina-escrever/imagens/MORAMOS NAS CHEGADAS.webp",
       "urlLink": "https://www.amazon.com.br/Moramos-Nas-Chegadas-Tamb%C3%A9m-Partidas/dp/658596506X",
       "description": "Prosa em cartas, tempo suspenso.\nFicar e ir no mesmo gesto denso.",
       "arrowStartOffset": 50
     },
     {
       "nomeImagem": "Opúsculo (2021–2023)",
-      "arquivo": "/maquina-escrever/imagens/OPUSCULO.png",
+      "arquivo": "/maquina-escrever/imagens/OPUSCULO.webp",
       "urlLink": "/opusculo",
       "description": "Textos reunidos sem mediação.\nDownload livre, circulação.",
       "arrowStartOffset": 30

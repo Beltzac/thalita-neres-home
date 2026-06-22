@@ -1,6 +1,6 @@
 {
   "baseUrl": "",
-  "baseImageFilename": "/home/imagens/base.png",
+  "baseImageFilename": "/home/imagens/base.webp",
   "margin": 60,
   "ACTIVE_RADIUS": 500,
   "labelMode": "name",
@@ -20,7 +20,7 @@
     "padding": 20
   },
   "precomputedCentersByUrl": {
-    "/home/imagens/base.png": {
+    "/home/imagens/base.webp": {
       "centerX": 1501.4792555253975,
       "centerY": 1958.784954011786,
       "bboxCenterX": 1522,
@@ -30,7 +30,7 @@
       "contentWidth": 2811,
       "contentHeight": 1898
     },
-    "home/imagens/base.png": {
+    "home/imagens/base.webp": {
       "centerX": 1501.4792555253975,
       "centerY": 1958.784954011786,
       "bboxCenterX": 1522,
@@ -40,7 +40,7 @@
       "contentWidth": 2811,
       "contentHeight": 1898
     },
-    "/home/imagens/arquitetura.png": {
+    "/home/imagens/arquitetura.webp": {
       "centerX": 1487.4851347166305,
       "centerY": 1970.832694094385,
       "bboxCenterX": 1443,
@@ -73,7 +73,7 @@
         }
       ]
     },
-    "home/imagens/arquitetura.png": {
+    "home/imagens/arquitetura.webp": {
       "centerX": 1487.4851347166305,
       "centerY": 1970.832694094385,
       "bboxCenterX": 1443,
@@ -106,7 +106,7 @@
         }
       ]
     },
-    "/home/imagens/camera.png": {
+    "/home/imagens/camera.webp": {
       "centerX": 521.6467069312625,
       "centerY": 1687.0995110727638,
       "bboxCenterX": 524,
@@ -134,7 +134,7 @@
         }
       ]
     },
-    "home/imagens/camera.png": {
+    "home/imagens/camera.webp": {
       "centerX": 521.6467069312625,
       "centerY": 1687.0995110727638,
       "bboxCenterX": 524,
@@ -162,7 +162,7 @@
         }
       ]
     },
-    "/home/imagens/desenho.png": {
+    "/home/imagens/desenho.webp": {
       "centerX": 2395.5253171924105,
       "centerY": 2513.1969037364684,
       "bboxCenterX": 2412.5,
@@ -195,7 +195,7 @@
         }
       ]
     },
-    "home/imagens/desenho.png": {
+    "home/imagens/desenho.webp": {
       "centerX": 2395.5253171924105,
       "centerY": 2513.1969037364684,
       "bboxCenterX": 2412.5,
@@ -228,7 +228,7 @@
         }
       ]
     },
-    "/home/imagens/expo.png": {
+    "/home/imagens/expo.webp": {
       "centerX": 1156.7490656350403,
       "centerY": 1428.498393547964,
       "bboxCenterX": 1159,
@@ -251,7 +251,7 @@
         }
       ]
     },
-    "home/imagens/expo.png": {
+    "home/imagens/expo.webp": {
       "centerX": 1156.7490656350403,
       "centerY": 1428.498393547964,
       "bboxCenterX": 1159,
@@ -274,7 +274,7 @@
         }
       ]
     },
-    "/home/imagens/fone.png": {
+    "/home/imagens/fone.webp": {
       "centerX": 2066.0314008611317,
       "centerY": 1379.0998129865611,
       "bboxCenterX": 1978,
@@ -297,7 +297,7 @@
         }
       ]
     },
-    "home/imagens/fone.png": {
+    "home/imagens/fone.webp": {
       "centerX": 2066.0314008611317,
       "centerY": 1379.0998129865611,
       "bboxCenterX": 1978,
@@ -320,7 +320,7 @@
         }
       ]
     },
-    "/home/imagens/livros.png": {
+    "/home/imagens/livros.webp": {
       "centerX": 554.3269767076476,
       "centerY": 1940.414077536431,
       "bboxCenterX": 544,
@@ -348,7 +348,7 @@
         }
       ]
     },
-    "home/imagens/livros.png": {
+    "home/imagens/livros.webp": {
       "centerX": 554.3269767076476,
       "centerY": 1940.414077536431,
       "bboxCenterX": 544,
@@ -376,7 +376,7 @@
         }
       ]
     },
-    "/home/imagens/sobre.png": {
+    "/home/imagens/sobre.webp": {
       "centerX": 1847.5238774055595,
       "centerY": 1823.973182466144,
       "bboxCenterX": 1843.5,
@@ -404,7 +404,7 @@
         }
       ]
     },
-    "home/imagens/sobre.png": {
+    "home/imagens/sobre.webp": {
       "centerX": 1847.5238774055595,
       "centerY": 1823.973182466144,
       "bboxCenterX": 1843.5,
@@ -432,7 +432,7 @@
         }
       ]
     },
-    "/home/imagens/video.png": {
+    "/home/imagens/video.webp": {
       "centerX": 1859.0644219206322,
       "centerY": 1616.3740766191377,
       "bboxCenterX": 1859,
@@ -460,7 +460,7 @@
         }
       ]
     },
-    "home/imagens/video.png": {
+    "home/imagens/video.webp": {
       "centerX": 1859.0644219206322,
       "centerY": 1616.3740766191377,
       "bboxCenterX": 1859,
@@ -492,7 +492,7 @@
   "overlayImages": [
     {
       "nomeImagem": "Portfólio de Arquitetura",
-      "arquivo": "/home/imagens/arquitetura.png",
+      "arquivo": "/home/imagens/arquitetura.webp",
       "urlLink": "/portfolio-arquitetura",
       "arrowStartOffset": 36,
       "arrowEndOffset": 44,
@@ -500,7 +500,7 @@
     },
     {
       "nomeImagem": "Fotografias",
-      "arquivo": "/home/imagens/camera.png",
+      "arquivo": "/home/imagens/camera.webp",
       "urlLink": "/fotografia",
       "arrowStartOffset": 28,
       "arrowEndOffset": 40,
@@ -508,7 +508,7 @@
     },
     {
       "nomeImagem": "Ilustrações",
-      "arquivo": "/home/imagens/desenho.png",
+      "arquivo": "/home/imagens/desenho.webp",
       "urlLink": "/ilustrações",
       "arrowStartOffset": 42,
       "arrowEndOffset": 48,
@@ -516,7 +516,7 @@
     },
     {
       "nomeImagem": "Exposições",
-      "arquivo": "/home/imagens/expo.png",
+      "arquivo": "/home/imagens/expo.webp",
       "urlLink": "/nenhuma-linha-e-inocente",
       "arrowStartOffset": 26,
       "arrowEndOffset": 36,
@@ -524,7 +524,7 @@
     },
     {
       "nomeImagem": "Podcast",
-      "arquivo": "/home/imagens/fone.png",
+      "arquivo": "/home/imagens/fone.webp",
       "urlLink": "/espera",
       "arrowStartOffset": 34,
       "arrowEndOffset": 44,
@@ -532,7 +532,7 @@
     },
     {
       "nomeImagem": "Meus Escritos",
-      "arquivo": "/home/imagens/livros.png",
+      "arquivo": "/home/imagens/livros.webp",
       "urlLink": "/meus-livros",
       "arrowStartOffset": 30,
       "arrowEndOffset": 42,
@@ -540,7 +540,7 @@
     },
     {
       "nomeImagem": "Sobre",
-      "arquivo": "/home/imagens/sobre.png",
+      "arquivo": "/home/imagens/sobre.webp",
       "urlLink": "/sobremim",
       "arrowStartOffset": 26,
       "arrowEndOffset": 18,
@@ -548,7 +548,7 @@
     },
     {
       "nomeImagem": "Vídeo",
-      "arquivo": "/home/imagens/video.png",
+      "arquivo": "/home/imagens/video.webp",
       "urlLink": "https://www.tiktok.com/@thneres1x",
       "arrowStartOffset": 28,
       "arrowEndOffset": 20,

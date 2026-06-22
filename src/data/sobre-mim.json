@@ -1,6 +1,6 @@
 {
   "baseUrl": "",
-  "baseImageFilename": "/sobre-mim/imagens/EU_BASE.png",
+  "baseImageFilename": "/sobre-mim/imagens/EU_BASE.webp",
   "margin": 60,
   "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
@@ -12,7 +12,7 @@
   "labelFontSize": "7.8vh",
   "showArrow": true,
   "precomputedCentersByUrl": {
-    "/sobre-mim/imagens/EU_BASE.png": {
+    "/sobre-mim/imagens/EU_BASE.webp": {
       "centerX": 715.1328695623215,
       "centerY": 963.812034986429,
       "bboxCenterX": 721.5,
@@ -22,7 +22,7 @@
       "contentWidth": 1290,
       "contentHeight": 1553
     },
-    "sobre-mim/imagens/EU_BASE.png": {
+    "sobre-mim/imagens/EU_BASE.webp": {
       "centerX": 715.1328695623215,
       "centerY": 963.812034986429,
       "bboxCenterX": 721.5,
@@ -32,7 +32,7 @@
       "contentWidth": 1290,
       "contentHeight": 1553
     },
-    "/sobre-mim/imagens/EU.png": {
+    "/sobre-mim/imagens/EU.webp": {
       "centerX": 714.984612463874,
       "centerY": 966.3702606971135,
       "bboxCenterX": 721.5,
@@ -55,7 +55,7 @@
         }
       ]
     },
-    "sobre-mim/imagens/EU.png": {
+    "sobre-mim/imagens/EU.webp": {
       "centerX": 714.984612463874,
       "centerY": 966.3702606971135,
       "bboxCenterX": 721.5,
@@ -82,7 +82,7 @@
   "overlayImages": [
     {
       "nomeImagem": "Sobre Mim",
-      "arquivo": "/sobre-mim/imagens/EU.png",
+      "arquivo": "/sobre-mim/imagens/EU.webp",
       "urlLink": "/sobremim",
       "description": "Thata",
       "arrowStartOffset": 0,

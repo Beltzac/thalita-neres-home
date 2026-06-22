@@ -6,8 +6,8 @@
     {
       "id": "living-apto-fp",
       "label": "Living Apto FP, 2023",
-      "baseImage": "/pastas-2/pasta-arq.png",
-      "activeImage": "/pastas-2/pasta-arq-hover.png",
+      "baseImage": "/pastas-2/pasta-arq.webp",
+      "activeImage": "/pastas-2/pasta-arq-hover.webp",
       "urlLink": "/projetos-living-apto-fp",
       "iconScale": 0.55,
       "labelScale": 0.4
