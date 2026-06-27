@@ -5,15 +5,21 @@ export function initMenuMesa(config) {
     CURSOR_GRAB = 'grabbing',
     DRAG_THRESHOLD = 4,
     globalScale = 0.15,
+    layoutBounds: configuredLayoutBounds = null,
     items = [],
   } = config;
+
+  const baseZIndex = items.reduce((max, item) => {
+    const value = Number.isFinite(item.zIndex) ? item.zIndex : 0;
+    return value > max ? value : max;
+  }, 1);
 
   let mesaContainer,
     renderedItems = [],
     dragState = null,
     lastActiveIndex = -1,
     layoutBounds = { maxX: 1, maxY: 1 },
-    zCounter = 1,
+    zCounter = baseZIndex,
     popped = null; // { index, backdrop, wrap, label, fromRect }
 
   function loadImage(src) {
@@ -426,8 +432,12 @@ export function initMenuMesa(config) {
 
     const xs = items.map(i => i.x ?? 0);
     const ys = items.map(i => i.y ?? 0);
-    layoutBounds.maxX = Math.max(...xs, 1);
-    layoutBounds.maxY = Math.max(...ys, 1);
+    layoutBounds.maxX = Number.isFinite(configuredLayoutBounds?.maxX)
+      ? configuredLayoutBounds.maxX
+      : Math.max(...xs, 1);
+    layoutBounds.maxY = Number.isFinite(configuredLayoutBounds?.maxY)
+      ? configuredLayoutBounds.maxY
+      : Math.max(...ys, 1);
 
     const loader = document.querySelector('.lds-facebook');
     const total = items.length;
@@ -473,6 +483,10 @@ export function initMenuMesa(config) {
         inner.appendChild(imgEl);
         wrapper.appendChild(inner);
         mesaContainer.appendChild(wrapper);
+
+        const itemZIndex = Number.isFinite(item.zIndex) ? item.zIndex : ++zCounter;
+        wrapper.style.zIndex = itemZIndex;
+        zCounter = Math.max(zCounter, itemZIndex);
 
         const entry = {
           item,

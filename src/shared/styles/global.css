@@ -12,7 +12,7 @@ html {
   padding: 0;
   width: 100%;
   height: 100%;
-  background-color: #ffffff;
+  background: transparent;
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
 }
@@ -121,17 +121,17 @@ html {
 
 #objectDescription.label-tooltip {
   position: absolute;
-  background-color: rgb(243, 243, 243);
+  background: transparent;
   padding: 8px;
   border-radius: 4px;
   font-size: 5vh;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: none;
 }
 
 #objectDescription.label-side,
 #objectDescription.label-horizontal {
   position: fixed;
-  background-color: transparent;
+  background: transparent;
   text-align: left;
   font-size: 4vh;
   max-width: 30vw;
