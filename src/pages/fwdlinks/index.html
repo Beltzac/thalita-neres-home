@@ -49,6 +49,10 @@
       const { init } = initMenuScene(config);
       init(container);
 
+      const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints || 0) > 0;
+      let headOpen = false;
+      let headReady = false;
+
       // Compute each badge's hotspot center (natural 1080x1920 coords) so the
       // head animation can reveal them center-outward.
       const badgeCenters = config.overlayImages.map((ov) => {
@@ -61,17 +65,20 @@
         container,
         headFrame: '/fwdlinks/imagens/abra-white.webp',
         splitY: 0.46,
+        // Visible alpha bounds of abra-white.webp in its 1920px frame.
+        headContentTop: 557 / 1920,
+        headContentBottom: 1482 / 1920,
         badgeSelector: '.imageLayer:not(.headBaseImage)',
         badgeCenters,
+        onOpen: () => { headReady = true; },
+        onClose: () => { headReady = false; },
       });
 
       // ---- Opening interaction: mobile taps, desktop proximity ----------
-      const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints || 0) > 0;
 
       const instructionEl = document.getElementById('instructionText');
       if (isTouch) {
         // Mobile: tap toggles the head open/closed (no hover).
-        let headOpen = false;
 
         // Convert a tap (client coords) into the head image's natural 1080x1920
         // space so we can hit-test the menu buttons by their centers.
@@ -95,13 +102,21 @@
           const badgeIdx = nat ? badgeCenters.findIndex(
             (c) => c && Math.hypot(nat.x - c[0], nat.y - c[1]) < 140
           ) : -1;
-          if (headOpen && badgeIdx >= 0) {
-            // Button tap: let the scene engine navigate; don't toggle.
+          if (headReady && badgeIdx >= 0) {
+            // Fully revealed button: let the scene engine navigate.
             return;
           }
+
+          // Block the scene engine for opening, closing, and in-flight taps.
+          e.stopImmediatePropagation();
+          if (headOpen && !headReady) {
+            return;
+          }
+
           headOpen = !headOpen;
+          headReady = false;
           setOpenness(headOpen ? 1 : 0);
-        });
+        }, { capture: true });
 
         if (instructionEl) {
           instructionEl.textContent = 'Toque na cabeça para abrir a minha mente.';

@@ -8,7 +8,7 @@
 // Layering (back -> front): scribble canvas -> head halves -> badges.
 import { initScribbleShader } from './scribbleShader.js';
 
-export function initHeadAnimation({ container, headFrame, splitY = 0.6, badgeSelector, badgeCenters = null, onOpen, onClose }) {
+export function initHeadAnimation({ container, headFrame, splitY = 0.6, headContentTop = 0, headContentBottom = 1, badgeSelector, badgeCenters = null, onOpen, onClose }) {
   const contentWrapper = container.querySelector('#contentWrapper');
   if (!contentWrapper) {
     console.error('headAnimation: #contentWrapper not found');
@@ -52,9 +52,14 @@ export function initHeadAnimation({ container, headFrame, splitY = 0.6, badgeSel
   let wasOpen = false;
 
   let headH = 0;
+  let topOpenOffset = 0;
+  let bottomOpenOffset = 0;
   function recalcSplit() {
-    const h = base.style.height;
-    headH = parseFloat(h) || (base.getBoundingClientRect().height || 0);
+    const baseRect = base.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    headH = baseRect.height;
+    topOpenOffset = Math.max(0, baseRect.top + headH * headContentTop - containerRect.top);
+    bottomOpenOffset = Math.max(0, containerRect.bottom - (baseRect.top + headH * headContentBottom));
   }
 
   function syncSize() {
@@ -85,7 +90,8 @@ export function initHeadAnimation({ container, headFrame, splitY = 0.6, badgeSel
 
   function applySplit(p) {
     if (!headH) return;
-    const offset = p * headH * 0.18;
+    const topOffset = p * topOpenOffset;
+    const bottomOffset = p * bottomOpenOffset;
     const { forward, reverse } = organicSplit();
 
     // TOP half: top edge (0,0)->(100%,0), then split line right->left.
@@ -93,8 +99,8 @@ export function initHeadAnimation({ container, headFrame, splitY = 0.6, badgeSel
     // BOTTOM half: split line left->right, then bottom edge (100%,100%)->(0,100%).
     bottomHalf.style.clipPath = `polygon(${forward}, 100% 100%, 0% 100%)`;
 
-    topHalf.style.transform = `translateY(${-offset}px)`;
-    bottomHalf.style.transform = `translateY(${offset}px)`;
+    topHalf.style.transform = `translateY(${-topOffset}px)`;
+    bottomHalf.style.transform = `translateY(${bottomOffset}px)`;
   }
 
   // ---- Badges: stagger appearance one-by-one ----
