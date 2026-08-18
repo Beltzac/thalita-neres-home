@@ -11,6 +11,7 @@ export function initMenuScene(config) {
     margin = 60,
     horizontalMargin = 0,
     fitToContainer = false,
+    baseScaleToFrame = false,
     CURSOR_NORMAL = 'url("/assets/cursors/cursor-normal.ico") 32 0, auto',
     CURSOR_HOVER = 'url("/assets/cursors/cursor-hover.ico") 32 0, pointer',
     ACTIVE_RADIUS = 500,
@@ -193,8 +194,10 @@ export function initMenuScene(config) {
     const availableWidth = viewportWidth - 2 * horizontalMargin;
     const availableHeight = viewportHeight - 2 * margin;
 
-    const scaleX = availableWidth / baseCenter.contentWidth;
-    const scaleY = availableHeight / baseCenter.contentHeight;
+    const refWidth = baseScaleToFrame ? baseCenter.width : baseCenter.contentWidth;
+    const refHeight = baseScaleToFrame ? baseCenter.height : baseCenter.contentHeight;
+    const scaleX = availableWidth / refWidth;
+    const scaleY = availableHeight / refHeight;
     const scale = Math.min(scaleX, scaleY);
 
     const targetHeight = baseCenter.height * scale;

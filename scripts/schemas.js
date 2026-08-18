@@ -46,6 +46,7 @@ export const sceneConfigSchema = z.object({
   margin: z.number().default(60),
   horizontalMargin: z.number().optional(),
   fitToContainer: z.boolean().optional(),
+  baseScaleToFrame: z.boolean().optional(),
   CURSOR_NORMAL: z.string().optional(),
   CURSOR_HOVER: z.string().optional(),
   ACTIVE_RADIUS: z.number().default(500),
