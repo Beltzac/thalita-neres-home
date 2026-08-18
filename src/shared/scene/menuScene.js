@@ -1,5 +1,8 @@
 import { confettiExplosion } from '../utils/confetti.js';
 import { createInstructionTextPlacer } from './instructionPlacement.js';
+import { loadThataFont } from '../utils/fonts.js';
+
+loadThataFont();
 
 export function initMenuScene(config) {
   const {

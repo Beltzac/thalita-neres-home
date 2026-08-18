@@ -1,11 +1,6 @@
-@font-face {
-  font-family: 'Thata';
-  src: url('/assets/fonts/Thata.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+    import config from '/src/data/fwdlinks.json';
 
+    document.addEventListener("DOMContentLoaded", () => {
 body,
 html {
   margin: 0;

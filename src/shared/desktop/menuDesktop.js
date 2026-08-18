@@ -1,4 +1,7 @@
 import { confettiExplosion } from '../utils/confetti.js';
+import { loadThataFont } from '../utils/fonts.js';
+
+loadThataFont();
 
 export function initMenuDesktop(config) {
   const {
