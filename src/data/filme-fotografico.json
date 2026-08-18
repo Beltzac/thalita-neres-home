@@ -35,6 +35,7 @@
     }
   },
   "showArrow": true,
+  "alwaysShowOverlays": false,
   "precomputedCentersByUrl": {
     "/filme-fotografico/imagens/BASE.webp": {
       "centerX": 997.0226351365284,

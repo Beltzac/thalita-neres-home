@@ -11,6 +11,7 @@
   "arrowEndOffset": 20,
   "labelFontSize": "7.8vh",
   "showArrow": true,
+  "alwaysShowOverlays": false,
   "precomputedCentersByUrl": {
     "/sobre-mim/imagens/EU_BASE.webp": {
       "centerX": 715.1328695623215,

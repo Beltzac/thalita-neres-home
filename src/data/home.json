@@ -11,6 +11,7 @@
   "labelMaxDistanceFromSource": 520,
   "instructionText": "Site inspirado em jogos indies dos anos 2010.\nAqui se navega com o mouse, não com pressa.\nMelhor visto no computador.\nPasse por cima. Veja o que acontece.",
   "showArrow": true,
+  "alwaysShowOverlays": false,
   "spiralSearch": {
     "enabled": true,
     "minDistance": 400,

@@ -8,6 +8,7 @@ const pages = [
   'pastas',
   'mesa-arquitetura',
   'projetos',
+  'fwdlinks',
   'index'
 ];
 

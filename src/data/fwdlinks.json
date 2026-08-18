@@ -1,0 +1,257 @@
+{
+  "baseUrl": "",
+  "baseImageFilename": "/fwdlinks/imagens/completo.webp",
+  "margin": 60,
+  "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
+  "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
+  "ACTIVE_RADIUS": 420,
+  "labelMode": "name",
+  "labelStyle": "side",
+  "arrowStartOffset": 300,
+  "arrowEndOffset": 20,
+  "labelFontSize": "6.5vh",
+  "labelMaxDistanceFromSource": 520,
+  "instructionText": "Abra a minha mente.\nPasse o mouse pelas ideias que aparecem.",
+  "showArrow": true,
+  "alwaysShowOverlays": true,
+  "precomputedCentersByUrl": {
+    "/fwdlinks/imagens/completo.webp": {
+      "centerX": 547.2840977479797,
+      "centerY": 1001.2378654144748,
+      "bboxCenterX": 540.5,
+      "bboxCenterY": 1009,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 1006,
+      "contentHeight": 1821
+    },
+    "fwdlinks/imagens/completo.webp": {
+      "centerX": 547.2840977479797,
+      "centerY": 1001.2378654144748,
+      "bboxCenterX": 540.5,
+      "bboxCenterY": 1009,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 1006,
+      "contentHeight": 1821
+    },
+    "/fwdlinks/imagens/portfolio.webp": {
+      "centerX": 353.9205159397474,
+      "centerY": 539.5,
+      "bboxCenterX": 354,
+      "bboxCenterY": 539.5,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 699,
+      "contentHeight": 162,
+      "hitCenterX": 353.9205159397474,
+      "hitCenterY": 539.5,
+      "hitBboxCenterX": 354,
+      "hitBboxCenterY": 539.5,
+      "hitContentWidth": 699,
+      "hitContentHeight": 162,
+      "hitAnchors": [
+        {
+          "x": 353.9205159397474,
+          "y": 539.5,
+          "count": 111796
+        }
+      ]
+    },
+    "fwdlinks/imagens/portfolio.webp": {
+      "centerX": 353.9205159397474,
+      "centerY": 539.5,
+      "bboxCenterX": 354,
+      "bboxCenterY": 539.5,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 699,
+      "contentHeight": 162,
+      "hitCenterX": 353.9205159397474,
+      "hitCenterY": 539.5,
+      "hitBboxCenterX": 354,
+      "hitBboxCenterY": 539.5,
+      "hitContentWidth": 699,
+      "hitContentHeight": 162,
+      "hitAnchors": [
+        {
+          "x": 353.9205159397474,
+          "y": 539.5,
+          "count": 111796
+        }
+      ]
+    },
+    "/fwdlinks/imagens/loja.webp": {
+      "centerX": 849.5,
+      "centerY": 879.4975136035825,
+      "bboxCenterX": 849.5,
+      "bboxCenterY": 879.5,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 410,
+      "contentHeight": 192,
+      "hitCenterX": 849.5,
+      "hitCenterY": 879.4975136035825,
+      "hitBboxCenterX": 849.5,
+      "hitBboxCenterY": 879.5,
+      "hitContentWidth": 410,
+      "hitContentHeight": 192,
+      "hitAnchors": [
+        {
+          "x": 849.5,
+          "y": 879.4975136035825,
+          "count": 76818
+        }
+      ]
+    },
+    "fwdlinks/imagens/loja.webp": {
+      "centerX": 849.5,
+      "centerY": 879.4975136035825,
+      "bboxCenterX": 849.5,
+      "bboxCenterY": 879.5,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 410,
+      "contentHeight": 192,
+      "hitCenterX": 849.5,
+      "hitCenterY": 879.4975136035825,
+      "hitBboxCenterX": 849.5,
+      "hitBboxCenterY": 879.5,
+      "hitContentWidth": 410,
+      "hitContentHeight": 192,
+      "hitAnchors": [
+        {
+          "x": 849.5,
+          "y": 879.4975136035825,
+          "count": 76818
+        }
+      ]
+    },
+    "/fwdlinks/imagens/livro.webp": {
+      "centerX": 249.5,
+      "centerY": 1299.5,
+      "bboxCenterX": 249.5,
+      "bboxCenterY": 1299.5,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 490,
+      "contentHeight": 192,
+      "hitCenterX": 249.5,
+      "hitCenterY": 1299.5,
+      "hitBboxCenterX": 249.5,
+      "hitBboxCenterY": 1299.5,
+      "hitContentWidth": 490,
+      "hitContentHeight": 192,
+      "hitAnchors": [
+        {
+          "x": 249.5,
+          "y": 1299.5,
+          "count": 92088
+        }
+      ]
+    },
+    "fwdlinks/imagens/livro.webp": {
+      "centerX": 249.5,
+      "centerY": 1299.5,
+      "bboxCenterX": 249.5,
+      "bboxCenterY": 1299.5,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 490,
+      "contentHeight": 192,
+      "hitCenterX": 249.5,
+      "hitCenterY": 1299.5,
+      "hitBboxCenterX": 249.5,
+      "hitBboxCenterY": 1299.5,
+      "hitContentWidth": 490,
+      "hitContentHeight": 192,
+      "hitAnchors": [
+        {
+          "x": 249.5,
+          "y": 1299.5,
+          "count": 92088
+        }
+      ]
+    },
+    "/fwdlinks/imagens/contato.webp": {
+      "centerX": 775.4994713190589,
+      "centerY": 1499.5,
+      "bboxCenterX": 775.5,
+      "bboxCenterY": 1499.5,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 598,
+      "contentHeight": 180,
+      "hitCenterX": 775.4994713190589,
+      "hitCenterY": 1499.5,
+      "hitBboxCenterX": 775.5,
+      "hitBboxCenterY": 1499.5,
+      "hitContentWidth": 598,
+      "hitContentHeight": 180,
+      "hitAnchors": [
+        {
+          "x": 775.4994713190589,
+          "y": 1499.5,
+          "count": 105924
+        }
+      ]
+    },
+    "fwdlinks/imagens/contato.webp": {
+      "centerX": 775.4994713190589,
+      "centerY": 1499.5,
+      "bboxCenterX": 775.5,
+      "bboxCenterY": 1499.5,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 598,
+      "contentHeight": 180,
+      "hitCenterX": 775.4994713190589,
+      "hitCenterY": 1499.5,
+      "hitBboxCenterX": 775.5,
+      "hitBboxCenterY": 1499.5,
+      "hitContentWidth": 598,
+      "hitContentHeight": 180,
+      "hitAnchors": [
+        {
+          "x": 775.4994713190589,
+          "y": 1499.5,
+          "count": 105924
+        }
+      ]
+    }
+  },
+  "overlayImages": [
+    {
+      "nomeImagem": "Portifólio Arquitetura",
+      "arquivo": "/fwdlinks/imagens/portfolio.webp",
+      "urlLink": "/portfolio-arquitetura",
+      "arrowStartOffset": 30,
+      "arrowEndOffset": 36,
+      "labelSide": "left"
+    },
+    {
+      "nomeImagem": "Loja",
+      "arquivo": "/fwdlinks/imagens/loja.webp",
+      "urlLink": "/loja",
+      "arrowStartOffset": 28,
+      "arrowEndOffset": 36,
+      "labelSide": "right"
+    },
+    {
+      "nomeImagem": "Livro",
+      "arquivo": "/fwdlinks/imagens/livro.webp",
+      "urlLink": "/meus-livros",
+      "arrowStartOffset": 28,
+      "arrowEndOffset": 36,
+      "labelSide": "left"
+    },
+    {
+      "nomeImagem": "Contato",
+      "arquivo": "/fwdlinks/imagens/contato.webp",
+      "urlLink": "/contato",
+      "arrowStartOffset": 28,
+      "arrowEndOffset": 36,
+      "labelSide": "right"
+    }
+  ]
+}

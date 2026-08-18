@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@chenglou/pretext": "^0.0.6",
+    "@huggingface/transformers": "^3.8.1",
     "puppeteer": "^25.1.0"
   }
 }

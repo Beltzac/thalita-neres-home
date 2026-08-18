@@ -22,6 +22,7 @@ export function initMenuScene(config) {
     instructionTextAvoidDrawing = null,
     showArrow = false,
     debug = false,
+    alwaysShowOverlays = false,
     spiralSearch = {
       enabled: false,
       preferredQuadrants: ['right', 'top', 'bottom', 'left'],
@@ -251,7 +252,11 @@ export function initMenuScene(config) {
         lastClosestImageIndex = i;
       }
 
-      overlayElements[i].style.display = 'none';
+      if (!alwaysShowOverlays) {
+        overlayElements[i].style.display = 'none';
+      } else {
+        overlayElements[i].style.display = '';
+      }
     }
 
     lastMinDistance = minDistance;

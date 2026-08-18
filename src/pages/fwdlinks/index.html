@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cabeça</title>
+  <link rel="stylesheet" href="/src/shared/styles/global.css">
+  <style>
+    html, body { background-color: #ffffff !important; }
+    #imageContainer { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
+    .imageLayer, canvas { position: absolute; width: auto; top: 0; left: 0; }
+    /* Engine base image (completo) is hidden visually; the head animation
+       frames draw the opening states. It still sizes/positions everything. */
+    #contentWrapper .imageLayer.headBaseImage { opacity: 0 !important; }
+    /* Badge overlays start hidden (opacity handled by headAnimation). */
+    #instructionText {
+      position: fixed;
+      top: calc(50% - 30vh);
+      right: calc(50% - (60vh + 15vw));
+      left: auto;
+      width: calc(20vw);
+      z-index: 2000;
+      font-family: 'Thata', sans-serif;
+      font-size: 5vh;
+      color: #000;
+      text-align: left;
+      pointer-events: none;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+  </style>
+</head>
+<body>
+  <div class="lds-facebook">
+    <div></div><div></div><div></div>
+  </div>
+  <div id="objectDescription"></div>
+  <div id="toastContainer"></div>
+  <div id="instructionText">Passe o mouse para abrir a minha mente.</div>
+  <div id="imageContainer"></div>
+
+  <script type="module">
+    import { initMenuScene } from '/src/shared/scene/menuScene.js';
+    import { initHeadAnimation } from '/src/shared/scene/headAnimation.js';
+    import config from '/src/data/fwdlinks.json';
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById('imageContainer');
+
+      const { init } = initMenuScene(config);
+      init(container);
+
+      const { setOpenness } = initHeadAnimation({
+        container,
+        frames: [
+          '/fwdlinks/imagens/aberta.webp',
+          '/fwdlinks/imagens/abra.webp',
+          '/fwdlinks/imagens/cerebro.webp',
+          '/fwdlinks/imagens/completo.webp',
+        ],
+        badgeSelector: '.imageLayer:not(:first-child)',
+      });
+
+      // ---- Proximity-driven opening -------------------------------------
+      // The head opens as the mouse approaches its center and closes as it
+      // moves away. Proximity is measured from the head "home" point (the
+      // face, near the bottom-center of the rendered base image).
+      const PROXIMITY_FULL_OPEN_PX = 260; // within this distance -> fully open
+      const PROXIMITY_FULL_CLOSED_PX = 720; // beyond this -> fully closed
+
+      let headCenter = { x: 0, y: 0 };
+      let lastClient = null;
+
+      function recalcHeadCenter() {
+        // The head lives at the base image's rendered box (hidden but laid out).
+        const base = document.querySelector('#contentWrapper .headBaseImage');
+        if (!base) return;
+        const rect = base.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return;
+        // Horizontal center, and the head (closed) sits in the lower part.
+        headCenter = {
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height * 0.82,
+        };
+      }
+
+      function updateOpenness(clientX, clientY) {
+        if (!headCenter.x && !headCenter.y) recalcHeadCenter();
+        const dx = clientX - headCenter.x;
+        const dy = clientY - headCenter.y;
+        const dist = Math.hypot(dx, dy);
+        // Map distance to openness: close -> 1, far -> 0, linear in between.
+        let o = (PROXIMITY_FULL_CLOSED_PX - dist) /
+                (PROXIMITY_FULL_CLOSED_PX - PROXIMITY_FULL_OPEN_PX);
+        o = Math.max(0, Math.min(1, o));
+        setOpenness(o);
+      }
+
+      container.addEventListener('pointermove', (e) => {
+        if (e.pointerType && e.pointerType !== 'mouse') return;
+        lastClient = { x: e.clientX, y: e.clientY };
+        updateOpenness(e.clientX, e.clientY);
+      }, { passive: true });
+
+      // While the mouse is inside, keep nudging so the value settles.
+      // (pointermove may stop firing if the pointer is idle.)
+      window.addEventListener('resize', () => {
+        recalcHeadCenter();
+        if (lastClient) updateOpenness(lastClient.x, lastClient.y);
+      });
+
+      // When the pointer leaves the document, close completely.
+      document.documentElement.addEventListener('mouseleave', () => setOpenness(0));
+
+      // First calibrate the head center once the base has a real layout.
+      window.addEventListener('load', () => {
+        recalcHeadCenter();
+        if (lastClient) updateOpenness(lastClient.x, lastClient.y);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -76,6 +76,7 @@ export const sceneConfigSchema = z.object({
     }).optional(),
   }).optional(),
   showArrow: z.boolean().default(false),
+  alwaysShowOverlays: z.boolean().default(false),
   spiralSearch: z.object({
     enabled: z.boolean().default(false),
     preferredQuadrants: z.array(z.string()).optional(),

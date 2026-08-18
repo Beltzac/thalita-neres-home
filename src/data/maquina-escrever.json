@@ -12,6 +12,7 @@
   "labelFontSize": "5vh",
   "labelMaxDistanceFromSource": 520,
   "showArrow": true,
+  "alwaysShowOverlays": false,
   "precomputedCentersByUrl": {
     "/maquina-escrever/imagens/MAQUINA DE ESCREVER.webp": {
       "centerX": 1523.307921000029,
