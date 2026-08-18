@@ -31,6 +31,7 @@ export const centerDataSchema = z.object({
 
 export const overlayImageSchema = z.object({
   nomeImagem: z.string().optional(),
+  buttonLabel: z.string().optional(),
   arquivo: z.string(),
   urlLink: z.string(),
   description: z.string().optional(),
@@ -43,6 +44,8 @@ export const sceneConfigSchema = z.object({
   baseUrl: z.string().default(''),
   baseImageFilename: z.string().optional(),
   margin: z.number().default(60),
+  horizontalMargin: z.number().optional(),
+  fitToContainer: z.boolean().optional(),
   CURSOR_NORMAL: z.string().optional(),
   CURSOR_HOVER: z.string().optional(),
   ACTIVE_RADIUS: z.number().default(500),
