@@ -10,7 +10,7 @@ export function initScribbleShader({ container, strokeCount = 150, canvasClass =
   const canvas = document.createElement('canvas');
   canvas.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;';
   canvas.classList.add(canvasClass);
-  contentWrapper.appendChild(canvas);
+  contentWrapper.insertBefore(canvas, contentWrapper.firstChild);
 
   const glOpts = { alpha: true, antialias: true, premultipliedAlpha: false };
   const gl = canvas.getContext('webgl2', glOpts) || canvas.getContext('webgl', glOpts);
