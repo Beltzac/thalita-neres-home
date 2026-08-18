@@ -13,7 +13,7 @@
   "arrowEndOffset": 20,
   "labelFontSize": "6.5vh",
   "labelMaxDistanceFromSource": 520,
-  "instructionText": "Abra a minha mente.\nPasse o mouse pelas ideias que aparecem.",
+  "instructionText": "Abra minha mente",
   "showArrow": false,
   "alwaysShowOverlays": true,
   "precomputedCentersByUrl": {

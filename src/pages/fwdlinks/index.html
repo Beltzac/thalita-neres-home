@@ -33,17 +33,17 @@
     /* Badge overlays start hidden (opacity handled by headAnimation). */
     #instructionText {
       position: fixed;
-      top: calc(50% - 30vh);
-      right: calc(50% - (60vh + 15vw));
-      left: auto;
-      width: calc(20vw);
+      top: 16px;
+      left: 50%;
+      width: max-content;
       z-index: 2000;
+      transform: translateX(-50%);
       font-family: 'Thata', sans-serif;
-      font-size: 5vh;
-      color: #000;
-      text-align: left;
+      font-size: clamp(30px, 5vh, 46px);
+      color: #292929;
+      text-align: center;
       pointer-events: none;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      will-change: opacity;
     }
   </style>
 </head>
@@ -53,7 +53,7 @@
   </div>
   <div id="objectDescription"></div>
   <div id="toastContainer"></div>
-  <div id="instructionText">Aproxime o cursor para abrir a minha mente.</div>
+  <div id="instructionText">Abra minha mente</div>
   <div id="imageContainer"></div>
 
   <script type="module">
@@ -63,6 +63,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       const container = document.getElementById('imageContainer');
+      const instructionEl = document.getElementById('instructionText');
 
       const { init } = initMenuScene(config);
       init(container);
@@ -133,6 +134,17 @@
         });
       });
 
+      const baseImage = contentWrapper.querySelector('.imageLayer');
+      function positionInstruction() {
+        const baseRect = baseImage.getBoundingClientRect();
+        if (!baseRect.height) {
+          return;
+        }
+        const visibleHeadTop = baseRect.top + baseRect.height * (557 / 1920);
+        instructionEl.style.left = `${baseRect.left + baseRect.width / 2}px`;
+        instructionEl.style.top = `${Math.max(16, visibleHeadTop - instructionEl.offsetHeight - 16)}px`;
+      }
+
       const { setOpenness } = initHeadAnimation({
         container,
         headFrame: '/fwdlinks/imagens/abra-white.webp',
@@ -143,13 +155,23 @@
         badgeSelector: '.vectorBadge',
         badgeCenters,
         animationSpeed: 0.08,
+        onProgress: (progress) => {
+          const opacity = Math.max(0, 1 - progress / 0.4);
+          instructionEl.style.opacity = String(opacity);
+          instructionEl.style.visibility = opacity > 0 ? 'visible' : 'hidden';
+        },
         onOpen: () => { headReady = true; },
         onClose: () => { headReady = false; },
       });
 
+      const instructionObserver = new MutationObserver(positionInstruction);
+      instructionObserver.observe(baseImage, { attributes: true, attributeFilter: ['style'] });
+      baseImage.addEventListener('load', positionInstruction, { once: true });
+      window.addEventListener('resize', positionInstruction);
+      requestAnimationFrame(positionInstruction);
+
       // ---- Opening interaction: mobile taps, desktop proximity ----------
 
-      const instructionEl = document.getElementById('instructionText');
       if (isTouch) {
         // Mobile: tap toggles the head open/closed (no hover).
 
@@ -191,9 +213,6 @@
           setOpenness(headOpen ? 1 : 0);
         }, { capture: true });
 
-        if (instructionEl) {
-          instructionEl.textContent = 'Toque na cabeça para abrir a minha mente.';
-        }
       } else {
         // Desktop: the head opens as the mouse approaches its center.
         const PROXIMITY_FULL_OPEN_PX = 430; // within this distance -> fully open

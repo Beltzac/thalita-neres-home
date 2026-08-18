@@ -8,7 +8,7 @@
 // Layering (back -> front): scribble canvas -> head halves -> badges.
 import { initScribbleShader } from './scribbleShader.js';
 
-export function initHeadAnimation({ container, headFrame, splitY = 0.6, headContentTop = 0, headContentBottom = 1, badgeSelector, badgeCenters = null, animationSpeed = 0.16, onOpen, onClose }) {
+export function initHeadAnimation({ container, headFrame, splitY = 0.6, headContentTop = 0, headContentBottom = 1, badgeSelector, badgeCenters = null, animationSpeed = 0.16, onProgress, onOpen, onClose }) {
   const contentWrapper = container.querySelector('#contentWrapper');
   if (!contentWrapper) {
     console.error('headAnimation: #contentWrapper not found');
@@ -77,21 +77,23 @@ export function initHeadAnimation({ container, headFrame, splitY = 0.6, headCont
     recalcSplit();
   }
 
-  // Build an organic (wavy) split contour across the image width, so the
-  // cut is curved and irregular rather than a straight horizontal line.
-  // Returns: { forward: left->right points, reverse: right->left points }.
+  // Build a gentle arched contour that follows the shape of the skull.
+  // Small, tapered variations keep it hand-drawn without making the cut jagged.
   function organicSplit() {
-    const N = 24;
-    const pts = [];
-    for (let i = 0; i < N; i++) {
-      const x = i / (N - 1);
-      const y = splitY
-        + 0.04 * Math.sin(x * Math.PI * 3 + 1.7)
-        + 0.022  * Math.sin(x * Math.PI * 7 + 0.6)
-        + 0.014 * Math.sin(x * 23.0 + 4.2);
-      pts.push(`${(x * 100).toFixed(2)}% ${(y * 100).toFixed(2)}%`);
+    const pointCount = 64;
+    const points = [];
+    for (let i = 0; i < pointCount; i++) {
+      const x = i / (pointCount - 1);
+      const envelope = Math.sin(x * Math.PI) ** 2;
+      const arch = -0.024 * envelope;
+      const texture = envelope * (
+        0.018 * Math.sin(x * Math.PI * 3 + 1.2)
+        + 0.008 * Math.sin(x * Math.PI * 7 + 0.6)
+      );
+      const y = splitY + arch + texture;
+      points.push(`${(x * 100).toFixed(2)}% ${(y * 100).toFixed(2)}%`);
     }
-    return { forward: pts.join(', '), reverse: [...pts].reverse().join(', ') };
+    return { forward: points.join(', '), reverse: [...points].reverse().join(', ') };
   }
 
   function applySplit(p) {
@@ -150,6 +152,7 @@ export function initHeadAnimation({ container, headFrame, splitY = 0.6, headCont
     scribble.setOpenness(progress);
     applySplit(progress);
     applyBadges(progress);
+    onProgress?.(progress);
 
     const isOpen = progress >= 0.99;
     if (isOpen && !wasOpen) {
