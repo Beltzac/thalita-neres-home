@@ -8,7 +8,7 @@
 // Layering (back -> front): scribble canvas -> head halves -> badges.
 import { initScribbleShader } from './scribbleShader.js';
 
-export function initHeadAnimation({ container, headFrame, splitY = 0.6, headContentTop = 0, headContentBottom = 1, badgeSelector, badgeCenters = null, onOpen, onClose }) {
+export function initHeadAnimation({ container, headFrame, splitY = 0.6, headContentTop = 0, headContentBottom = 1, badgeSelector, badgeCenters = null, animationSpeed = 0.16, onOpen, onClose }) {
   const contentWrapper = container.querySelector('#contentWrapper');
   if (!contentWrapper) {
     console.error('headAnimation: #contentWrapper not found');
@@ -49,6 +49,7 @@ export function initHeadAnimation({ container, headFrame, splitY = 0.6, headCont
   let progress = 0; // 0 = closed, 1 = open
   let target = 0;
   let rafId = null;
+  let lastFrameTime = null;
   let wasOpen = false;
 
   let headH = 0;
@@ -58,6 +59,10 @@ export function initHeadAnimation({ container, headFrame, splitY = 0.6, headCont
     const baseRect = base.getBoundingClientRect();
     const containerRect = container.getBoundingClientRect();
     headH = baseRect.height;
+    scribble.setCenter?.(
+      baseRect.left + baseRect.width / 2,
+      baseRect.top + headH * splitY
+    );
     topOpenOffset = Math.max(0, baseRect.top + headH * headContentTop - containerRect.top);
     bottomOpenOffset = Math.max(0, containerRect.bottom - (baseRect.top + headH * headContentBottom));
   }
@@ -67,6 +72,7 @@ export function initHeadAnimation({ container, headFrame, splitY = 0.6, headCont
     if (h) {
       topHalf.style.height = h;
       bottomHalf.style.height = h;
+      badges.forEach((badge) => { badge.style.height = h; });
     }
     recalcSplit();
   }
@@ -155,14 +161,21 @@ export function initHeadAnimation({ container, headFrame, splitY = 0.6, headCont
     }
   }
 
-  function tick() {
+  function tick(timestamp) {
     rafId = null;
-    const speed = 0.16;
-    progress += (target - progress) * speed;
+    const frameDuration = 1000 / 60;
+    const elapsedFrames = lastFrameTime === null
+      ? 1
+      : Math.min((timestamp - lastFrameTime) / frameDuration, 4);
+    const frameSpeed = 1 - Math.pow(1 - animationSpeed, elapsedFrames);
+    lastFrameTime = timestamp;
+    progress += (target - progress) * frameSpeed;
     if (Math.abs(target - progress) < 0.001) progress = target;
     render();
     if (Math.abs(target - progress) > 0.0005) {
       rafId = requestAnimationFrame(tick);
+    } else {
+      lastFrameTime = null;
     }
   }
 

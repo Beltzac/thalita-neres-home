@@ -225,6 +225,7 @@
   "overlayImages": [
     {
       "nomeImagem": "Portifólio Arquitetura",
+      "buttonLabel": "PORTFÓLIO",
       "arquivo": "/fwdlinks/imagens/portfolio.webp",
       "urlLink": "/portfolio-arquitetura",
       "arrowStartOffset": 30,
@@ -233,6 +234,7 @@
     },
     {
       "nomeImagem": "Loja",
+      "buttonLabel": "LOJA",
       "arquivo": "/fwdlinks/imagens/loja.webp",
       "urlLink": "/loja",
       "arrowStartOffset": 28,
@@ -241,6 +243,7 @@
     },
     {
       "nomeImagem": "Livro",
+      "buttonLabel": "LIVRO",
       "arquivo": "/fwdlinks/imagens/livro.webp",
       "urlLink": "/meus-livros",
       "arrowStartOffset": 28,
@@ -249,6 +252,7 @@
     },
     {
       "nomeImagem": "Contato",
+      "buttonLabel": "CONTATO",
       "arquivo": "/fwdlinks/imagens/contato.webp",
       "urlLink": "/contato",
       "arrowStartOffset": 28,

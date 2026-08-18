@@ -11,7 +11,25 @@
     .imageLayer, canvas { position: absolute; width: auto; top: 0; left: 0; }
     /* Engine base image (completo) is hidden visually; the head animation
        frames draw the opening states. It still sizes/positions everything. */
-    #contentWrapper .imageLayer.headBaseImage { opacity: 0 !important; }
+    #contentWrapper .imageLayer.headBaseImage,
+    #contentWrapper .imageLayer.menuHitLayer { opacity: 0 !important; }
+    .vectorBadge {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: auto;
+      overflow: visible;
+    }
+    .vectorBadge rect {
+      fill: #fff;
+      stroke: #292929;
+      stroke-width: 6;
+    }
+    .vectorBadge text {
+      fill: #292929;
+      font-family: 'Thata', sans-serif;
+      font-weight: 400;
+    }
     /* Badge overlays start hidden (opacity handled by headAnimation). */
     #instructionText {
       position: fixed;
@@ -53,12 +71,66 @@
       let headOpen = false;
       let headReady = false;
 
-      // Compute each badge's hotspot center (natural 1080x1920 coords) so the
-      // head animation can reveal them center-outward.
-      const badgeCenters = config.overlayImages.map((ov) => {
-        const pc = config.precomputedCentersByUrl[ov.arquivo]
-          || config.precomputedCentersByUrl[ov.arquivo.replace(/^\//, '')];
-        return pc ? [pc.hitCenterX ?? pc.centerX, pc.hitCenterY ?? pc.centerY] : null;
+      // Keep the raster overlays for hit detection, but render the visible
+      // buttons as SVG so borders and type stay sharp at every scale.
+      const contentWrapper = document.getElementById('contentWrapper');
+      const rasterBadges = Array.from(contentWrapper.querySelectorAll('.imageLayer:not(:first-child)'));
+      rasterBadges.forEach((badge) => badge.classList.add('menuHitLayer'));
+
+      const SVG_NS = 'http://www.w3.org/2000/svg';
+      const badgeCenters = [];
+      const badgeLabels = [];
+
+      config.overlayImages.forEach((overlay, index) => {
+        const precomputed = config.precomputedCentersByUrl[overlay.arquivo]
+          || config.precomputedCentersByUrl[overlay.arquivo.replace(/^\//, '')];
+        const centerX = precomputed.hitBboxCenterX ?? precomputed.bboxCenterX;
+        const centerY = precomputed.hitBboxCenterY ?? precomputed.bboxCenterY;
+        const width = precomputed.hitContentWidth ?? precomputed.contentWidth;
+        const height = precomputed.hitContentHeight ?? precomputed.contentHeight;
+        const left = centerX - width / 2;
+        const top = centerY - height / 2;
+        const label = overlay.buttonLabel;
+
+        badgeCenters.push([precomputed.hitCenterX ?? precomputed.centerX, precomputed.hitCenterY ?? precomputed.centerY]);
+
+        const svg = document.createElementNS(SVG_NS, 'svg');
+        svg.classList.add('vectorBadge');
+        svg.setAttribute('viewBox', '0 0 1080 1920');
+        svg.style.zIndex = String(10 + index);
+
+        const rect = document.createElementNS(SVG_NS, 'rect');
+        rect.setAttribute('x', String(left + 3));
+        rect.setAttribute('y', String(top + 3));
+        rect.setAttribute('width', String(width - 6));
+        rect.setAttribute('height', String(height - 6));
+        rect.setAttribute('rx', String(height * 0.18));
+        rect.setAttribute('data-center-x', String(centerX));
+        rect.setAttribute('data-center-y', String(centerY));
+
+        const text = document.createElementNS(SVG_NS, 'text');
+        text.textContent = label;
+        text.setAttribute('x', String(centerX));
+        text.setAttribute('y', String(centerY));
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'middle');
+        text.setAttribute('font-size', String(Math.min(height * 0.48, width / (label.length * 0.55))));
+
+        svg.append(rect, text);
+        contentWrapper.appendChild(svg);
+        badgeLabels.push({ text, centerX, centerY });
+      });
+
+      document.fonts.ready.then(() => {
+        badgeLabels.forEach(({ text, centerX, centerY }) => {
+          for (let pass = 0; pass < 3; pass++) {
+            const bounds = text.getBBox();
+            const currentX = Number(text.getAttribute('x'));
+            const currentY = Number(text.getAttribute('y'));
+            text.setAttribute('x', String(currentX + centerX - bounds.x - bounds.width / 2));
+            text.setAttribute('y', String(currentY + centerY - bounds.y - bounds.height / 2));
+          }
+        });
       });
 
       const { setOpenness } = initHeadAnimation({
@@ -68,8 +140,9 @@
         // Visible alpha bounds of abra-white.webp in its 1920px frame.
         headContentTop: 557 / 1920,
         headContentBottom: 1482 / 1920,
-        badgeSelector: '.imageLayer:not(.headBaseImage)',
+        badgeSelector: '.vectorBadge',
         badgeCenters,
+        animationSpeed: 0.08,
         onOpen: () => { headReady = true; },
         onClose: () => { headReady = false; },
       });
