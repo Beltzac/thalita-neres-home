@@ -1,6 +1,6 @@
 {
   "baseUrl": "",
-  "baseImageFilename": "/fwdlinks/imagens/completo.webp",
+  "baseImageFilename": "/fwdlinks/imagens/abra.webp",
   "margin": 60,
   "horizontalMargin": 16,
   "fitToContainer": true,
@@ -17,25 +17,25 @@
   "showArrow": false,
   "alwaysShowOverlays": true,
   "precomputedCentersByUrl": {
-    "/fwdlinks/imagens/completo.webp": {
-      "centerX": 547.2840977479797,
-      "centerY": 1001.2378654144748,
-      "bboxCenterX": 540.5,
-      "bboxCenterY": 1009,
+    "/fwdlinks/imagens/abra.webp": {
+      "centerX": 541.7999941321948,
+      "centerY": 1027.7596805842954,
+      "bboxCenterX": 541.5,
+      "bboxCenterY": 1018.5,
       "width": 1080,
       "height": 1920,
-      "contentWidth": 1006,
-      "contentHeight": 1821
+      "contentWidth": 876,
+      "contentHeight": 924
     },
-    "fwdlinks/imagens/completo.webp": {
-      "centerX": 547.2840977479797,
-      "centerY": 1001.2378654144748,
-      "bboxCenterX": 540.5,
-      "bboxCenterY": 1009,
+    "fwdlinks/imagens/abra.webp": {
+      "centerX": 541.7999941321948,
+      "centerY": 1027.7596805842954,
+      "bboxCenterX": 541.5,
+      "bboxCenterY": 1018.5,
       "width": 1080,
       "height": 1920,
-      "contentWidth": 1006,
-      "contentHeight": 1821
+      "contentWidth": 876,
+      "contentHeight": 924
     },
     "/fwdlinks/imagens/portfolio.webp": {
       "centerX": 276.890070992503,
