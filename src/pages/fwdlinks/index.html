@@ -65,64 +65,95 @@
         badgeCenters,
       });
 
-      // ---- Proximity-driven opening -------------------------------------
-      // The head opens as the mouse approaches its center and closes as it
-      // moves away. Proximity is measured from the head "home" point (the
-      // face, near the bottom-center of the rendered base image).
-      const PROXIMITY_FULL_OPEN_PX = 430; // within this distance -> fully open
-      const PROXIMITY_FULL_CLOSED_PX = 860; // beyond this -> fully closed
+      // ---- Opening interaction: mobile taps, desktop proximity ----------
+      const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints || 0) > 0;
 
-      let headCenter = { x: 0, y: 0 };
-      let lastClient = null;
+      const instructionEl = document.getElementById('instructionText');
+      if (isTouch) {
+        // Mobile: tap toggles the head open/closed (no hover).
+        let headOpen = false;
 
-      function recalcHeadCenter() {
-        // The head lives at the base image's rendered box (hidden but laid out).
-        const base = document.querySelector('#contentWrapper .headBaseImage');
-        if (!base) return;
-        const rect = base.getBoundingClientRect();
-        if (rect.width === 0 || rect.height === 0) return;
-        // Center the openness anchor on the whole head+brain region so the
-        // head stays open while hovering both the face (bottom) and the menu
-        // badges (middle/top), closing only in the surrounding white margins.
-        headCenter = {
-          x: rect.left + rect.width / 2,
-          y: rect.top + rect.height * 0.52,
-        };
+        // Convert a tap (client coords) into the head image's natural 1080x1920
+        // space so we can hit-test the menu buttons by their centers.
+        function screenToNatural(clientX, clientY) {
+          const base = document.querySelector('#contentWrapper .headBaseImage');
+          const cw = document.getElementById('contentWrapper');
+          if (!base || !cw) return null;
+          const rect = base.getBoundingClientRect();
+          const m = new WebKitCSSMatrix(getComputedStyle(cw).transform);
+          const scaleX = rect.width / base.naturalWidth;
+          const scaleY = rect.height / base.naturalHeight;
+          return {
+            x: (clientX - m.m41) / scaleX,
+            y: (clientY - m.m42) / scaleY,
+          };
+        }
+
+        container.addEventListener('click', (e) => {
+          const nat = screenToNatural(e.clientX, e.clientY);
+          // Which button (if any) is this tap on? (within a radius of its center)
+          const badgeIdx = nat ? badgeCenters.findIndex(
+            (c) => c && Math.hypot(nat.x - c[0], nat.y - c[1]) < 140
+          ) : -1;
+          if (headOpen && badgeIdx >= 0) {
+            // Button tap: let the scene engine navigate; don't toggle.
+            return;
+          }
+          headOpen = !headOpen;
+          setOpenness(headOpen ? 1 : 0);
+        });
+
+        if (instructionEl) {
+          instructionEl.textContent = 'Toque na cabeça para abrir a minha mente.';
+        }
+      } else {
+        // Desktop: the head opens as the mouse approaches its center.
+        const PROXIMITY_FULL_OPEN_PX = 430; // within this distance -> fully open
+        const PROXIMITY_FULL_CLOSED_PX = 860; // beyond this -> fully closed
+
+        let headCenter = { x: 0, y: 0 };
+        let lastClient = null;
+
+        function recalcHeadCenter() {
+          const base = document.querySelector('#contentWrapper .headBaseImage');
+          if (!base) return;
+          const rect = base.getBoundingClientRect();
+          if (rect.width === 0 || rect.height === 0) return;
+          headCenter = {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height * 0.52,
+          };
+        }
+
+        function updateOpenness(clientX, clientY) {
+          if (!headCenter.x && !headCenter.y) recalcHeadCenter();
+          const dx = clientX - headCenter.x;
+          const dy = clientY - headCenter.y;
+          const dist = Math.hypot(dx, dy);
+          let o = (PROXIMITY_FULL_CLOSED_PX - dist) /
+                  (PROXIMITY_FULL_CLOSED_PX - PROXIMITY_FULL_OPEN_PX);
+          o = Math.max(0, Math.min(1, o));
+          setOpenness(o);
+        }
+
+        container.addEventListener('pointermove', (e) => {
+          if (e.pointerType && e.pointerType !== 'mouse') return;
+          lastClient = { x: e.clientX, y: e.clientY };
+          updateOpenness(e.clientX, e.clientY);
+        }, { passive: true });
+
+        window.addEventListener('resize', () => {
+          recalcHeadCenter();
+          if (lastClient) updateOpenness(lastClient.x, lastClient.y);
+        });
+
+        document.documentElement.addEventListener('mouseleave', () => setOpenness(0));
+
+        window.addEventListener('load', () => {
+          recalcHeadCenter();
+          if (lastClient) updateOpenness(lastClient.x, lastClient.y);
+        });
       }
-
-      function updateOpenness(clientX, clientY) {
-        if (!headCenter.x && !headCenter.y) recalcHeadCenter();
-        const dx = clientX - headCenter.x;
-        const dy = clientY - headCenter.y;
-        const dist = Math.hypot(dx, dy);
-        // Map distance to openness: close -> 1, far -> 0, linear in between.
-        let o = (PROXIMITY_FULL_CLOSED_PX - dist) /
-                (PROXIMITY_FULL_CLOSED_PX - PROXIMITY_FULL_OPEN_PX);
-        o = Math.max(0, Math.min(1, o));
-        setOpenness(o);
-      }
-
-      container.addEventListener('pointermove', (e) => {
-        if (e.pointerType && e.pointerType !== 'mouse') return;
-        lastClient = { x: e.clientX, y: e.clientY };
-        updateOpenness(e.clientX, e.clientY);
-      }, { passive: true });
-
-      // While the mouse is inside, keep nudging so the value settles.
-      // (pointermove may stop firing if the pointer is idle.)
-      window.addEventListener('resize', () => {
-        recalcHeadCenter();
-        if (lastClient) updateOpenness(lastClient.x, lastClient.y);
-      });
-
-      // When the pointer leaves the document, close completely.
-      document.documentElement.addEventListener('mouseleave', () => setOpenness(0));
-
-      // First calibrate the head center once the base has a real layout.
-      window.addEventListener('load', () => {
-        recalcHeadCenter();
-        if (lastClient) updateOpenness(lastClient.x, lastClient.y);
-      });
     });
   </script>
 </body>
