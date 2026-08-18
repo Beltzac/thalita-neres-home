@@ -6,6 +6,8 @@ export function initMenuScene(config) {
     baseUrl = '',
     baseImageFilename,
     margin = 60,
+    horizontalMargin = 0,
+    fitToContainer = false,
     CURSOR_NORMAL = 'url("/assets/cursors/cursor-normal.ico") 32 0, auto',
     CURSOR_HOVER = 'url("/assets/cursors/cursor-hover.ico") 32 0, pointer',
     ACTIVE_RADIUS = 500,
@@ -182,10 +184,10 @@ export function initMenuScene(config) {
   }
 
   function centerMenu(baseCenter) {
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+    const viewportWidth = fitToContainer ? imageContainer.clientWidth : window.innerWidth;
+    const viewportHeight = fitToContainer ? imageContainer.clientHeight : window.innerHeight;
 
-    const availableWidth = viewportWidth;
+    const availableWidth = viewportWidth - 2 * horizontalMargin;
     const availableHeight = viewportHeight - 2 * margin;
 
     const scaleX = availableWidth / baseCenter.contentWidth;

@@ -2,6 +2,8 @@
   "baseUrl": "",
   "baseImageFilename": "/fwdlinks/imagens/completo.webp",
   "margin": 60,
+  "horizontalMargin": 16,
+  "fitToContainer": true,
   "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 420,
