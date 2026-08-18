@@ -8,7 +8,7 @@
 // Layering (back -> front): scribble canvas -> head halves -> badges.
 import { initScribbleShader } from './scribbleShader.js';
 
-export function initHeadAnimation({ container, headFrame, splitY = 0.6, badgeSelector, onOpen, onClose }) {
+export function initHeadAnimation({ container, headFrame, splitY = 0.6, badgeSelector, badgeCenters = null, onOpen, onClose }) {
   const contentWrapper = container.querySelector('#contentWrapper');
   if (!contentWrapper) {
     console.error('headAnimation: #contentWrapper not found');
@@ -107,12 +107,27 @@ export function initHeadAnimation({ container, headFrame, splitY = 0.6, badgeSel
   }
   setBadgeInteraction(false);
 
+  // Frame center in the head image's natural coordinate space (1080x1920).
+  const FRAME_CX = 540;
+  const FRAME_CY = 960;
+
+  function distanceFromCenter(c) {
+    if (!c) return Infinity;
+    return Math.hypot(c[0] - FRAME_CX, c[1] - FRAME_CY);
+  }
+
   function applyBadges(p) {
-    // Each badge fades in at a successive openness threshold.
     const n = badges.length;
-    badges.forEach((b, i) => {
-      const start = 0.55 + (i / n) * 0.4; // 0.55 .. 0.95
-      const local = Math.max(0, Math.min(1, (p - start) / 0.08));
+    // Order badges by distance from the frame center so they appear
+    // center-outward (closest first).
+    const order = badges
+      .map((b, i) => ({ i, d: distanceFromCenter(badgeCenters && badgeCenters[i]) }))
+      .sort((a, b) => a.d - b.d);
+
+    order.forEach((entry, rank) => {
+      const b = badges[entry.i];
+      const start = 0.5 + (rank / n) * 0.42; // 0.5 .. 0.92
+      const local = Math.max(0, Math.min(1, (p - start) / 0.07));
       b.style.visibility = local > 0 ? 'visible' : 'hidden';
       b.style.opacity = String(local);
       b.style.pointerEvents = local >= 1 ? 'auto' : 'none';

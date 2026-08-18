@@ -53,14 +53,16 @@ async function runSam(raw, points) {
 }
 
 export async function segmentImage(filePath, {
-  gridX = parseInt(process.env.SAM_GRID_X || '9'),
-  gridY = parseInt(process.env.SAM_GRID_Y || '16'),
+  gridX,
+  gridY,
   minArea = 500,
   dedupIoU = 0.6,
   discardBackground = true,       // #1: drop >90% or full-edge-touching region
-  maxAreaFraction = 0.9,
+  maxAreaFraction = 0.7,
   visualize = false,              // #6: also emit mask PNGs
 } = {}) {
+  gridX = gridX ?? parseInt(process.env.SAM_GRID_X || '9');
+  gridY = gridY ?? parseInt(process.env.SAM_GRID_Y || '16');
   const options = { gridX, gridY, minArea, dedupIoU, discardBackground, maxAreaFraction };
   const cache = fileCache(filePath);
 
@@ -90,10 +92,11 @@ export async function segmentImage(filePath, {
     if (s && s.count >= minArea) {
       const areaFraction = s.count / totalPx;
       // #1: discard background — region covering most of image or touching all edges.
-      const touchesAllEdges =
-        s.bbox.x <= 1 && s.bbox.y <= 1 &&
-        (s.bbox.x + s.bbox.w) >= width - 1 && (s.bbox.y + s.bbox.h) >= height - 1;
-      if (discardBackground && (areaFraction > maxAreaFraction || touchesAllEdges)) continue;
+      const touches = ['l','r','t','b'].filter((side) =>
+        side==='l' ? s.bbox.x<=1 : side==='r' ? (s.bbox.x+s.bbox.w)>=width-1 : side==='t' ? s.bbox.y<=1 : (s.bbox.y+s.bbox.h)>=height-1
+      ).length;
+      const touchesManyEdges = touches >= 3;
+      if (discardBackground && (areaFraction > maxAreaFraction || touchesManyEdges)) continue;
       candidates.push({ promptIndex: p, candIndex: best.bestC, tensor: best.tensor, area: s.count, areaFraction, bbox: s.bbox, center: s.center, score: best.score });
     }
   }
@@ -103,10 +106,11 @@ export async function segmentImage(filePath, {
   const regionTensors = [];
   for (const cand of candidates) {
     if (regions.some((r) => bboxIoU(r.bbox, cand.bbox) > dedupIoU)) continue;
-    regions.push(cand);
-    regionTensors.push(cand);
+    const { tensor, promptIndex, candIndex, ...meta } = cand;
+    regions.push(meta);
+    regionTensors.push({ tensor });
   }
-  regions.forEach((r, i) => { r.index = i; delete r.tensor; delete r.promptIndex; delete r.candIndex; });
+  regions.forEach((r, i) => { r.index = i; });
 
   const result = { width, height, regionCount: regions.length, regions, cached: false };
 
@@ -149,6 +153,9 @@ async function compositeMaskOverlay(srcFile, maskTensor, outFile) {
       else { overlay[i]=0; overlay[i+1]=0; overlay[i+2]=0; overlay[i+3]=0; }
     }
   }
-  const overlayImg = sharp(overlay, { raw: { width, height, channels: 4 } }).png();
-  await sharp(srcFile).composite([{ input: await overlayImg.toBuffer(), raw: { width, height, channels: 4 } }]).png().toFile(outFile);
+  // Composite the RAW RGBA overlay directly (not a re-encoded PNG) over the source.
+  await sharp(srcFile)
+    .composite([{ input: overlay, raw: { width, height, channels: 4 } }])
+    .png()
+    .toFile(outFile);
 }

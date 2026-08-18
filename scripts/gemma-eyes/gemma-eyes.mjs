@@ -15,6 +15,25 @@ const require = createRequire(import.meta.url);
 const sharpModule = require('sharp');
 const sharp = sharpModule.default ?? sharpModule;
 
+
+// Strip onnxruntime native warning lines (session_state / node assignment noise)
+// that can't be suppressed via env vars. Applied to all stdout writes.
+function installStdoutFilter() {
+  const origWrite = process.stdout.write.bind(process.stdout);
+  let carry = '';
+  process.stdout.write = (chunk, enc, cb) => {
+    let text = typeof chunk === 'string' ? chunk : chunk.toString(enc || 'utf8');
+    carry += text;
+    const lines = carry.split('\n');
+    carry = lines.pop() ?? '';
+    const clean = lines.filter((l) => !/^\d{4}-\d{2}-\d{2}.*\[W:onnxruntime:/.test(l)).join('\n');
+    if (clean) origWrite(clean + '\n');
+    if (typeof cb === 'function') cb();
+    return true;
+  };
+}
+installStdoutFilter();
+
 function pathToFileURLString(p) { try { return pathToFileURL(p).href; } catch { return ''; } }
 
 function parseArgs(argv) {
@@ -65,8 +84,8 @@ export async function analyze({ images, question=null, withSam=true, withYolo=tr
     const entry = { image: img };
     const dataUrl = await imageToDataUrlSmart(sharp, img);
 
-    if (withSam) entry.segmentation = await segmentImage(img, { visualize, gridX, gridY });
-    if (withYolo) entry.detection = await detectObjects(img, { threshold });
+    if (withSam) entry.segmentation = await segmentImage(img, { visualize, gridX: gridX ?? undefined, gridY: gridY ?? undefined });
+    if (withYolo) entry.detection = await detectObjects(img, { threshold: threshold ?? undefined });
 
     let prompt = question || DEFAULT_PROMPT;
     if (entry.detection && entry.detection.detections.length) {
@@ -86,8 +105,8 @@ export async function analyzeGroup({ images, question=null, withSam=true, withYo
   const dataUrls = [], segs = [], dets = [];
   for (const img of images) {
     dataUrls.push(await imageToDataUrlSmart(sharp, img));
-    if (withSam) segs.push({ image: img, segmentation: await segmentImage(img, { visualize, gridX, gridY }) });
-    if (withYolo) dets.push({ image: img, detection: await detectObjects(img, { threshold }) });
+    if (withSam) segs.push({ image: img, segmentation: await segmentImage(img, { visualize, gridX: gridX ?? undefined, gridY: gridY ?? undefined }) });
+    if (withYolo) dets.push({ image: img, detection: await detectObjects(img, { threshold: threshold ?? undefined }) });
   }
 
   let prompt = question
@@ -111,7 +130,11 @@ async function main() {
   const results = compare ? [await analyzeGroup(opts)] : await analyze(opts);
 
   if (asJson) {
-    process.stdout.write(JSON.stringify(results, null, 2) + '\n');
+    // onnxruntime native warnings pollute stdout, so write JSON to a file.
+    const { writeFileSync } = await import('node:fs');
+    const outFile = process.env.GEMMA_EYES_JSON_FILE || (process.cwd() + '/_gemma-eyes-out.json');
+    writeFileSync(outFile, JSON.stringify(results, null, 2));
+    console.log('JSON written to: ' + outFile);
   } else if (compare) {
     const r = results[0];
     for (const seg of (r.segmentation||[])) {

@@ -16,7 +16,10 @@
     "lint": "eslint src scripts eslint.config.js vite.config.js wixPage.js",
     "lint:fix": "eslint src scripts eslint.config.js vite.config.js wixPage.js --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "eyes": "node scripts/gemma-eyes/gemma-eyes.mjs",
+    "eyes:json": "node scripts/gemma-eyes/gemma-eyes.mjs --json",
+    "eyes:compare": "node scripts/gemma-eyes/gemma-eyes.mjs --compare"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

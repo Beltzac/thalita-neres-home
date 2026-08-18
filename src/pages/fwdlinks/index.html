@@ -49,11 +49,20 @@
       const { init } = initMenuScene(config);
       init(container);
 
+      // Compute each badge's hotspot center (natural 1080x1920 coords) so the
+      // head animation can reveal them center-outward.
+      const badgeCenters = config.overlayImages.map((ov) => {
+        const pc = config.precomputedCentersByUrl[ov.arquivo]
+          || config.precomputedCentersByUrl[ov.arquivo.replace(/^\//, '')];
+        return pc ? [pc.hitCenterX ?? pc.centerX, pc.hitCenterY ?? pc.centerY] : null;
+      });
+
       const { setOpenness } = initHeadAnimation({
         container,
         headFrame: '/fwdlinks/imagens/abra.webp',
         splitY: 0.46,
-        badgeSelector: '.imageLayer:not(:first-child)',
+        badgeSelector: '.imageLayer:not(.headBaseImage)',
+        badgeCenters,
       });
 
       // ---- Proximity-driven opening -------------------------------------
