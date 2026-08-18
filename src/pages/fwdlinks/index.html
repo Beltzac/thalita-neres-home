@@ -45,6 +45,26 @@
       pointer-events: none;
       will-change: opacity;
     }
+    /* Dev tooling: switch between head and button animations. */
+    #animDev {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 9999;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 6px 8px;
+      font: 11px/1.2 'Arial', sans-serif;
+      color: #333;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+    }
+    #animDev .anim-field { display: flex; flex-direction: column; gap: 3px; }
+    #animDev .anim-field span { font-weight: bold; white-space: nowrap; }
+    #animDev select { font: inherit; border: 1px solid #bbb; border-radius: 4px; padding: 2px; }
   </style>
 </head>
 <body>
@@ -54,6 +74,57 @@
   <div id="objectDescription"></div>
   <div id="toastContainer"></div>
   <div id="instructionText">Abra minha mente</div>
+  <div id="animDev">
+    <div class="anim-field">
+      <span>ABRIR</span>
+      <select id="animCurve">
+        <option value="suave">Suave (atual)</option>
+        <option value="snap" selected>Snap rápido</option>
+        <option value="pop">Pop (leve)</option>
+        <option value="explosao">Explosão</option>
+        <option value="elastic">Elástico</option>
+        <option value="duplo">Pop duplo</option>
+        <option value="bounce">Quicar</option>
+      </select>
+      <select id="headSpeed">
+        <option value="0.04">Lento</option>
+        <option value="0.08" selected>Normal</option>
+        <option value="0.16">Rápido</option>
+      </select>
+    </div>
+    <div class="anim-field">
+      <span>GIRAR</span>
+      <select id="animRotate">
+        <option value="abrir">Abrir (atual)</option>
+        <option value="nada">Nenhum</option>
+        <option value="delicado">Delicado</option>
+        <option value="forte">Forte</option>
+        <option value="bambolear" selected>Bambolear</option>
+      </select>
+      <select id="rotateSpeed">
+        <option value="0.04" selected>Lento</option>
+        <option value="0.08">Normal</option>
+        <option value="0.16">Rápido</option>
+      </select>
+    </div>
+    <div class="anim-field">
+      <span>BOTÕES</span>
+      <select id="animBtn">
+        <option value="pop">Pop</option>
+        <option value="fade">Fade</option>
+        <option value="zoom">Zoom</option>
+        <option value="rise">Subir</option>
+        <option value="drop">Cair</option>
+        <option value="spin">Girar</option>
+        <option value="centro" selected>Crescer do centro</option>
+      </select>
+      <select id="buttonSpeed">
+        <option value="0.04" selected>Lento</option>
+        <option value="0.08">Normal</option>
+        <option value="0.16">Rápido</option>
+      </select>
+    </div>
+  </div>
   <div id="imageContainer"></div>
 
   <script type="module">
@@ -145,7 +216,7 @@
         instructionEl.style.top = `${Math.max(16, visibleHeadTop - instructionEl.offsetHeight - 16)}px`;
       }
 
-      const { setOpenness } = initHeadAnimation({
+      const { setOpenness, setCurve, setHeadRotate, setButtonAnim, setHeadSpeed, setRotateSpeed, setButtonSpeed } = initHeadAnimation({
         container,
         headFrame: '/fwdlinks/imagens/abra.webp',
         splitY: 0.46,
@@ -261,6 +332,40 @@
           if (lastClient) updateOpenness(lastClient.x, lastClient.y);
         });
       }
+
+      // Dev tooling: switch head/button animations and replay to compare.
+      function replay() {
+        setOpenness(0);
+        window.setTimeout(() => setOpenness(1), 140);
+      }
+      const animCurve = document.getElementById('animCurve');
+      const animRotate = document.getElementById('animRotate');
+      const animBtn = document.getElementById('animBtn');
+      if (animCurve) {
+        animCurve.addEventListener('change', () => {
+          setCurve(animCurve.value);
+          replay();
+        });
+      }
+      if (animRotate) {
+        animRotate.addEventListener('change', () => {
+          setHeadRotate(animRotate.value);
+          replay();
+        });
+      }
+      if (animBtn) {
+        animBtn.addEventListener('change', () => {
+          setButtonAnim(animBtn.value);
+          replay();
+        });
+      }
+      function wireSpeed(id, setter) {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', () => { setter(el.value); replay(); });
+      }
+      wireSpeed('headSpeed', setHeadSpeed);
+      wireSpeed('rotateSpeed', setRotateSpeed);
+      wireSpeed('buttonSpeed', setButtonSpeed);
     });
   </script>
 </body>
