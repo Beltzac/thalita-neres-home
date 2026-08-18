@@ -35,7 +35,7 @@
   </div>
   <div id="objectDescription"></div>
   <div id="toastContainer"></div>
-  <div id="instructionText">Passe o mouse para abrir a minha mente.</div>
+  <div id="instructionText">Aproxime o cursor para abrir a minha mente.</div>
   <div id="imageContainer"></div>
 
   <script type="module">
@@ -51,12 +51,8 @@
 
       const { setOpenness } = initHeadAnimation({
         container,
-        frames: [
-          '/fwdlinks/imagens/aberta.webp',
-          '/fwdlinks/imagens/abra.webp',
-          '/fwdlinks/imagens/cerebro.webp',
-          '/fwdlinks/imagens/completo.webp',
-        ],
+        headFrame: '/fwdlinks/imagens/abra.webp',
+        splitY: 0.46,
         badgeSelector: '.imageLayer:not(:first-child)',
       });
 
@@ -64,8 +60,8 @@
       // The head opens as the mouse approaches its center and closes as it
       // moves away. Proximity is measured from the head "home" point (the
       // face, near the bottom-center of the rendered base image).
-      const PROXIMITY_FULL_OPEN_PX = 260; // within this distance -> fully open
-      const PROXIMITY_FULL_CLOSED_PX = 720; // beyond this -> fully closed
+      const PROXIMITY_FULL_OPEN_PX = 430; // within this distance -> fully open
+      const PROXIMITY_FULL_CLOSED_PX = 860; // beyond this -> fully closed
 
       let headCenter = { x: 0, y: 0 };
       let lastClient = null;
@@ -76,10 +72,12 @@
         if (!base) return;
         const rect = base.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) return;
-        // Horizontal center, and the head (closed) sits in the lower part.
+        // Center the openness anchor on the whole head+brain region so the
+        // head stays open while hovering both the face (bottom) and the menu
+        // badges (middle/top), closing only in the surrounding white margins.
         headCenter = {
           x: rect.left + rect.width / 2,
-          y: rect.top + rect.height * 0.82,
+          y: rect.top + rect.height * 0.52,
         };
       }
 

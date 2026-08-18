@@ -5,14 +5,14 @@
   "CURSOR_NORMAL": "url(/assets/cursors/cursor-normal.ico) 32 0, auto",
   "CURSOR_HOVER": "url(/assets/cursors/cursor-hover.ico) 32 0, pointer",
   "ACTIVE_RADIUS": 420,
-  "labelMode": "name",
+  "labelMode": "none",
   "labelStyle": "side",
   "arrowStartOffset": 300,
   "arrowEndOffset": 20,
   "labelFontSize": "6.5vh",
   "labelMaxDistanceFromSource": 520,
   "instructionText": "Abra a minha mente.\nPasse o mouse pelas ideias que aparecem.",
-  "showArrow": true,
+  "showArrow": false,
   "alwaysShowOverlays": true,
   "precomputedCentersByUrl": {
     "/fwdlinks/imagens/completo.webp": {
@@ -36,186 +36,186 @@
       "contentHeight": 1821
     },
     "/fwdlinks/imagens/portfolio.webp": {
-      "centerX": 353.9205159397474,
+      "centerX": 276.890070992503,
       "centerY": 539.5,
-      "bboxCenterX": 354,
+      "bboxCenterX": 277,
       "bboxCenterY": 539.5,
       "width": 1080,
       "height": 1920,
-      "contentWidth": 699,
-      "contentHeight": 162,
-      "hitCenterX": 353.9205159397474,
+      "contentWidth": 545,
+      "contentHeight": 188,
+      "hitCenterX": 276.890070992503,
       "hitCenterY": 539.5,
-      "hitBboxCenterX": 354,
+      "hitBboxCenterX": 277,
       "hitBboxCenterY": 539.5,
-      "hitContentWidth": 699,
-      "hitContentHeight": 162,
+      "hitContentWidth": 545,
+      "hitContentHeight": 188,
       "hitAnchors": [
         {
-          "x": 353.9205159397474,
+          "x": 276.890070992503,
           "y": 539.5,
-          "count": 111796
+          "count": 100574
         }
       ]
     },
     "fwdlinks/imagens/portfolio.webp": {
-      "centerX": 353.9205159397474,
+      "centerX": 276.890070992503,
       "centerY": 539.5,
-      "bboxCenterX": 354,
+      "bboxCenterX": 277,
       "bboxCenterY": 539.5,
       "width": 1080,
       "height": 1920,
-      "contentWidth": 699,
-      "contentHeight": 162,
-      "hitCenterX": 353.9205159397474,
+      "contentWidth": 545,
+      "contentHeight": 188,
+      "hitCenterX": 276.890070992503,
       "hitCenterY": 539.5,
-      "hitBboxCenterX": 354,
+      "hitBboxCenterX": 277,
       "hitBboxCenterY": 539.5,
-      "hitContentWidth": 699,
-      "hitContentHeight": 162,
+      "hitContentWidth": 545,
+      "hitContentHeight": 188,
       "hitAnchors": [
         {
-          "x": 353.9205159397474,
+          "x": 276.890070992503,
           "y": 539.5,
-          "count": 111796
+          "count": 100574
         }
       ]
     },
     "/fwdlinks/imagens/loja.webp": {
-      "centerX": 849.5,
-      "centerY": 879.4975136035825,
+      "centerX": 849.4961079134866,
+      "centerY": 879.4973123050787,
       "bboxCenterX": 849.5,
       "bboxCenterY": 879.5,
       "width": 1080,
       "height": 1920,
-      "contentWidth": 410,
-      "contentHeight": 192,
-      "hitCenterX": 849.5,
-      "hitCenterY": 879.4975136035825,
+      "contentWidth": 362,
+      "contentHeight": 224,
+      "hitCenterX": 849.4961079134866,
+      "hitCenterY": 879.4973123050787,
       "hitBboxCenterX": 849.5,
       "hitBboxCenterY": 879.5,
-      "hitContentWidth": 410,
-      "hitContentHeight": 192,
+      "hitContentWidth": 362,
+      "hitContentHeight": 224,
       "hitAnchors": [
         {
-          "x": 849.5,
-          "y": 879.4975136035825,
-          "count": 76818
+          "x": 849.4961079134866,
+          "y": 879.4973123050787,
+          "count": 78878
         }
       ]
     },
     "fwdlinks/imagens/loja.webp": {
-      "centerX": 849.5,
-      "centerY": 879.4975136035825,
+      "centerX": 849.4961079134866,
+      "centerY": 879.4973123050787,
       "bboxCenterX": 849.5,
       "bboxCenterY": 879.5,
       "width": 1080,
       "height": 1920,
-      "contentWidth": 410,
-      "contentHeight": 192,
-      "hitCenterX": 849.5,
-      "hitCenterY": 879.4975136035825,
+      "contentWidth": 362,
+      "contentHeight": 224,
+      "hitCenterX": 849.4961079134866,
+      "hitCenterY": 879.4973123050787,
       "hitBboxCenterX": 849.5,
       "hitBboxCenterY": 879.5,
-      "hitContentWidth": 410,
-      "hitContentHeight": 192,
+      "hitContentWidth": 362,
+      "hitContentHeight": 224,
       "hitAnchors": [
         {
-          "x": 849.5,
-          "y": 879.4975136035825,
-          "count": 76818
+          "x": 849.4961079134866,
+          "y": 879.4973123050787,
+          "count": 78878
         }
       ]
     },
     "/fwdlinks/imagens/livro.webp": {
-      "centerX": 249.5,
-      "centerY": 1299.5,
+      "centerX": 249.49809551399662,
+      "centerY": 1299.4988251199022,
       "bboxCenterX": 249.5,
       "bboxCenterY": 1299.5,
       "width": 1080,
       "height": 1920,
-      "contentWidth": 490,
-      "contentHeight": 192,
-      "hitCenterX": 249.5,
-      "hitCenterY": 1299.5,
+      "contentWidth": 426,
+      "contentHeight": 224,
+      "hitCenterX": 249.49809551399662,
+      "hitCenterY": 1299.4988251199022,
       "hitBboxCenterX": 249.5,
       "hitBboxCenterY": 1299.5,
-      "hitContentWidth": 490,
-      "hitContentHeight": 192,
+      "hitContentWidth": 426,
+      "hitContentHeight": 224,
       "hitAnchors": [
         {
-          "x": 249.5,
-          "y": 1299.5,
-          "count": 92088
+          "x": 249.49809551399662,
+          "y": 1299.4988251199022,
+          "count": 93201
         }
       ]
     },
     "fwdlinks/imagens/livro.webp": {
-      "centerX": 249.5,
-      "centerY": 1299.5,
+      "centerX": 249.49809551399662,
+      "centerY": 1299.4988251199022,
       "bboxCenterX": 249.5,
       "bboxCenterY": 1299.5,
       "width": 1080,
       "height": 1920,
-      "contentWidth": 490,
-      "contentHeight": 192,
-      "hitCenterX": 249.5,
-      "hitCenterY": 1299.5,
+      "contentWidth": 426,
+      "contentHeight": 224,
+      "hitCenterX": 249.49809551399662,
+      "hitCenterY": 1299.4988251199022,
       "hitBboxCenterX": 249.5,
       "hitBboxCenterY": 1299.5,
-      "hitContentWidth": 490,
-      "hitContentHeight": 192,
+      "hitContentWidth": 426,
+      "hitContentHeight": 224,
       "hitAnchors": [
         {
-          "x": 249.5,
-          "y": 1299.5,
-          "count": 92088
+          "x": 249.49809551399662,
+          "y": 1299.4988251199022,
+          "count": 93201
         }
       ]
     },
     "/fwdlinks/imagens/contato.webp": {
-      "centerX": 775.4994713190589,
-      "centerY": 1499.5,
-      "bboxCenterX": 775.5,
+      "centerX": 818.4928635781687,
+      "centerY": 1499.499160699891,
+      "bboxCenterX": 818.5,
       "bboxCenterY": 1499.5,
       "width": 1080,
       "height": 1920,
-      "contentWidth": 598,
-      "contentHeight": 180,
-      "hitCenterX": 775.4994713190589,
-      "hitCenterY": 1499.5,
-      "hitBboxCenterX": 775.5,
+      "contentWidth": 512,
+      "contentHeight": 210,
+      "hitCenterX": 818.4928635781687,
+      "hitCenterY": 1499.499160699891,
+      "hitBboxCenterX": 818.5,
       "hitBboxCenterY": 1499.5,
-      "hitContentWidth": 598,
-      "hitContentHeight": 180,
+      "hitContentWidth": 512,
+      "hitContentHeight": 210,
       "hitAnchors": [
         {
-          "x": 775.4994713190589,
-          "y": 1499.5,
-          "count": 105924
+          "x": 818.4928635781687,
+          "y": 1499.499160699891,
+          "count": 105445
         }
       ]
     },
     "fwdlinks/imagens/contato.webp": {
-      "centerX": 775.4994713190589,
-      "centerY": 1499.5,
-      "bboxCenterX": 775.5,
+      "centerX": 818.4928635781687,
+      "centerY": 1499.499160699891,
+      "bboxCenterX": 818.5,
       "bboxCenterY": 1499.5,
       "width": 1080,
       "height": 1920,
-      "contentWidth": 598,
-      "contentHeight": 180,
-      "hitCenterX": 775.4994713190589,
-      "hitCenterY": 1499.5,
-      "hitBboxCenterX": 775.5,
+      "contentWidth": 512,
+      "contentHeight": 210,
+      "hitCenterX": 818.4928635781687,
+      "hitCenterY": 1499.499160699891,
+      "hitBboxCenterX": 818.5,
       "hitBboxCenterY": 1499.5,
-      "hitContentWidth": 598,
-      "hitContentHeight": 180,
+      "hitContentWidth": 512,
+      "hitContentHeight": 210,
       "hitAnchors": [
         {
-          "x": 775.4994713190589,
-          "y": 1499.5,
-          "count": 105924
+          "x": 818.4928635781687,
+          "y": 1499.499160699891,
+          "count": 105445
         }
       ]
     }
