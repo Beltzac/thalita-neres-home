@@ -1,6 +1,3 @@
-    import config from '/src/data/fwdlinks.json';
-
-    document.addEventListener("DOMContentLoaded", () => {
 body,
 html {
   margin: 0;
