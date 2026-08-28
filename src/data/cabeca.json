@@ -240,7 +240,11 @@
       "urlLink": "/loja",
       "arrowStartOffset": 28,
       "arrowEndOffset": 36,
-      "labelSide": "right"
+      "labelSide": "right",
+      "comingSoon": {
+        "title": "☺ Aviso ☼",
+        "text": "♥ A loja ainda está em obras.\nVolte em breve. ∞"
+      }
     },
     {
       "nomeImagem": "Livro",

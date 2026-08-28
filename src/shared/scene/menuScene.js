@@ -1,4 +1,5 @@
 import { confettiExplosion } from '../utils/confetti.js';
+import { showComingSoon } from './comingSoon.js';
 import { createInstructionTextPlacer } from './instructionPlacement.js';
 import { loadThataFont } from '../utils/fonts.js';
 
@@ -1413,6 +1414,11 @@ export function initMenuScene(config) {
       confettiExplosion(centerX, centerY);
 
       setTimeout(() => {
+        // Overlays flagged as comingSoon show a message instead of navigating.
+        if (overlay.comingSoon) {
+          showComingSoon(overlay.comingSoon);
+          return;
+        }
         window.parent.postMessage(overlay.urlLink, '*');
       }, 500);
     });

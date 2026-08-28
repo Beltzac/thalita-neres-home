@@ -162,7 +162,8 @@
         const height = precomputed.hitContentHeight ?? precomputed.contentHeight;
         const left = centerX - width / 2;
         const top = centerY - height / 2;
-        const label = overlay.buttonLabel;
+        // Coming-soon buttons get a marker so the click has a visible payoff.
+        const label = overlay.buttonLabel + (overlay.comingSoon ? ' *' : '');
 
         badgeCenters.push([precomputed.hitCenterX ?? precomputed.centerX, precomputed.hitCenterY ?? precomputed.centerY]);
 
