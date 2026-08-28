@@ -250,7 +250,7 @@
       "nomeImagem": "Livro",
       "buttonLabel": "LIVRO",
       "arquivo": "/cabeca/imagens/livro.webp",
-      "urlLink": "/meus-livros",
+      "urlLink": "https://www.amazon.com.br/Moramos-Nas-Chegadas-Tamb%C3%A9m-Partidas/dp/658596506X",
       "arrowStartOffset": 28,
       "arrowEndOffset": 36,
       "labelSide": "left"
