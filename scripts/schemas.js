@@ -4,7 +4,7 @@ const hitAnchorSchema = z.object({
   x: z.number(),
   y: z.number(),
   count: z.number(),
-});
+}).strict();
 
 export const centerDataSchema = z.object({
   centerX: z.number(),
@@ -19,7 +19,7 @@ export const centerDataSchema = z.object({
     width: z.number(),
     height: z.number(),
     runs: z.string(),
-  }).optional(),
+  }).strict().optional(),
   hitCenterX: z.number().optional(),
   hitCenterY: z.number().optional(),
   hitBboxCenterX: z.number().optional(),
@@ -27,7 +27,7 @@ export const centerDataSchema = z.object({
   hitContentWidth: z.number().optional(),
   hitContentHeight: z.number().optional(),
   hitAnchors: z.array(hitAnchorSchema).optional(),
-});
+}).strict();
 
 export const overlayImageSchema = z.object({
   nomeImagem: z.string().optional(),
@@ -38,7 +38,15 @@ export const overlayImageSchema = z.object({
   arrowStartOffset: z.number().optional(),
   arrowEndOffset: z.number().optional(),
   labelSide: z.enum(['left', 'right', 'top', 'bottom', 'top-left', 'top-right', 'bottom-left', 'bottom-right']).optional(),
-});
+  comingSoon: z.union([
+    z.string(),
+    z.object({
+      title: z.string().optional(),
+      text: z.string().optional(),
+      hint: z.string().optional(),
+    }).strict(),
+  ]).optional(),
+}).strict();
 
 export const sceneConfigSchema = z.object({
   baseUrl: z.string().default(''),
@@ -77,8 +85,8 @@ export const sceneConfigSchema = z.object({
       y: z.number(),
       horizontal: z.enum(['left', 'center', 'right']).optional(),
       vertical: z.enum(['top', 'center', 'bottom']).optional(),
-    }).optional(),
-  }).optional(),
+    }).strict().optional(),
+  }).strict().optional(),
   showArrow: z.boolean().default(false),
   alwaysShowOverlays: z.boolean().default(false),
   spiralSearch: z.object({
@@ -89,10 +97,10 @@ export const sceneConfigSchema = z.object({
     angleStep: z.number().default(20),
     radiusStep: z.number().default(14),
     padding: z.number().default(14),
-  }).optional(),
+  }).strict().optional(),
   precomputedCentersByUrl: z.record(z.string(), centerDataSchema).default({}),
   overlayImages: z.array(overlayImageSchema).default([]),
-});
+}).strict();
 
 export const desktopItemSchema = z.object({
   id: z.string(),
@@ -100,13 +108,15 @@ export const desktopItemSchema = z.object({
   baseImage: z.string(),
   activeImage: z.string(),
   urlLink: z.string(),
-});
+  iconScale: z.number().optional(),
+  labelScale: z.number().optional(),
+}).strict();
 
 export const desktopConfigSchema = z.object({
   CURSOR_NORMAL: z.string().optional(),
   CURSOR_HOVER: z.string().optional(),
   labelStyle: z.string().default('classic'),
   desktopItems: z.array(desktopItemSchema).default([]),
-});
+}).strict();
 
 export const anyConfigSchema = z.union([sceneConfigSchema, desktopConfigSchema]);
