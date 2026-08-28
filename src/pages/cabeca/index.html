@@ -47,11 +47,11 @@
     }
     /* Dev tooling: switch between head and button animations. */
     #animDev {
+      display: none; /* hidden by default; shown only on dev hosts */
       position: fixed;
       top: 12px;
       right: 12px;
       z-index: 9999;
-      display: flex;
       gap: 10px;
       align-items: flex-start;
       background: rgba(255, 255, 255, 0.94);
@@ -61,6 +61,9 @@
       font: 11px/1.2 'Arial', sans-serif;
       color: #333;
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+    }
+    #animDev.is-dev {
+      display: flex; /* revealed only when running on a dev host */
     }
     #animDev .anim-field { display: flex; flex-direction: column; gap: 3px; }
     #animDev .anim-field span { font-weight: bold; white-space: nowrap; }
@@ -335,10 +338,10 @@
       }
 
       // Dev tooling: switch head/button animations and replay to compare.
-      // Only available outside production (localhost/preview builds).
+      // Hidden by default via CSS; only revealed on dev hosts (no flash in PRD).
       const isDevHost = ['localhost', '127.0.0.1', ''].includes(location.hostname);
-      if (!isDevHost) {
-        document.getElementById('animDev')?.remove();
+      if (isDevHost) {
+        document.getElementById('animDev')?.classList.add('is-dev');
       }
       function replay() {
         setOpenness(0);
