@@ -17,7 +17,7 @@ const SCENE_CONFIGS = new Set([
   'sobre-mim.json',
   'maquina-escrever.json',
   'filme-fotografico.json',
-  'fwdlinks.json'
+  'cabeca.json'
 ]);
 
 function isRemoteUrl(value) {

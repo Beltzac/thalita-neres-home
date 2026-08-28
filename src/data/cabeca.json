@@ -1,6 +1,6 @@
 {
   "baseUrl": "",
-  "baseImageFilename": "/fwdlinks/imagens/abra.webp",
+  "baseImageFilename": "/cabeca/imagens/abra.webp",
   "margin": 60,
   "horizontalMargin": 16,
   "fitToContainer": true,
@@ -18,7 +18,7 @@
   "showArrow": false,
   "alwaysShowOverlays": true,
   "precomputedCentersByUrl": {
-    "/fwdlinks/imagens/abra.webp": {
+    "/cabeca/imagens/abra.webp": {
       "centerX": 541.7999941321948,
       "centerY": 1027.7596805842954,
       "bboxCenterX": 541.5,
@@ -28,7 +28,7 @@
       "contentWidth": 876,
       "contentHeight": 924
     },
-    "fwdlinks/imagens/abra.webp": {
+    "cabeca/imagens/abra.webp": {
       "centerX": 541.7999941321948,
       "centerY": 1027.7596805842954,
       "bboxCenterX": 541.5,
@@ -38,7 +38,7 @@
       "contentWidth": 876,
       "contentHeight": 924
     },
-    "/fwdlinks/imagens/portfolio.webp": {
+    "/cabeca/imagens/portfolio.webp": {
       "centerX": 276.890070992503,
       "centerY": 539.5,
       "bboxCenterX": 277,
@@ -61,7 +61,7 @@
         }
       ]
     },
-    "fwdlinks/imagens/portfolio.webp": {
+    "cabeca/imagens/portfolio.webp": {
       "centerX": 276.890070992503,
       "centerY": 539.5,
       "bboxCenterX": 277,
@@ -84,7 +84,7 @@
         }
       ]
     },
-    "/fwdlinks/imagens/loja.webp": {
+    "/cabeca/imagens/loja.webp": {
       "centerX": 849.4961079134866,
       "centerY": 879.4973123050787,
       "bboxCenterX": 849.5,
@@ -107,7 +107,7 @@
         }
       ]
     },
-    "fwdlinks/imagens/loja.webp": {
+    "cabeca/imagens/loja.webp": {
       "centerX": 849.4961079134866,
       "centerY": 879.4973123050787,
       "bboxCenterX": 849.5,
@@ -130,7 +130,7 @@
         }
       ]
     },
-    "/fwdlinks/imagens/livro.webp": {
+    "/cabeca/imagens/livro.webp": {
       "centerX": 249.49809551399662,
       "centerY": 1299.4988251199022,
       "bboxCenterX": 249.5,
@@ -153,7 +153,7 @@
         }
       ]
     },
-    "fwdlinks/imagens/livro.webp": {
+    "cabeca/imagens/livro.webp": {
       "centerX": 249.49809551399662,
       "centerY": 1299.4988251199022,
       "bboxCenterX": 249.5,
@@ -176,7 +176,7 @@
         }
       ]
     },
-    "/fwdlinks/imagens/contato.webp": {
+    "/cabeca/imagens/contato.webp": {
       "centerX": 818.4928635781687,
       "centerY": 1499.499160699891,
       "bboxCenterX": 818.5,
@@ -199,7 +199,7 @@
         }
       ]
     },
-    "fwdlinks/imagens/contato.webp": {
+    "cabeca/imagens/contato.webp": {
       "centerX": 818.4928635781687,
       "centerY": 1499.499160699891,
       "bboxCenterX": 818.5,
@@ -227,7 +227,7 @@
     {
       "nomeImagem": "Portifólio Arquitetura",
       "buttonLabel": "PORTFÓLIO",
-      "arquivo": "/fwdlinks/imagens/portfolio.webp",
+      "arquivo": "/cabeca/imagens/portfolio.webp",
       "urlLink": "/portfolio-arquitetura",
       "arrowStartOffset": 30,
       "arrowEndOffset": 36,
@@ -236,7 +236,7 @@
     {
       "nomeImagem": "Loja",
       "buttonLabel": "LOJA",
-      "arquivo": "/fwdlinks/imagens/loja.webp",
+      "arquivo": "/cabeca/imagens/loja.webp",
       "urlLink": "/loja",
       "arrowStartOffset": 28,
       "arrowEndOffset": 36,
@@ -245,7 +245,7 @@
     {
       "nomeImagem": "Livro",
       "buttonLabel": "LIVRO",
-      "arquivo": "/fwdlinks/imagens/livro.webp",
+      "arquivo": "/cabeca/imagens/livro.webp",
       "urlLink": "/meus-livros",
       "arrowStartOffset": 28,
       "arrowEndOffset": 36,
@@ -254,7 +254,7 @@
     {
       "nomeImagem": "Contato",
       "buttonLabel": "CONTATO",
-      "arquivo": "/fwdlinks/imagens/contato.webp",
+      "arquivo": "/cabeca/imagens/contato.webp",
       "urlLink": "/contato",
       "arrowStartOffset": 28,
       "arrowEndOffset": 36,

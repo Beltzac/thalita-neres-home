@@ -130,7 +130,7 @@
   <script type="module">
     import { initMenuScene } from '/src/shared/scene/menuScene.js';
     import { initHeadAnimation } from '/src/shared/scene/headAnimation.js';
-    import config from '/src/data/fwdlinks.json';
+    import config from '/src/data/cabeca.json';
 
     document.addEventListener("DOMContentLoaded", () => {
       const container = document.getElementById('imageContainer');
@@ -218,7 +218,7 @@
 
       const { setOpenness, setCurve, setHeadRotate, setButtonAnim, setHeadSpeed, setRotateSpeed, setButtonSpeed } = initHeadAnimation({
         container,
-        headFrame: '/fwdlinks/imagens/abra.webp',
+        headFrame: '/cabeca/imagens/abra.webp',
         splitY: 0.46,
         // Visible alpha bounds of abra.webp in its 1920px frame.
         headContentTop: 557 / 1920,
@@ -286,8 +286,8 @@
 
       } else {
         // Desktop: the head opens as the mouse approaches its center.
-        const PROXIMITY_FULL_OPEN_PX = 430; // within this distance -> fully open
-        const PROXIMITY_FULL_CLOSED_PX = 860; // beyond this -> fully closed
+        const PROXIMITY_FULL_OPEN_PX = 320; // within this distance -> fully open
+        const PROXIMITY_FULL_CLOSED_PX = 640; // beyond this -> fully closed
 
         let headCenter = { x: 0, y: 0 };
         let lastClient = null;
@@ -334,6 +334,11 @@
       }
 
       // Dev tooling: switch head/button animations and replay to compare.
+      // Only available outside production (localhost/preview builds).
+      const isDevHost = ['localhost', '127.0.0.1', ''].includes(location.hostname);
+      if (!isDevHost) {
+        document.getElementById('animDev')?.remove();
+      }
       function replay() {
         setOpenness(0);
         window.setTimeout(() => setOpenness(1), 140);

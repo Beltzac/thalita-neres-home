@@ -433,6 +433,52 @@
         }
       ]
     },
+    "/cabeca/imagens/abra.webp": {
+      "centerX": 541.8006623762359,
+      "centerY": 1027.759772120484,
+      "bboxCenterX": 541.5,
+      "bboxCenterY": 1018.5,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 876,
+      "contentHeight": 924,
+      "hitCenterX": 541.8006623762359,
+      "hitCenterY": 1027.759772120484,
+      "hitBboxCenterX": 541.5,
+      "hitBboxCenterY": 1018.5,
+      "hitContentWidth": 876,
+      "hitContentHeight": 924,
+      "hitAnchors": [
+        {
+          "x": 541.8006623762359,
+          "y": 1027.759772120484,
+          "count": 579429
+        }
+      ]
+    },
+    "cabeca/imagens/abra.webp": {
+      "centerX": 541.8006623762359,
+      "centerY": 1027.759772120484,
+      "bboxCenterX": 541.5,
+      "bboxCenterY": 1018.5,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 876,
+      "contentHeight": 924,
+      "hitCenterX": 541.8006623762359,
+      "hitCenterY": 1027.759772120484,
+      "hitBboxCenterX": 541.5,
+      "hitBboxCenterY": 1018.5,
+      "hitContentWidth": 876,
+      "hitContentHeight": 924,
+      "hitAnchors": [
+        {
+          "x": 541.8006623762359,
+          "y": 1027.759772120484,
+          "count": 579429
+        }
+      ]
+    },
     "/home/imagens/video.webp": {
       "centerX": 1859.0644219206322,
       "centerY": 1616.3740766191377,
@@ -546,6 +592,14 @@
       "arrowStartOffset": 26,
       "arrowEndOffset": 18,
       "labelSide": "right"
+    },
+    {
+      "nomeImagem": "Cabeça",
+      "arquivo": "/cabeca/imagens/abra.webp",
+      "urlLink": "/cabeca",
+      "arrowStartOffset": 28,
+      "arrowEndOffset": 20,
+      "labelSide": "left"
     },
     {
       "nomeImagem": "Vídeo",

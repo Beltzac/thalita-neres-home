@@ -1,4 +1,4 @@
-// Head-opening animation for the fwdlinks page.
+// Head-opening animation for the cabeca page.
 //
 // The head opens vertically: the top half (skull) slides up and the bottom
 // half (jaw/neck) slides down, revealing a GPU-generated scribble (WebGL)

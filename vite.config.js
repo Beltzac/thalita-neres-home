@@ -10,7 +10,7 @@ const pageInputs = {
   pastas: resolve(__dirname, 'src/pages/pastas/index.html'),
   'mesa-arquitetura': resolve(__dirname, 'src/pages/mesa-arquitetura/index.html'),
   projetos: resolve(__dirname, 'src/pages/projetos/index.html'),
-  fwdlinks: resolve(__dirname, 'src/pages/fwdlinks/index.html'),
+  cabeca: resolve(__dirname, 'src/pages/cabeca/index.html'),
   index: resolve(__dirname, 'src/pages/index.html'),
 };
 
