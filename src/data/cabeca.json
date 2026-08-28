@@ -225,10 +225,10 @@
   },
   "overlayImages": [
     {
-      "nomeImagem": "Portifólio Arquitetura",
-      "buttonLabel": "PORTFÓLIO",
+      "nomeImagem": "Ilustrações",
+      "buttonLabel": "ILUSTRAÇÃO",
       "arquivo": "/cabeca/imagens/portfolio.webp",
-      "urlLink": "/portfolio-arquitetura",
+      "urlLink": "/ilustrações",
       "arrowStartOffset": 30,
       "arrowEndOffset": 36,
       "labelSide": "left"
@@ -252,10 +252,10 @@
       "labelSide": "left"
     },
     {
-      "nomeImagem": "Contato",
-      "buttonLabel": "CONTATO",
+      "nomeImagem": "Arquitetura",
+      "buttonLabel": "ARQUITETURA",
       "arquivo": "/cabeca/imagens/contato.webp",
-      "urlLink": "/contato",
+      "urlLink": "/portfolio-arquitetura",
       "arrowStartOffset": 28,
       "arrowEndOffset": 36,
       "labelSide": "right"
