@@ -250,16 +250,19 @@
       if (isTouch) {
         // Mobile: tap toggles the head open/closed (no hover).
 
-        // Convert a tap (client coords) into the head image's natural 1080x1920
-        // space so we can hit-test the menu buttons by their centers.
+        // Convert a tap (client coords) into the head image's source space so we
+        // can hit-test the menu buttons by their centers. Use the dimensions
+        // declared in the config, not the file's pixels: the artwork is served
+        // scaled down while the precomputed centers stay in the declared space.
+        const baseSourceCenter = config.precomputedCentersByUrl[config.baseImageFilename];
         function screenToNatural(clientX, clientY) {
           const base = document.querySelector('#contentWrapper .headBaseImage');
           const cw = document.getElementById('contentWrapper');
-          if (!base || !cw) return null;
+          if (!base || !cw || !baseSourceCenter) return null;
           const rect = base.getBoundingClientRect();
           const m = new WebKitCSSMatrix(getComputedStyle(cw).transform);
-          const scaleX = rect.width / base.naturalWidth;
-          const scaleY = rect.height / base.naturalHeight;
+          const scaleX = rect.width / baseSourceCenter.width;
+          const scaleY = rect.height / baseSourceCenter.height;
           return {
             x: (clientX - m.m41) / scaleX,
             y: (clientY - m.m42) / scaleY,

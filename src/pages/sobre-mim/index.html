@@ -49,10 +49,16 @@
         if (!instructionEl) return;
 
         const baseImageEl = container.querySelector('.imageLayer');
-        if (!baseImageEl || !baseImageEl.naturalWidth || !baseImageEl.naturalHeight) return;
+        if (!baseImageEl) return;
 
-        const scaleX = baseImageEl.clientWidth / baseImageEl.naturalWidth;
-        const scaleY = baseImageEl.clientHeight / baseImageEl.naturalHeight;
+        // The offsets below are in the base image's declared source space, so the
+        // scale must come from the config, not from the file's pixel dimensions
+        // (the artwork is served scaled down; the declared space is unchanged).
+        const baseSourceCenter = config.precomputedCentersByUrl[config.baseImageFilename];
+        if (!baseSourceCenter) return;
+
+        const scaleX = baseImageEl.clientWidth / baseSourceCenter.width;
+        const scaleY = baseImageEl.clientHeight / baseSourceCenter.height;
         const sceneScale = Math.min(scaleX, scaleY);
 
         const offsetX = -620 * sceneScale;
