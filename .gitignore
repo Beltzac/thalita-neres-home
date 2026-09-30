@@ -22,3 +22,6 @@ Thumbs.db
 # Local scratch files
 clipboard_capture.png
 tmp-*.png
+
+# Locally fetched OCR model data (scripts/gemma-eyes)
+eng.traineddata

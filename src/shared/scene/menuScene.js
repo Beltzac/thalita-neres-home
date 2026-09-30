@@ -46,8 +46,6 @@ export function initMenuScene(config) {
   let lastClosestImageIndex = -1;
   let lastMinDistance = Infinity;
   let globalBaseCenter = null;
-  let loadedImages = 0;
-  let totalImages = 0;
 
   function ensureGlobalArrowLayer() {
     let arrowLayer = document.getElementById('arrowLayer');
@@ -243,7 +241,9 @@ export function initMenuScene(config) {
 
     for (let i = 0; i < overlayElements.length; i++) {
       const preProcessed = preProcessedOverlays[i];
-      if (!preProcessed) continue;
+      if (!preProcessed) {
+        continue;
+      }
       const anchors = getHitAnchors(preProcessed);
       let distance = Infinity;
 
@@ -626,18 +626,20 @@ export function initMenuScene(config) {
 
         const score = quadrantPriority * 1000 + normalizedDistance * 100;
 
-        debugCandidates.push({
-          x: candidateCenterX,
-          y: candidateCenterY,
-          left: left,
-          top: top,
-          width: labelWidth,
-          height: labelHeight,
-          score: score,
-          quadrant: quadrant,
-          radius: radius,
-          isBest: false,
-        });
+        if (debug) {
+          debugCandidates.push({
+            x: candidateCenterX,
+            y: candidateCenterY,
+            left: left,
+            top: top,
+            width: labelWidth,
+            height: labelHeight,
+            score: score,
+            quadrant: quadrant,
+            radius: radius,
+            isBest: false,
+          });
+        }
 
         if (score < bestScore) {
           bestScore = score;
@@ -1345,9 +1347,17 @@ export function initMenuScene(config) {
   }
 
   function setupImagesEvents() {
-    imageContainer.addEventListener('mousemove', function (e) {
-      if (!globalBaseCenter) return;
-      const isActive = findClosestImage(overlayElements, e.clientX, e.clientY);
+    let hoverFrame = 0;
+    let latestHover = null;
+
+    function processHover() {
+      hoverFrame = 0;
+      const point = latestHover;
+      if (!point || !globalBaseCenter) {
+        return;
+      }
+
+      const isActive = findClosestImage(overlayElements, point.x, point.y);
       const arrowPath = document.getElementById('dynamicArrow');
 
       if (isActive && lastClosestImageIndex !== -1) {
@@ -1361,9 +1371,9 @@ export function initMenuScene(config) {
         changeCursor(isActive);
 
         if (labelStyle === 'side' || labelStyle === 'horizontal') {
-          showNameWithArrow(imageName, imageDesc, e.clientX, e.clientY, targetX, targetY, isActive);
+          showNameWithArrow(imageName, imageDesc, point.x, point.y, targetX, targetY, isActive);
         } else {
-          showName(labelText, e.clientX, e.clientY);
+          showName(labelText, point.x, point.y);
           if (arrowPath) {
             arrowPath.setAttribute('d', '');
           }
@@ -1371,14 +1381,24 @@ export function initMenuScene(config) {
       } else {
         changeCursor(isActive);
         if (labelStyle === 'side' || labelStyle === 'horizontal') {
-          showNameWithArrow(null, null, e.clientX, e.clientY, 0, 0, false);
+          showNameWithArrow(null, null, point.x, point.y, 0, 0, false);
         } else {
-          showName(null, e.clientX, e.clientY);
+          showName(null, point.x, point.y);
           if (arrowPath) {
             arrowPath.setAttribute('d', '');
           }
         }
       }
+    }
+
+    imageContainer.addEventListener('mousemove', function (e) {
+      // Coalesce pointer events to one layout pass per frame; the handler does
+      // forced reflows, so running it per hardware event wastes frames.
+      latestHover = { x: e.clientX, y: e.clientY };
+      if (hoverFrame) {
+        return;
+      }
+      hoverFrame = window.requestAnimationFrame(processHover);
     });
 
     imageContainer.addEventListener('click', function () {
@@ -1466,28 +1486,34 @@ export function initMenuScene(config) {
       createAndAppendImage(baseUrl + overlay.arquivo, index + 2, false)
     );
 
-    loadedImages = 0;
-    totalImages = overlayElements.length + 1;
-
     let eventsSetup = false;
 
+    function hideLoader() {
+      const loader = document.querySelector('.lds-facebook');
+      if (loader) {
+        loader.style.display = 'none';
+      }
+    }
+
     function maybeSetupEvents() {
-      if (eventsSetup || !globalBaseCenter) return;
+      if (eventsSetup || !globalBaseCenter) {
+        return;
+      }
       eventsSetup = true;
       setupImagesEvents();
-      document.querySelector('.lds-facebook').style.display = 'none';
+      hideLoader();
     }
 
     baseImage.onload = () => {
       globalBaseCenter = preProcessOverlays(baseImage);
       centerMenu(globalBaseCenter);
       instructionTextPlacer?.schedule();
-      loadedImages++;
       maybeSetupEvents();
     };
 
     baseImage.onerror = () => {
       console.error('Failed to load base image', baseImage.src);
+      hideLoader();
     };
 
     window.addEventListener('resize', () => {
@@ -1500,7 +1526,6 @@ export function initMenuScene(config) {
     overlayElements.forEach((img, index) => {
       img.onload = () => {
         preProcessedOverlays[index] = preProcessOverlays(img, index);
-        loadedImages++;
       };
       img.onerror = () => {
         console.error('Failed to load overlay image', img.src);

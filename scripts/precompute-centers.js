@@ -96,7 +96,18 @@ async function loadImageBuffer(imageKey, pageDir) {
     candidates.push(path.join(rootDir, 'public', cleanedKey));
   }
 
-  for (const filePath of candidates) {
+  // The pristine PNG is the source of truth for hit-detection geometry: the JSON
+  // stores centers and the ACTIVE_RADIUS / spiralSearch distances in source-pixel
+  // space, so analysis must run on the full-resolution PNG, not the scaled WebP.
+  const preferredCandidates = [];
+  for (const candidate of candidates) {
+    if (/\.webp$/i.test(candidate)) {
+      preferredCandidates.push(candidate.replace(/\.webp$/i, '.png'));
+    }
+    preferredCandidates.push(candidate);
+  }
+
+  for (const filePath of preferredCandidates) {
     try {
       await fs.access(filePath);
       return fs.readFile(filePath);
