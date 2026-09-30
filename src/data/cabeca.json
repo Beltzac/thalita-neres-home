@@ -228,7 +228,7 @@
       "nomeImagem": "Ilustrações",
       "buttonLabel": "ILUSTRAÇÃO",
       "arquivo": "/cabeca/imagens/portfolio.webp",
-      "urlLink": "/ilustrações",
+      "urlLink": "/portfolio-ilustracoes-mobile",
       "arrowStartOffset": 30,
       "arrowEndOffset": 36,
       "labelSide": "left"
@@ -259,7 +259,7 @@
       "nomeImagem": "Arquitetura",
       "buttonLabel": "ARQUITETURA",
       "arquivo": "/cabeca/imagens/contato.webp",
-      "urlLink": "/portfolio-arquitetura",
+      "urlLink": "/portfolio-arquitetura-mobile",
       "arrowStartOffset": 28,
       "arrowEndOffset": 36,
       "labelSide": "right"
