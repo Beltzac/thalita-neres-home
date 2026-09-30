@@ -7,6 +7,7 @@
 //
 // Layering (back -> front): scribble canvas -> head halves -> badges.
 import { initScribbleShader } from './scribbleShader.js';
+import { initScribble } from './scribble.js';
 
 // Easing profiles for the opening gesture. Each maps normalized progress
 // t in [0,1] to an "applied openness" that can briefly exceed 1 (overshoot)
@@ -105,7 +106,10 @@ export function initHeadAnimation({ container, headFrame, splitY = 0.6, headCont
   base.classList.add('headBaseImage');
 
   // ---- Scribble (WebGL) goes BEHIND everything ----
-  const scribble = initScribbleShader({ container });
+  // WebGL2 is preferred; the Canvas2D scribble keeps the effect when WebGL is
+  // unavailable (GPU blocklisted, hardware acceleration off, embedded viewers).
+  const scribble =
+    initScribbleShader({ container }) || initScribble({ container, baseSelector: '.headBaseImage' });
 
   // ---- Head: two halves split at splitY ----
   // TOP half (skull): clipped to 0..splitY, slides UP as it opens.
@@ -149,7 +153,7 @@ export function initHeadAnimation({ container, headFrame, splitY = 0.6, headCont
     const baseRect = base.getBoundingClientRect();
     const containerRect = container.getBoundingClientRect();
     headH = baseRect.height;
-    scribble.setCenter?.(
+    scribble?.setCenter?.(
       baseRect.left + baseRect.width / 2,
       baseRect.top + headH * splitY
     );
@@ -256,7 +260,7 @@ export function initHeadAnimation({ container, headFrame, splitY = 0.6, headCont
   }
 
   function render() {
-    scribble.setOpenness(progress);
+    scribble?.setOpenness?.(progress);
     applySplit(progress, rotateProgress);
     applyBadges(buttonProgress);
     onProgress?.(progress);
