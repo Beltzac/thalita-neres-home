@@ -39,186 +39,232 @@
       "contentHeight": 924
     },
     "/cabeca/imagens/portfolio.webp": {
-      "centerX": 276.890070992503,
-      "centerY": 539.5,
-      "bboxCenterX": 277,
-      "bboxCenterY": 539.5,
+      "centerX": 309.890070992503,
+      "centerY": 530.5,
+      "bboxCenterX": 310,
+      "bboxCenterY": 530.5,
       "width": 1080,
       "height": 1920,
       "contentWidth": 545,
       "contentHeight": 188,
-      "hitCenterX": 276.890070992503,
-      "hitCenterY": 539.5,
-      "hitBboxCenterX": 277,
-      "hitBboxCenterY": 539.5,
+      "hitCenterX": 309.890070992503,
+      "hitCenterY": 530.5,
+      "hitBboxCenterX": 310,
+      "hitBboxCenterY": 530.5,
       "hitContentWidth": 545,
       "hitContentHeight": 188,
       "hitAnchors": [
         {
-          "x": 276.890070992503,
-          "y": 539.5,
+          "x": 309.890070992503,
+          "y": 530.5,
           "count": 100574
         }
       ]
     },
     "cabeca/imagens/portfolio.webp": {
-      "centerX": 276.890070992503,
-      "centerY": 539.5,
-      "bboxCenterX": 277,
-      "bboxCenterY": 539.5,
+      "centerX": 309.890070992503,
+      "centerY": 530.5,
+      "bboxCenterX": 310,
+      "bboxCenterY": 530.5,
       "width": 1080,
       "height": 1920,
       "contentWidth": 545,
       "contentHeight": 188,
-      "hitCenterX": 276.890070992503,
-      "hitCenterY": 539.5,
-      "hitBboxCenterX": 277,
-      "hitBboxCenterY": 539.5,
+      "hitCenterX": 309.890070992503,
+      "hitCenterY": 530.5,
+      "hitBboxCenterX": 310,
+      "hitBboxCenterY": 530.5,
       "hitContentWidth": 545,
       "hitContentHeight": 188,
       "hitAnchors": [
         {
-          "x": 276.890070992503,
-          "y": 539.5,
+          "x": 309.890070992503,
+          "y": 530.5,
           "count": 100574
         }
       ]
     },
     "/cabeca/imagens/loja.webp": {
-      "centerX": 849.4961079134866,
-      "centerY": 879.4973123050787,
-      "bboxCenterX": 849.5,
-      "bboxCenterY": 879.5,
+      "centerX": 580.4961079134866,
+      "centerY": 950.4973123050787,
+      "bboxCenterX": 580.5,
+      "bboxCenterY": 950.5,
       "width": 1080,
       "height": 1920,
       "contentWidth": 362,
       "contentHeight": 224,
-      "hitCenterX": 849.4961079134866,
-      "hitCenterY": 879.4973123050787,
-      "hitBboxCenterX": 849.5,
-      "hitBboxCenterY": 879.5,
+      "hitCenterX": 580.4961079134866,
+      "hitCenterY": 950.4973123050787,
+      "hitBboxCenterX": 580.5,
+      "hitBboxCenterY": 950.5,
       "hitContentWidth": 362,
       "hitContentHeight": 224,
       "hitAnchors": [
         {
-          "x": 849.4961079134866,
-          "y": 879.4973123050787,
+          "x": 580.4961079134866,
+          "y": 950.4973123050787,
           "count": 78878
         }
       ]
     },
     "cabeca/imagens/loja.webp": {
-      "centerX": 849.4961079134866,
-      "centerY": 879.4973123050787,
-      "bboxCenterX": 849.5,
-      "bboxCenterY": 879.5,
+      "centerX": 580.4961079134866,
+      "centerY": 950.4973123050787,
+      "bboxCenterX": 580.5,
+      "bboxCenterY": 950.5,
       "width": 1080,
       "height": 1920,
       "contentWidth": 362,
       "contentHeight": 224,
-      "hitCenterX": 849.4961079134866,
-      "hitCenterY": 879.4973123050787,
-      "hitBboxCenterX": 849.5,
-      "hitBboxCenterY": 879.5,
+      "hitCenterX": 580.4961079134866,
+      "hitCenterY": 950.4973123050787,
+      "hitBboxCenterX": 580.5,
+      "hitBboxCenterY": 950.5,
       "hitContentWidth": 362,
       "hitContentHeight": 224,
       "hitAnchors": [
         {
-          "x": 849.4961079134866,
-          "y": 879.4973123050787,
+          "x": 580.4961079134866,
+          "y": 950.4973123050787,
           "count": 78878
         }
       ]
     },
     "/cabeca/imagens/livro.webp": {
-      "centerX": 249.49809551399662,
-      "centerY": 1299.4988251199022,
-      "bboxCenterX": 249.5,
-      "bboxCenterY": 1299.5,
+      "centerX": 240.49809551399662,
+      "centerY": 1210.4988251199022,
+      "bboxCenterX": 240.5,
+      "bboxCenterY": 1210.5,
       "width": 1080,
       "height": 1920,
       "contentWidth": 426,
       "contentHeight": 224,
-      "hitCenterX": 249.49809551399662,
-      "hitCenterY": 1299.4988251199022,
-      "hitBboxCenterX": 249.5,
-      "hitBboxCenterY": 1299.5,
+      "hitCenterX": 240.49809551399662,
+      "hitCenterY": 1210.4988251199022,
+      "hitBboxCenterX": 240.5,
+      "hitBboxCenterY": 1210.5,
       "hitContentWidth": 426,
       "hitContentHeight": 224,
       "hitAnchors": [
         {
-          "x": 249.49809551399662,
-          "y": 1299.4988251199022,
+          "x": 240.49809551399662,
+          "y": 1210.4988251199022,
           "count": 93201
         }
       ]
     },
     "cabeca/imagens/livro.webp": {
-      "centerX": 249.49809551399662,
-      "centerY": 1299.4988251199022,
-      "bboxCenterX": 249.5,
-      "bboxCenterY": 1299.5,
+      "centerX": 240.49809551399662,
+      "centerY": 1210.4988251199022,
+      "bboxCenterX": 240.5,
+      "bboxCenterY": 1210.5,
       "width": 1080,
       "height": 1920,
       "contentWidth": 426,
       "contentHeight": 224,
-      "hitCenterX": 249.49809551399662,
-      "hitCenterY": 1299.4988251199022,
-      "hitBboxCenterX": 249.5,
-      "hitBboxCenterY": 1299.5,
+      "hitCenterX": 240.49809551399662,
+      "hitCenterY": 1210.4988251199022,
+      "hitBboxCenterX": 240.5,
+      "hitBboxCenterY": 1210.5,
       "hitContentWidth": 426,
       "hitContentHeight": 224,
       "hitAnchors": [
         {
-          "x": 249.49809551399662,
-          "y": 1299.4988251199022,
+          "x": 240.49809551399662,
+          "y": 1210.4988251199022,
           "count": 93201
         }
       ]
     },
     "/cabeca/imagens/contato.webp": {
-      "centerX": 818.4928635781687,
-      "centerY": 1499.499160699891,
-      "bboxCenterX": 818.5,
-      "bboxCenterY": 1499.5,
+      "centerX": 815.4928635781687,
+      "centerY": 1395.499160699891,
+      "bboxCenterX": 815.5,
+      "bboxCenterY": 1395.5,
       "width": 1080,
       "height": 1920,
       "contentWidth": 512,
       "contentHeight": 210,
-      "hitCenterX": 818.4928635781687,
-      "hitCenterY": 1499.499160699891,
-      "hitBboxCenterX": 818.5,
-      "hitBboxCenterY": 1499.5,
+      "hitCenterX": 815.4928635781687,
+      "hitCenterY": 1395.499160699891,
+      "hitBboxCenterX": 815.5,
+      "hitBboxCenterY": 1395.5,
       "hitContentWidth": 512,
       "hitContentHeight": 210,
       "hitAnchors": [
         {
-          "x": 818.4928635781687,
-          "y": 1499.499160699891,
+          "x": 815.4928635781687,
+          "y": 1395.499160699891,
           "count": 105445
         }
       ]
     },
     "cabeca/imagens/contato.webp": {
-      "centerX": 818.4928635781687,
-      "centerY": 1499.499160699891,
-      "bboxCenterX": 818.5,
-      "bboxCenterY": 1499.5,
+      "centerX": 815.4928635781687,
+      "centerY": 1395.499160699891,
+      "bboxCenterX": 815.5,
+      "bboxCenterY": 1395.5,
       "width": 1080,
       "height": 1920,
       "contentWidth": 512,
       "contentHeight": 210,
-      "hitCenterX": 818.4928635781687,
-      "hitCenterY": 1499.499160699891,
-      "hitBboxCenterX": 818.5,
-      "hitBboxCenterY": 1499.5,
+      "hitCenterX": 815.4928635781687,
+      "hitCenterY": 1395.499160699891,
+      "hitBboxCenterX": 815.5,
+      "hitBboxCenterY": 1395.5,
       "hitContentWidth": 512,
       "hitContentHeight": 210,
       "hitAnchors": [
         {
-          "x": 818.4928635781687,
-          "y": 1499.499160699891,
+          "x": 815.4928635781687,
+          "y": 1395.499160699891,
           "count": 105445
+        }
+      ]
+    },
+    "/cabeca/imagens/instagram.webp": {
+      "centerX": 800.0077707673015,
+      "centerY": 720.49911628504,
+      "bboxCenterX": 800,
+      "bboxCenterY": 720.5,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 545,
+      "contentHeight": 188,
+      "hitCenterX": 800.0077707673015,
+      "hitCenterY": 720.49911628504,
+      "hitBboxCenterX": 800,
+      "hitBboxCenterY": 720.5,
+      "hitContentWidth": 545,
+      "hitContentHeight": 188,
+      "hitAnchors": [
+        {
+          "x": 800.0077707673015,
+          "y": 720.49911628504,
+          "count": 101277
+        }
+      ]
+    },
+    "cabeca/imagens/instagram.webp": {
+      "centerX": 800.0077707673015,
+      "centerY": 720.49911628504,
+      "bboxCenterX": 800,
+      "bboxCenterY": 720.5,
+      "width": 1080,
+      "height": 1920,
+      "contentWidth": 545,
+      "contentHeight": 188,
+      "hitCenterX": 800.0077707673015,
+      "hitCenterY": 720.49911628504,
+      "hitBboxCenterX": 800,
+      "hitBboxCenterY": 720.5,
+      "hitContentWidth": 545,
+      "hitContentHeight": 188,
+      "hitAnchors": [
+        {
+          "x": 800.0077707673015,
+          "y": 720.49911628504,
+          "count": 101277
         }
       ]
     }
@@ -261,6 +307,15 @@
       "arquivo": "/cabeca/imagens/contato.webp",
       "urlLink": "/portfolio-arquitetura-mobile",
       "arrowStartOffset": 28,
+      "arrowEndOffset": 36,
+      "labelSide": "right"
+    },
+    {
+      "nomeImagem": "Instagram",
+      "buttonLabel": "INSTAGRAM",
+      "arquivo": "/cabeca/imagens/instagram.webp",
+      "urlLink": "https://www.instagram.com/thalitaneres/",
+      "arrowStartOffset": 30,
       "arrowEndOffset": 36,
       "labelSide": "right"
     }
