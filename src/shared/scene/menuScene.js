@@ -1401,8 +1401,13 @@ export function initMenuScene(config) {
       hoverFrame = window.requestAnimationFrame(processHover);
     });
 
-    imageContainer.addEventListener('click', function () {
-      if (lastClosestImageIndex < 0 || lastMinDistance > ACTIVE_RADIUS || !isOverlayReady(lastClosestImageIndex)) {
+    imageContainer.addEventListener('click', function (e) {
+      // Resolve the target from the click point itself. On touch devices the
+      // tap's mousemove and click arrive in the same batch, before the coalesced
+      // rAF hover pass runs, so lastClosestImageIndex can still point at a
+      // previous tap and navigate to the wrong overlay.
+      const isActive = findClosestImage(overlayElements, e.clientX, e.clientY);
+      if (!isActive || !isOverlayReady(lastClosestImageIndex)) {
         return;
       }
 
