@@ -20,7 +20,9 @@ export function initScribble({ container, baseSelector = '.headBaseImage' }) {
   const canvas = document.createElement('canvas');
   canvas.style.cssText = 'position:absolute;left:0;top:0;pointer-events:none;';
   canvas.classList.add('scribbleLayer');
-  contentWrapper.insertBefore(canvas, base.nextSibling);
+  // Insert before the base image so the scribble paints behind the head halves
+  // (which headAnimation inserts before the base) — matching the WebGL path.
+  contentWrapper.insertBefore(canvas, base);
 
   const ctx = canvas.getContext('2d');
 

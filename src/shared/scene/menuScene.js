@@ -1414,27 +1414,9 @@ export function initMenuScene(config) {
       const overlay = overlayImages[lastClosestImageIndex];
       const preProcessed = preProcessedOverlays[lastClosestImageIndex];
 
-      if (!preProcessed.screenCenter) {
-        const style = window.getComputedStyle(contentWrapper);
-        const matrix = new WebKitCSSMatrix(style.transform);
-        const offsetX = matrix.m41;
-        const offsetY = matrix.m42;
-
-        const boundingBox = baseImage.getBoundingClientRect();
-        const refWidth = globalBaseCenter ? globalBaseCenter.width : baseImage.naturalWidth;
-        const refHeight = globalBaseCenter ? globalBaseCenter.height : baseImage.naturalHeight;
-
-        const scaleX = boundingBox.width / refWidth;
-        const scaleY = boundingBox.height / refHeight;
-
-        const centerX = getHitCenterX(preProcessed) * scaleX + offsetX;
-        const centerY = getHitCenterY(preProcessed) * scaleY + offsetY;
-
-        preProcessed.screenCenter = { centerX, centerY };
-      }
-
-      const centerX = preProcessed.screenCenter.centerX;
-      const centerY = preProcessed.screenCenter.centerY;
+      // Recompute from the live layout every time: a cached center goes stale
+      // after a resize/orientation change and misplaces the confetti burst.
+      const { x: centerX, y: centerY } = getScreenCoordinates(preProcessed);
 
       confettiExplosion(centerX, centerY);
 
